@@ -5,190 +5,190 @@ interface
 uses SysUtils, Classes, Functions, UserFunctions;
 
 type
-	TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, KAMAEL = 4,
-	TALKING_ISLAND = 5, HEINE = 6, DION = 7, GIRAN = 8, ADEN = 9, GODDARD = 10,
-	GLUDIO = 11, GLUDIN = 12, SHTUTTGART = 13, RUNE = 14, OREN = 15, HUNTER = 16, NON_CITY = 17);
-	TFarmZone = record
-		range: integer;
-		mili: integer;
-	end;	
-	
-	TCity2 = record
-		Enum: TCity;
-		ID: integer;
-		Name: String;
-		gateKeeperID: integer;
-		supplyManagerID: integer;
-		newbieBufferID: integer;
-		pathToBuffer: DimensionArray;
-		pathToSupply: DimensionArray;
-		GateKeepersString: String;
-	end;
+  TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, KAMAEL = 4,
+  TALKING_ISLAND = 5, HEINE = 6, DION = 7, GIRAN = 8, ADEN = 9, GODDARD = 10,
+  GLUDIO = 11, GLUDIN = 12, SHTUTTGART = 13, RUNE = 14, OREN = 15, HUNTER = 16, NON_CITY = 17);
+  TFarmZone = record
+    range: integer;
+    mili: integer;
+  end;
+
+  TCity2 = record
+    Enum: TCity;
+    ID: integer;
+    Name: String;
+    gateKeeperID: integer;
+    supplyManagerID: integer;
+    newbieBufferID: integer;
+    pathToBuffer: DimensionArray;
+    pathToSupply: DimensionArray;
+    GateKeepersString: String;
+  end;
 
 const
-	TCities : array[0..17] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, KAMAEL,
-	TALKING_ISLAND, HEINE, DION, GIRAN, ADEN, GODDARD,
-	GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
-	
-	GkDlg  = 'Телепортироваться';
-	//GkDlg  = 'Телепортация';
-	CityNames : array[0..16] of string = ('dwarven village','orc village','dark elf village','elf village','kamael village','talking island',
-	'heine','dion','giran','aden','goddard','gludio','gludin','schuttgart','rune','oren','hunter village');
+  TCities : array[0..17] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, KAMAEL,
+  TALKING_ISLAND, HEINE, DION, GIRAN, ADEN, GODDARD,
+  GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
 
-	GateKeepers1 : array[0..16] of integer = (30540, 30576, 30134, 30146, 32163, 30006, 30899, 30059, 30080, 30848, 31275, 30256, 30320, 31694, 31320, 30177, 30233);
-	GateKeepers : array[0..16] of integer = (50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124);
-	TPDelay = 1000;
-	GateKeepersStrings   : array[0..16] of string = (
-		'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","kamael village","abandoned coal mines","eastern mining zone","western mining zone","mithril mines w","mithril mines e"', //dwarven
-		'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","kamael village","immortal plateau","cave of trials","fozen waterfall"', //orc
-		'gludio,"dwarven village","talking island","orc village","kamael village","dark forest","swampland","spider nest","neutral zone"', //darkelven
-		'gludio,"dwarven village","talking island","orc village","kamael village","elven forest","elven fortress","neutral zone"', //elven
-		'gludio,aden,"talking island","dark elf village","elf village","ofc village","stronghold 1","stronghold 2","stronghold 3","isle of souls harbor"', //kamael
-		'gludin,"dark elf village","dwarven village","elf village","orc village","kamael village","elven ruins","singing waterfall","northen territory","obelisk of victory"', //talking island
-		'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva","isle of prayer"', //heine
-		'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"', //dion
-		'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","devils isle","breka stronghold"', //giran
-		'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"kamael village","hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence","giant cave"', //aden
-		'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence","forge of gods"', //goddard
-		'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","kamael village","ruins of agony","ruins of despair","ant nest","windawood manor"', //gludio
-		'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","kamael village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"', //gludin
-		'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","iceman hat","crypts of disgrace","pavel ruines","mithril mines"', //schuttgart
-		'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence","stakato nest","primeval isle wharf"', //rune
-		'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","sel mahum west","sel mahum south","sel mahum center","plains of the lizardmen","outlaw forest","sea of spores"', //oren
-		'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors","dragon valley","antharas lair","ivory tower"' //hunter
-	);
-	nbArr : array[0..8] of integer = (30598, 30599, 30600, 30601, 30602, 32135, 31076, 31077, 32327);
-	spArr : array[0..16] of integer = (30519, 30561, 30137, 30150, 32167, 30004, 30893, 30063, 30081, 30893, 31263, 30254, 30313, 31952, 31307, 30180, 30301);
+  GkDlg  = 'Телепортироваться';
+  //GkDlg  = 'Телепортация';
+  CityNames : array[0..16] of string = ('dwarven village','orc village','dark elf village','elf village','kamael village','talking island',
+  'heine','dion','giran','aden','goddard','gludio','gludin','schuttgart','rune','oren','hunter village');
+
+  GateKeepers1 : array[0..16] of integer = (30540, 30576, 30134, 30146, 32163, 30006, 30899, 30059, 30080, 30848, 31275, 30256, 30320, 31694, 31320, 30177, 30233);
+  GateKeepers : array[0..16] of integer = (50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124);
+  TPDelay = 1000;
+  GateKeepersStrings   : array[0..16] of string = (
+    'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","kamael village","abandoned coal mines","eastern mining zone","western mining zone","mithril mines w","mithril mines e"', //dwarven
+    'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","kamael village","immortal plateau","cave of trials","fozen waterfall"', //orc
+    'gludio,"dwarven village","talking island","orc village","kamael village","dark forest","swampland","spider nest","neutral zone"', //darkelven
+    'gludio,"dwarven village","talking island","orc village","kamael village","elven forest","elven fortress","neutral zone"', //elven
+    'gludio,aden,"talking island","dark elf village","elf village","ofc village","stronghold 1","stronghold 2","stronghold 3","isle of souls harbor"', //kamael
+    'gludin,"dark elf village","dwarven village","elf village","orc village","kamael village","elven ruins","singing waterfall","northen territory","obelisk of victory"', //talking island
+    'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva","isle of prayer"', //heine
+    'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"', //dion
+    'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","devils isle","breka stronghold"', //giran
+    'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"kamael village","hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence","giant cave"', //aden
+    'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence","forge of gods"', //goddard
+    'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","kamael village","ruins of agony","ruins of despair","ant nest","windawood manor"', //gludio
+    'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","kamael village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"', //gludin
+    'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","iceman hat","crypts of disgrace","pavel ruines","mithril mines"', //schuttgart
+    'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence","stakato nest","primeval isle wharf"', //rune
+    'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","sel mahum west","sel mahum south","sel mahum center","plains of the lizardmen","outlaw forest","sea of spores"', //oren
+    'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors","dragon valley","antharas lair","ivory tower"' //hunter
+  );
+  nbArr : array[0..8] of integer = (30598, 30599, 30600, 30601, 30602, 32135, 31076, 31077, 32327);
+  spArr : array[0..16] of integer = (30519, 30561, 30137, 30150, 32167, 30004, 30893, 30063, 30081, 30893, 31263, 30254, 30313, 31952, 31307, 30180, 30301);
 
 var
-	language: boolean = false;
-	talkingIslandToBuffer: DimensionArray;
-	heineToBuffer: DimensionArray;
-	dionToBuffer: DimensionArray;
-	giranToBuffer: DimensionArray;
-	adenToBuffer: DimensionArray;
-	goddardToBuffer: DimensionArray;
-	gludioToBuffer: DimensionArray;
-	gludinToBuffer: DimensionArray;
-	shtuttgartToBuffer: DimensionArray;
-	runeToBuffer: DimensionArray;
-	orenToBuffer: DimensionArray;
-	kamaelToBuffer: DimensionArray;
-	
-	talkingIslandToSupply: DimensionArray;
-	heineToSupply: DimensionArray;
-	dionToSupply: DimensionArray;
-	giranToSupply: DimensionArray;
-	adenToSupply: DimensionArray;
-	goddardToSupply: DimensionArray;
-	gludioToSupply: DimensionArray;
-	gludinToSupply: DimensionArray;
-	shtuttgartToSupply: DimensionArray;
-	runeToSupply: DimensionArray;
-	orenToSupply: DimensionArray;
-	kamaelToSupply: DimensionArray;
-	
-	giranToWeaponShop: DimensionArray;
-	giranToAccessoryShop: DimensionArray;
-	giranToArmorShop: DimensionArray;
+  language: boolean = false;
+  talkingIslandToBuffer: DimensionArray;
+  heineToBuffer: DimensionArray;
+  dionToBuffer: DimensionArray;
+  giranToBuffer: DimensionArray;
+  adenToBuffer: DimensionArray;
+  goddardToBuffer: DimensionArray;
+  gludioToBuffer: DimensionArray;
+  gludinToBuffer: DimensionArray;
+  shtuttgartToBuffer: DimensionArray;
+  runeToBuffer: DimensionArray;
+  orenToBuffer: DimensionArray;
+  kamaelToBuffer: DimensionArray;
+
+  talkingIslandToSupply: DimensionArray;
+  heineToSupply: DimensionArray;
+  dionToSupply: DimensionArray;
+  giranToSupply: DimensionArray;
+  adenToSupply: DimensionArray;
+  goddardToSupply: DimensionArray;
+  gludioToSupply: DimensionArray;
+  gludinToSupply: DimensionArray;
+  shtuttgartToSupply: DimensionArray;
+  runeToSupply: DimensionArray;
+  orenToSupply: DimensionArray;
+  kamaelToSupply: DimensionArray;
+
+  giranToWeaponShop: DimensionArray;
+  giranToAccessoryShop: DimensionArray;
+  giranToArmorShop: DimensionArray;
 
 
-	function GetCity(shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
-	procedure GoHome(ItemID: integer = -1; skillID: integer = -1; Val: boolean = false);
-	procedure InCity;
-	function DoTeleport(TeleportValue: String): boolean;
-	function DoTeleportToLocation(TeleportValue: String): boolean;
-	function isRightCity(val: TCity; shouldGoHome: boolean = true): boolean;
-	function toRightCity(val: TCity): boolean;
-	function inStartLoc: boolean;
-	function getNewbieBuffer: TL2Live;
-	function getSupplyManager: TL2Live;
-	procedure GetBuff;
-	procedure GetSupplies;
-	procedure initBuffPathArrays;
-	function getNewbieQuest: boolean;
-	
-	function getCityToLocationGK(teleportName: string): integer;
+  function GetCity(shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
+  procedure GoHome(ItemID: integer = -1; skillID: integer = -1; Val: boolean = false);
+  procedure InCity;
+  function DoTeleport(TeleportValue: String): boolean;
+  function DoTeleportToLocation(TeleportValue: String): boolean;
+  function isRightCity(val: TCity; shouldGoHome: boolean = true): boolean;
+  function toRightCity(val: TCity): boolean;
+  function inStartLoc: boolean;
+  function getNewbieBuffer: TL2Live;
+  function getSupplyManager: TL2Live;
+  procedure GetBuff;
+  procedure GetSupplies;
+  procedure initBuffPathArrays;
+  function getNewbieQuest: boolean;
+
+  function getCityToLocationGK(teleportName: string): integer;
 
 implementation
 
-function GetCity; //todo hunter, dark elv, 
+function GetCity; //todo hunter, dark elv,
 var
-	City : TCity;
+  City : TCity;
 begin
-	City := NON_CITY;
-	if User.InRange(-83139,243145,User.Z,5000,10) then City := TALKING_ISLAND;
-	if User.InRange(116569,-179848,User.Z,7000,10) then City := DWARVEN;
-	if User.InRange(-118184, 46024, User.Z, 7000, 10) then City := KAMAEL;
-	if User.InRange(44904, 49800, User.Z, 7000, 10) then City := ELVEN;
-	if User.InRange(-45080, -113576, User.Z, 5000, 10) then City := ORC;
-	if User.InRange(111434,220426,User.Z,5000,10)  then City := HEINE;
-	if User.InRange(18591,144708,User.Z,5000,10)   then City := DION;
-	if User.InRange(82876,148960,User.Z,5000,10)   then City := GIRAN;
-	if User.InRange(147509,25928,User.Z,5000,10)   then City := ADEN;
-	if User.InRange(147713,-56202,User.Z,5000,10)  then City := GODDARD;
-	if User.InRange(-14236,123701,User.Z,5000,10)  then City := GLUDIO;
-	if User.InRange(-81311,152663,User.Z,5000,10)  then City := GLUDIN;
-	if User.InRange(88041,-142502,User.Z,5000,10)  then City := SHTUTTGART;
-	if User.InRange(117144, 76824,User.Z,5000,10)  then City := HUNTER;
-	if User.InRange(11416, 16856,User.Z,5000,10)  then City := DARK_ELVEN;
-	if User.InRange(43838,-48222,User.Z,5000,10) or User.InRange(38283,-48102,User.Z,5000,10) then City := RUNE;
-	if User.InRange(81150,54880,User.Z,5000,10)    then City := OREN;
-	if (City = NON_CITY) and (shouldGoHome) then
-	begin
-		GoHome(-1, -1, inCityEvt);
-		City := GetCity;
-	end;
-	Result := City;
+  City := NON_CITY;
+  if User.InRange(-83139,243145,User.Z,5000,10) then City := TALKING_ISLAND;
+  if User.InRange(116569,-179848,User.Z,7000,10) then City := DWARVEN;
+  if User.InRange(-118184, 46024, User.Z, 7000, 10) then City := KAMAEL;
+  if User.InRange(44904, 49800, User.Z, 7000, 10) then City := ELVEN;
+  if User.InRange(-45080, -113576, User.Z, 5000, 10) then City := ORC;
+  if User.InRange(111434,220426,User.Z,5000,10)  then City := HEINE;
+  if User.InRange(18591,144708,User.Z,5000,10)   then City := DION;
+  if User.InRange(82876,148960,User.Z,5000,10)   then City := GIRAN;
+  if User.InRange(147509,25928,User.Z,5000,10)   then City := ADEN;
+  if User.InRange(147713,-56202,User.Z,5000,10)  then City := GODDARD;
+  if User.InRange(-14236,123701,User.Z,5000,10)  then City := GLUDIO;
+  if User.InRange(-81311,152663,User.Z,5000,10)  then City := GLUDIN;
+  if User.InRange(88041,-142502,User.Z,5000,10)  then City := SHTUTTGART;
+  if User.InRange(117144, 76824,User.Z,5000,10)  then City := HUNTER;
+  if User.InRange(11416, 16856,User.Z,5000,10)  then City := DARK_ELVEN;
+  if User.InRange(43838,-48222,User.Z,5000,10) or User.InRange(38283,-48102,User.Z,5000,10) then City := RUNE;
+  if User.InRange(81150,54880,User.Z,5000,10)    then City := OREN;
+  if (City = NON_CITY) and (shouldGoHome) then
+  begin
+    GoHome(-1, -1, inCityEvt);
+    City := GetCity;
+  end;
+  Result := City;
 end;
 
 procedure GoHome;
 var
-	Skill: TL2Skill;
-	Item: TL2Item;
+  Skill: TL2Skill;
+  Item: TL2Item;
 begin
   if not User.Dead then
   begin
-	if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
-	begin
-		Engine.UseItem(itemID);
-		delay(100);
-		delay(User.Cast.EndTime + 100);
-	end;
+  if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
+  begin
+    Engine.UseItem(itemID);
+    delay(100);
+    delay(User.Cast.EndTime + 100);
+  end;
 
-	if (skillID <> -1) and (itemID = -1) and SkillList.ByID(skillID, Skill) then
-	begin
-		Engine.UseSkill(skillID);
-		delay(100);
-		delay(User.Cast.EndTime + 100);
-	end;
-	
-	if (skillID = -1) and (itemID = -1) and Inventory.User.ByID(10650, Item) then
-	begin
-		Engine.UseItem(Item); //Свиток телепорта
-		delay(10 * 1000);
-	end;
-	
-	if (skillID = -1) and (itemID = -1) and not Inventory.User.ByID(736, Item) then
-	begin
-		delay(100);
-		delay(5 * 60 * 1000);
-	end;
+  if (skillID <> -1) and (itemID = -1) and SkillList.ByID(skillID, Skill) then
+  begin
+    Engine.UseSkill(skillID);
+    delay(100);
+    delay(User.Cast.EndTime + 100);
+  end;
+
+  if (skillID = -1) and (itemID = -1) and Inventory.User.ByID(10650, Item) then
+  begin
+    Engine.UseItem(Item); //Свиток телепорта
+    delay(10 * 1000);
+  end;
+
+  if (skillID = -1) and (itemID = -1) and not Inventory.User.ByID(736, Item) then
+  begin
+    delay(100);
+    delay(5 * 60 * 1000);
+  end;
   end else
-	Engine.GoHome;
+  Engine.GoHome;
 
   Delay(5 * 1000);
   if Val then
-	InCity;
+  InCity;
 end;
 
 //Пушествия от места появления в городе до гейткипера города.
 procedure InCity;
 var
-	City: TCity;
-	Moved : Boolean;
-	NPC: TL2Npc;
-	NewResp : TStringList;
+  City: TCity;
+  Moved : Boolean;
+  NPC: TL2Npc;
+  NewResp : TStringList;
 begin
   City := GetCity;
   //talking island
@@ -1144,88 +1144,88 @@ begin
   end;
 end;
 
-function getCityToLocationGK;
+function getCityToLocationGK(teleportName: string): integer;
 var
-	i: integer;
+  i: integer;
 begin
-	for i:=0 to 16 do
-	begin
-		if Pos(teleportName, GateKeepersStrings[i]) <> 0 then
-		begin
-			Result := i;
-			exit;
-		end;
-	end;
-	Result := -1;
+  for i:=0 to 16 do
+  begin
+    if Pos(teleportName, GateKeepersStrings[i]) <> 0 then
+    begin
+      Result := i;
+      exit;
+    end;
+  end;
+  Result := -1;
 end;
 
 function DoTeleportToLocation;
 begin
-	Result := false;
-	if toRightCity(TCities[getCityToLocationGK(TeleportValue)]) then
-		Result := DoTeleport(TeleportValue);
+  Result := false;
+  if toRightCity(TCities[getCityToLocationGK(TeleportValue)]) then
+    Result := DoTeleport(TeleportValue);
 end;
 
 function DoTeleport;
 var
-	City: TCity;
-	gkId: integer;
-	cityIndex: integer;
-	buffer: TL2Live;
-	dialogIndex: integer;
-	teleportIndex: TStringList;
+  City: TCity;
+  gkId: integer;
+  cityIndex: integer;
+  buffer: TL2Live;
+  dialogIndex: integer;
+  teleportIndex: TStringList;
 begin
-	teleportIndex := TStringList.Create;
+  teleportIndex := TStringList.Create;
 
-	City := GetCity;
-	cityIndex := Ord(City);
+  City := GetCity;
+  cityIndex := Ord(City);
 
-	if City = NON_CITY then
-	begin
-		Result := false;
-		exit;
-	end;
+  if City = NON_CITY then
+  begin
+    Result := false;
+    exit;
+  end;
 
-	gkId := GateKeepers[cityIndex];
-	teleportIndex.Delimiter := ',';
-	teleportIndex.DelimitedText := GateKeepersStrings[cityIndex];
+  gkId := GateKeepers[cityIndex];
+  teleportIndex.Delimiter := ',';
+  teleportIndex.DelimitedText := GateKeepersStrings[cityIndex];
 
-	buffer := nil;
+  buffer := nil;
 
-	NpcList.ById(gkId, buffer);
+  NpcList.ById(gkId, buffer);
 
-	if buffer = nil then
-	begin
-		Result := false;
-		exit;
-	end;
+  if buffer = nil then
+  begin
+    Result := false;
+    exit;
+  end;
 
-	dialogIndex := teleportIndex.indexOf(TeleportValue) + 1;
-	print(dialogIndex);
-	if dialogIndex = 0 then
-	begin
-		DoTeleportToLocation(TeleportValue);
-		exit;
-	end;
-	
-	if dialogIndex > 0 then
-	begin
-		Engine.SetTarget(buffer);
-		Engine.MoveTo(buffer);
-		Engine.DlgOpen;
-		delay(500);
-		if buffer.id = 30146 then
-			Engine.DlgSel(1)	
-		else
-			Engine.DlgSel(ifThen((Pos(buffer.name, 'Ragara') <> 0), 'Teleport', GkDlg));
-		delay(500);
-		Engine.DlgSel(dialogIndex);
-		Delay(3 * 1000);
-		Result := true;
-	end else
-		Result := false;
+  dialogIndex := teleportIndex.indexOf(TeleportValue) + 1;
+  print(dialogIndex);
+  if dialogIndex = 0 then
+  begin
+    DoTeleportToLocation(TeleportValue);
+    exit;
+  end;
 
-	teleportIndex.Free;
+  if dialogIndex > 0 then
+  begin
+    Engine.SetTarget(buffer);
+    Engine.MoveTo(buffer);
+    Engine.DlgOpen;
+    delay(500);
+    if buffer.id = 30146 then
+      Engine.DlgSel(1)
+    else
+      Engine.DlgSel(ifThen((Pos(buffer.name, 'Ragara') <> 0), 'Teleport', GkDlg));
+    delay(500);
+    Engine.DlgSel(dialogIndex);
+    Delay(3 * 1000);
+    Result := true;
+  end else
+    Result := false;
+
+  teleportIndex.Free;
 end;
 
 //по массиву строк телепортов ищем наш тп, он будет равен ид города
@@ -1280,204 +1280,204 @@ end;
 
 function getNewbieBuffer;
 var
-	i: integer;
+  i: integer;
 begin
-	for i:=0 to 8 do
-	begin
-		if NpcList.ByID(nbArr[i], Result) then
-			exit;
-	end;
-	Result := nil;
+  for i:=0 to 8 do
+  begin
+    if NpcList.ByID(nbArr[i], Result) then
+      exit;
+  end;
+  Result := nil;
 end;
 
 function getSupplyManager;
 var
-	i: integer;
+  i: integer;
 begin
-	for i:=0 to 16 do
-	begin
-		if NpcList.ByID(spArr[i], Result) then
-			exit;
-	end;
-	Result := nil;
+  for i:=0 to 16 do
+  begin
+    if NpcList.ByID(spArr[i], Result) then
+      exit;
+  end;
+  Result := nil;
 end;
 
 procedure initBuffPathArrays;
 begin
-	SetLength(talkingIslandToBuffer, 4, 3);
-	SetLength(heineToBuffer, 6, 3);
-	SetLength(dionToBuffer, 2, 3);
-	SetLength(giranToBuffer, 2, 3);
-	SetLength(adenToBuffer, 2, 3);
-	SetLength(goddardToBuffer, 2, 3);
-	SetLength(gludioToBuffer, 2, 3);
-	SetLength(gludinToBuffer, 2, 3);
-	SetLength(shtuttgartToBuffer, 2, 3);
-	SetLength(runeToBuffer, 3, 3);
-	SetLength(orenToBuffer, 2, 3);
-	SetLength(kamaelToBuffer, 2, 3);
+  SetLength(talkingIslandToBuffer, 4, 3);
+  SetLength(heineToBuffer, 6, 3);
+  SetLength(dionToBuffer, 2, 3);
+  SetLength(giranToBuffer, 2, 3);
+  SetLength(adenToBuffer, 2, 3);
+  SetLength(goddardToBuffer, 2, 3);
+  SetLength(gludioToBuffer, 2, 3);
+  SetLength(gludinToBuffer, 2, 3);
+  SetLength(shtuttgartToBuffer, 2, 3);
+  SetLength(runeToBuffer, 3, 3);
+  SetLength(orenToBuffer, 2, 3);
+  SetLength(kamaelToBuffer, 2, 3);
 
-	writeToArray(talkingIslandToBuffer[0], -84168, 244568, -3712);
-	writeToArray(talkingIslandToBuffer[1], -84584, 244008, -3712);
-	writeToArray(talkingIslandToBuffer[2], -84104, 243528, -3712);
-	writeToArray(talkingIslandToBuffer[3], -84072, 243288, -3712);
+  writeToArray(talkingIslandToBuffer[0], -84168, 244568, -3712);
+  writeToArray(talkingIslandToBuffer[1], -84584, 244008, -3712);
+  writeToArray(talkingIslandToBuffer[2], -84104, 243528, -3712);
+  writeToArray(talkingIslandToBuffer[3], -84072, 243288, -3712);
 
-	writeToArray(heineToBuffer[0], 111387,219387,-3544);
-	writeToArray(heineToBuffer[1], 111250,219358,-3516);
-	writeToArray(heineToBuffer[2], 111267,219361,-3516);
-	writeToArray(heineToBuffer[3], 111218,219438,-3532);
-	writeToArray(heineToBuffer[4], 111158,219756,-3673);
-	writeToArray(heineToBuffer[5], 111188,220978,-3544);
+  writeToArray(heineToBuffer[0], 111387,219387,-3544);
+  writeToArray(heineToBuffer[1], 111250,219358,-3516);
+  writeToArray(heineToBuffer[2], 111267,219361,-3516);
+  writeToArray(heineToBuffer[3], 111218,219438,-3532);
+  writeToArray(heineToBuffer[4], 111158,219756,-3673);
+  writeToArray(heineToBuffer[5], 111188,220978,-3544);
 
-	writeToArray(dionToBuffer[0], 15628,142920,-2704);
-	writeToArray(dionToBuffer[1], 16754,142947,-2717);
+  writeToArray(dionToBuffer[0], 15628,142920,-2704);
+  writeToArray(dionToBuffer[1], 16754,142947,-2717);
 
-	writeToArray(giranToBuffer[0], 83405,147953,-3403);
-	writeToArray(giranToBuffer[1], 83261,148847,-3403);
+  writeToArray(giranToBuffer[0], 83405,147953,-3403);
+  writeToArray(giranToBuffer[1], 83261,148847,-3403);
 
-	writeToArray(adenToBuffer[0], 146771,25813,-2011);
-	writeToArray(adenToBuffer[1], 147128,25924,-2011);
+  writeToArray(adenToBuffer[0], 146771,25813,-2011);
+  writeToArray(adenToBuffer[1], 147128,25924,-2011);
 
-	writeToArray(goddardToBuffer[0], 147969,-55264,-2732);
-	writeToArray(goddardToBuffer[1], 148064,-55368,-2732);
+  writeToArray(goddardToBuffer[0], 147969,-55264,-2732);
+  writeToArray(goddardToBuffer[1], 148064,-55368,-2732);
 
-	writeToArray(gludioToBuffer[0], -14504,124036,-3124);
-	writeToArray(gludioToBuffer[1], -14728,124023,-3122);
+  writeToArray(gludioToBuffer[0], -14504,124036,-3124);
+  writeToArray(gludioToBuffer[1], -14728,124023,-3122);
 
-	writeToArray(gludinToBuffer[0], -81073,150110,-3042);
-	writeToArray(gludinToBuffer[1], -81603,150204,-3127);
+  writeToArray(gludinToBuffer[0], -81073,150110,-3042);
+  writeToArray(gludinToBuffer[1], -81603,150204,-3127);
 
-	writeToArray(shtuttgartToBuffer[0], 87061,-143441,-1290);
-	writeToArray(shtuttgartToBuffer[1], 87015,-143349,-1290);
+  writeToArray(shtuttgartToBuffer[0], 87061,-143441,-1290);
+  writeToArray(shtuttgartToBuffer[1], 87015,-143349,-1290);
 
-	writeToArray(runeToBuffer[0], 43827,-47698,-794);
-	writeToArray(runeToBuffer[1], 43606,-47837,-795);
-	writeToArray(runeToBuffer[2], 43530,-47561,-795);
+  writeToArray(runeToBuffer[0], 43827,-47698,-794);
+  writeToArray(runeToBuffer[1], 43606,-47837,-795);
+  writeToArray(runeToBuffer[2], 43530,-47561,-795);
 
-	writeToArray(orenToBuffer[0], 82965,53174,-1494);
-	writeToArray(orenToBuffer[1], 82397,53295,-1494);
+  writeToArray(orenToBuffer[0], 82965,53174,-1494);
+  writeToArray(orenToBuffer[1], 82397,53295,-1494);
 
-	writeToArray(kamaelToBuffer[0], -119384,46840,368);
-	writeToArray(kamaelToBuffer[1], -119608,44888,368);
+  writeToArray(kamaelToBuffer[0], -119384,46840,368);
+  writeToArray(kamaelToBuffer[1], -119608,44888,368);
 
-	SetLength(giranToWeaponShop, 7, 3);
-	SetLength(giranToArmorShop, 7, 3);
-	SetLength(giranToAccessoryShop, 6, 3);
-	
-	writeToArray(giranToWeaponShop[0], 82618, 148244, -3416);
-	writeToArray(giranToWeaponShop[1], 81416, 148264, -3456);
-	writeToArray(giranToWeaponShop[2], 80728, 148600, -3448);
-	writeToArray(giranToWeaponShop[3], 79816, 148568, -3520);
-	writeToArray(giranToWeaponShop[4], 79848, 147592, -3520);
-	writeToArray(giranToWeaponShop[5], 80088, 146712, -3504);
-	writeToArray(giranToWeaponShop[6], 79800, 146568, -3504);
-	
-	writeToArray(giranToArmorShop[0], 81528, 148328, -3456);
-	writeToArray(giranToArmorShop[1], 80696, 148600, -3448);
-	writeToArray(giranToArmorShop[2], 79800, 148648, -3520);
-	writeToArray(giranToArmorShop[3], 79816, 149464, -3520);
-	writeToArray(giranToArmorShop[4], 79576, 150088, -3520);
-	writeToArray(giranToArmorShop[5], 79592, 150632, -3504);
-	writeToArray(giranToArmorShop[6], 79672, 150712, -3496);
-	
-	writeToArray(giranToAccessoryShop[0], 81528, 148328, -3456);
-	writeToArray(giranToAccessoryShop[1], 80696, 148600, -3448);
-	writeToArray(giranToAccessoryShop[2], 79800, 148648, -3520);
-	writeToArray(giranToAccessoryShop[3], 79816, 149464, -3520);
-	writeToArray(giranToAccessoryShop[4], 80136, 149448, -3488);
-	writeToArray(giranToAccessoryShop[5], 80408, 149240, -3488);
-	
-	
-	SetLength(talkingIslandToSupply, 9, 3);
-	SetLength(heineToSupply, 9, 3);
-	SetLength(dionToSupply, 9, 3);
-	SetLength(giranToSupply, 9, 3);
-	SetLength(adenToSupply, 9, 3);
-	SetLength(goddardToSupply, 9, 3);
-	SetLength(gludioToSupply, 9, 3);
-	SetLength(gludinToSupply, 9, 3);
-	SetLength(shtuttgartToSupply, 9, 3);
-	SetLength(runeToSupply, 9, 3);
-	SetLength(orenToSupply, 9, 3);
-	SetLength(kamaelToSupply, 5, 3);
-	
-	
-	writeToArray(talkingIslandToSupply[0], -84376, 244360, -3712);
-	writeToArray(talkingIslandToSupply[1], -84536, 243992, -3712);
-	writeToArray(talkingIslandToSupply[2], -83944, 243416, -3712);
-	writeToArray(talkingIslandToSupply[3], -83992, 242664, -3712);
-	writeToArray(talkingIslandToSupply[4], -84792, 241896, -3712);
-	writeToArray(talkingIslandToSupply[5], -84408, 241192, -3712);
-	writeToArray(talkingIslandToSupply[6], -84616, 240904, -3712);
-	writeToArray(talkingIslandToSupply[7], -84264, 240664, -3704);
-	writeToArray(talkingIslandToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(heineToSupply[0], -84376, 244360, -3712);
-	writeToArray(heineToSupply[1], -84536, 243992, -3712);
-	writeToArray(heineToSupply[2], -83944, 243416, -3712);
-	writeToArray(heineToSupply[3], -83992, 242664, -3712);
-	writeToArray(heineToSupply[4], -84792, 241896, -3712);
-	writeToArray(heineToSupply[5], -84408, 241192, -3712);
-	writeToArray(heineToSupply[6], -84616, 240904, -3712);
-	writeToArray(heineToSupply[7], -84264, 240664, -3704);
-	writeToArray(heineToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(dionToSupply[0], -84376, 244360, -3712);
-	writeToArray(dionToSupply[1], -84536, 243992, -3712);
-	writeToArray(dionToSupply[2], -83944, 243416, -3712);
-	writeToArray(dionToSupply[3], -83992, 242664, -3712);
-	writeToArray(dionToSupply[4], -84792, 241896, -3712);
-	writeToArray(dionToSupply[5], -84408, 241192, -3712);
-	writeToArray(dionToSupply[6], -84616, 240904, -3712);
-	writeToArray(dionToSupply[7], -84264, 240664, -3704);
-	writeToArray(dionToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(giranToSupply[0], -84376, 244360, -3712);
-	writeToArray(giranToSupply[1], -84536, 243992, -3712);
-	writeToArray(giranToSupply[2], -83944, 243416, -3712);
-	writeToArray(giranToSupply[3], -83992, 242664, -3712);
-	writeToArray(giranToSupply[4], -84792, 241896, -3712);
-	writeToArray(giranToSupply[5], -84408, 241192, -3712);
-	writeToArray(giranToSupply[6], -84616, 240904, -3712);
-	writeToArray(giranToSupply[7], -84264, 240664, -3704);
-	writeToArray(giranToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(adenToSupply[0], -84376, 244360, -3712);
-	writeToArray(adenToSupply[1], -84536, 243992, -3712);
-	writeToArray(adenToSupply[2], -83944, 243416, -3712);
-	writeToArray(adenToSupply[3], -83992, 242664, -3712);
-	writeToArray(adenToSupply[4], -84792, 241896, -3712);
-	writeToArray(adenToSupply[5], -84408, 241192, -3712);
-	writeToArray(adenToSupply[6], -84616, 240904, -3712);
-	writeToArray(adenToSupply[7], -84264, 240664, -3704);
-	writeToArray(adenToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(goddardToSupply[0], -84376, 244360, -3712);
-	writeToArray(goddardToSupply[1], -84536, 243992, -3712);
-	writeToArray(goddardToSupply[2], -83944, 243416, -3712);
-	writeToArray(goddardToSupply[3], -83992, 242664, -3712);
-	writeToArray(goddardToSupply[4], -84792, 241896, -3712);
-	writeToArray(goddardToSupply[5], -84408, 241192, -3712);
-	writeToArray(goddardToSupply[6], -84616, 240904, -3712);
-	writeToArray(goddardToSupply[7], -84264, 240664, -3704);
-	writeToArray(goddardToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(gludioToSupply[0], -84376, 244360, -3712);
-	writeToArray(gludioToSupply[1], -84536, 243992, -3712);
-	writeToArray(gludioToSupply[2], -83944, 243416, -3712);
-	writeToArray(gludioToSupply[3], -83992, 242664, -3712);
-	writeToArray(gludioToSupply[4], -84792, 241896, -3712);
-	writeToArray(gludioToSupply[5], -84408, 241192, -3712);
-	writeToArray(gludioToSupply[6], -84616, 240904, -3712);
-	writeToArray(gludioToSupply[7], -84264, 240664, -3704);
-	writeToArray(gludioToSupply[8], -84232, 240504, -3704);
-	
-	writeToArray(kamaelToSupply[0], -118968, 45896, 352);
-	writeToArray(kamaelToSupply[1], -117608, 46696, 368);
-	writeToArray(kamaelToSupply[2], -117320, 47480, 464);
-	writeToArray(kamaelToSupply[3], -117160, 47560, 456);
-	writeToArray(kamaelToSupply[4], -117128, 47976, 472);
-	
+  SetLength(giranToWeaponShop, 7, 3);
+  SetLength(giranToArmorShop, 7, 3);
+  SetLength(giranToAccessoryShop, 6, 3);
+
+  writeToArray(giranToWeaponShop[0], 82618, 148244, -3416);
+  writeToArray(giranToWeaponShop[1], 81416, 148264, -3456);
+  writeToArray(giranToWeaponShop[2], 80728, 148600, -3448);
+  writeToArray(giranToWeaponShop[3], 79816, 148568, -3520);
+  writeToArray(giranToWeaponShop[4], 79848, 147592, -3520);
+  writeToArray(giranToWeaponShop[5], 80088, 146712, -3504);
+  writeToArray(giranToWeaponShop[6], 79800, 146568, -3504);
+
+  writeToArray(giranToArmorShop[0], 81528, 148328, -3456);
+  writeToArray(giranToArmorShop[1], 80696, 148600, -3448);
+  writeToArray(giranToArmorShop[2], 79800, 148648, -3520);
+  writeToArray(giranToArmorShop[3], 79816, 149464, -3520);
+  writeToArray(giranToArmorShop[4], 79576, 150088, -3520);
+  writeToArray(giranToArmorShop[5], 79592, 150632, -3504);
+  writeToArray(giranToArmorShop[6], 79672, 150712, -3496);
+
+  writeToArray(giranToAccessoryShop[0], 81528, 148328, -3456);
+  writeToArray(giranToAccessoryShop[1], 80696, 148600, -3448);
+  writeToArray(giranToAccessoryShop[2], 79800, 148648, -3520);
+  writeToArray(giranToAccessoryShop[3], 79816, 149464, -3520);
+  writeToArray(giranToAccessoryShop[4], 80136, 149448, -3488);
+  writeToArray(giranToAccessoryShop[5], 80408, 149240, -3488);
+
+
+  SetLength(talkingIslandToSupply, 9, 3);
+  SetLength(heineToSupply, 9, 3);
+  SetLength(dionToSupply, 9, 3);
+  SetLength(giranToSupply, 9, 3);
+  SetLength(adenToSupply, 9, 3);
+  SetLength(goddardToSupply, 9, 3);
+  SetLength(gludioToSupply, 9, 3);
+  SetLength(gludinToSupply, 9, 3);
+  SetLength(shtuttgartToSupply, 9, 3);
+  SetLength(runeToSupply, 9, 3);
+  SetLength(orenToSupply, 9, 3);
+  SetLength(kamaelToSupply, 5, 3);
+
+
+  writeToArray(talkingIslandToSupply[0], -84376, 244360, -3712);
+  writeToArray(talkingIslandToSupply[1], -84536, 243992, -3712);
+  writeToArray(talkingIslandToSupply[2], -83944, 243416, -3712);
+  writeToArray(talkingIslandToSupply[3], -83992, 242664, -3712);
+  writeToArray(talkingIslandToSupply[4], -84792, 241896, -3712);
+  writeToArray(talkingIslandToSupply[5], -84408, 241192, -3712);
+  writeToArray(talkingIslandToSupply[6], -84616, 240904, -3712);
+  writeToArray(talkingIslandToSupply[7], -84264, 240664, -3704);
+  writeToArray(talkingIslandToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(heineToSupply[0], -84376, 244360, -3712);
+  writeToArray(heineToSupply[1], -84536, 243992, -3712);
+  writeToArray(heineToSupply[2], -83944, 243416, -3712);
+  writeToArray(heineToSupply[3], -83992, 242664, -3712);
+  writeToArray(heineToSupply[4], -84792, 241896, -3712);
+  writeToArray(heineToSupply[5], -84408, 241192, -3712);
+  writeToArray(heineToSupply[6], -84616, 240904, -3712);
+  writeToArray(heineToSupply[7], -84264, 240664, -3704);
+  writeToArray(heineToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(dionToSupply[0], -84376, 244360, -3712);
+  writeToArray(dionToSupply[1], -84536, 243992, -3712);
+  writeToArray(dionToSupply[2], -83944, 243416, -3712);
+  writeToArray(dionToSupply[3], -83992, 242664, -3712);
+  writeToArray(dionToSupply[4], -84792, 241896, -3712);
+  writeToArray(dionToSupply[5], -84408, 241192, -3712);
+  writeToArray(dionToSupply[6], -84616, 240904, -3712);
+  writeToArray(dionToSupply[7], -84264, 240664, -3704);
+  writeToArray(dionToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(giranToSupply[0], -84376, 244360, -3712);
+  writeToArray(giranToSupply[1], -84536, 243992, -3712);
+  writeToArray(giranToSupply[2], -83944, 243416, -3712);
+  writeToArray(giranToSupply[3], -83992, 242664, -3712);
+  writeToArray(giranToSupply[4], -84792, 241896, -3712);
+  writeToArray(giranToSupply[5], -84408, 241192, -3712);
+  writeToArray(giranToSupply[6], -84616, 240904, -3712);
+  writeToArray(giranToSupply[7], -84264, 240664, -3704);
+  writeToArray(giranToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(adenToSupply[0], -84376, 244360, -3712);
+  writeToArray(adenToSupply[1], -84536, 243992, -3712);
+  writeToArray(adenToSupply[2], -83944, 243416, -3712);
+  writeToArray(adenToSupply[3], -83992, 242664, -3712);
+  writeToArray(adenToSupply[4], -84792, 241896, -3712);
+  writeToArray(adenToSupply[5], -84408, 241192, -3712);
+  writeToArray(adenToSupply[6], -84616, 240904, -3712);
+  writeToArray(adenToSupply[7], -84264, 240664, -3704);
+  writeToArray(adenToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(goddardToSupply[0], -84376, 244360, -3712);
+  writeToArray(goddardToSupply[1], -84536, 243992, -3712);
+  writeToArray(goddardToSupply[2], -83944, 243416, -3712);
+  writeToArray(goddardToSupply[3], -83992, 242664, -3712);
+  writeToArray(goddardToSupply[4], -84792, 241896, -3712);
+  writeToArray(goddardToSupply[5], -84408, 241192, -3712);
+  writeToArray(goddardToSupply[6], -84616, 240904, -3712);
+  writeToArray(goddardToSupply[7], -84264, 240664, -3704);
+  writeToArray(goddardToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(gludioToSupply[0], -84376, 244360, -3712);
+  writeToArray(gludioToSupply[1], -84536, 243992, -3712);
+  writeToArray(gludioToSupply[2], -83944, 243416, -3712);
+  writeToArray(gludioToSupply[3], -83992, 242664, -3712);
+  writeToArray(gludioToSupply[4], -84792, 241896, -3712);
+  writeToArray(gludioToSupply[5], -84408, 241192, -3712);
+  writeToArray(gludioToSupply[6], -84616, 240904, -3712);
+  writeToArray(gludioToSupply[7], -84264, 240664, -3704);
+  writeToArray(gludioToSupply[8], -84232, 240504, -3704);
+
+  writeToArray(kamaelToSupply[0], -118968, 45896, 352);
+  writeToArray(kamaelToSupply[1], -117608, 46696, 368);
+  writeToArray(kamaelToSupply[2], -117320, 47480, 464);
+  writeToArray(kamaelToSupply[3], -117160, 47560, 456);
+  writeToArray(kamaelToSupply[4], -117128, 47976, 472);
+
 end;
 
 procedure GetBuff;
@@ -1487,48 +1487,48 @@ var
   stringIndex: integer;
   i: integer;
 begin
-	City := GetCity;
-	case City of
-		TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
-		HEINE : moveToLoc(heineToBuffer);
-		DION : moveToLoc(dionToBuffer);
-		GIRAN : moveToLoc(giranToBuffer);
-		ADEN : moveToLoc(adenToBuffer);
-		GODDARD : moveToLoc(goddardToBuffer);
-		GLUDIO : moveToLoc(gludioToBuffer);
-		GLUDIN : moveToLoc(gludinToBuffer);
-		SHTUTTGART : moveToLoc(shtuttgartToBuffer);
-		RUNE : moveToLoc(runeToBuffer);
-		OREN : moveToLoc(orenToBuffer);
-		KAMAEL : moveToLoc(kamaelToBuffer);
-	end;
+  City := GetCity;
+  case City of
+    TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
+    HEINE : moveToLoc(heineToBuffer);
+    DION : moveToLoc(dionToBuffer);
+    GIRAN : moveToLoc(giranToBuffer);
+    ADEN : moveToLoc(adenToBuffer);
+    GODDARD : moveToLoc(goddardToBuffer);
+    GLUDIO : moveToLoc(gludioToBuffer);
+    GLUDIN : moveToLoc(gludinToBuffer);
+    SHTUTTGART : moveToLoc(shtuttgartToBuffer);
+    RUNE : moveToLoc(runeToBuffer);
+    OREN : moveToLoc(orenToBuffer);
+    KAMAEL : moveToLoc(kamaelToBuffer);
+  end;
 
-	if getNewbieBuffer = nil then
-	begin
-		print('Newbie buffer not found..');
-		exit;
-	end;
+  if getNewbieBuffer = nil then
+  begin
+    print('Newbie buffer not found..');
+    exit;
+  end;
 
-	if ((getNewbieBuffer.ID >= 30598) and (getNewbieBuffer.ID <= 30602)) or (getNewbieBuffer.ID = 32135) then
-		stringIndex := 2 //in HF 5
-	else
-		stringIndex := 1;
+  if ((getNewbieBuffer.ID >= 30598) and (getNewbieBuffer.ID <= 30602)) or (getNewbieBuffer.ID = 32135) then
+    stringIndex := 2 //in HF 5
+  else
+    stringIndex := 1;
 
-	Engine.MoveTo(getNewbieBuffer);
-	Engine.SetTarget(getNewbieBuffer);
-	Engine.DlgOpen;
-	delay(500);
-	Engine.DlgSel(stringIndex);
-	delay(500);
-	Engine.DlgSel(1);
+  Engine.MoveTo(getNewbieBuffer);
+  Engine.SetTarget(getNewbieBuffer);
+  Engine.DlgOpen;
+  delay(500);
+  Engine.DlgSel(stringIndex);
+  delay(500);
+  Engine.DlgSel(1);
 
-	delay(200);
+  delay(200);
 
-	if User.Level <= 39 then begin
-		Engine.DlgOpen;
-		Engine.DlgSel(3);
-		Engine.DlgSel(1);
-	end;
+  if User.Level <= 39 then begin
+    Engine.DlgOpen;
+    Engine.DlgSel(3);
+    Engine.DlgSel(1);
+  end;
 end;
 
 procedure GetSupplies;
@@ -1538,41 +1538,41 @@ var
   stringIndex: integer;
   i: integer;
 begin
-	City := GetCity;
-	{DWARVEN, ORC, DARK_ELVEN, ELVEN, KAMAEL,
-	TALKING_ISLAND, HEINE, DION, GIRAN, ADEN, GODDARD,
-	GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY}
-	//Тут кусок кода по городам... Путь от телепорта до баффера.
-	case City of
-		TALKING_ISLAND: moveToLoc(talkingIslandToSupply);
-		HEINE : moveToLoc(heineToSupply);
-		DION : moveToLoc(dionToSupply);
-		GIRAN : moveToLoc(giranToSupply);
-		ADEN : moveToLoc(adenToSupply);
-		GODDARD : moveToLoc(goddardToSupply);
-		GLUDIO : moveToLoc(gludioToSupply);
-		GLUDIN : moveToLoc(gludinToSupply);
-		SHTUTTGART : moveToLoc(shtuttgartToSupply);
-		RUNE : moveToLoc(runeToSupply);
-		OREN : moveToLoc(orenToSupply);
-		KAMAEL : moveToLoc(kamaelToSupply);
-	end;
-	//Конец куска
+  City := GetCity;
+  {DWARVEN, ORC, DARK_ELVEN, ELVEN, KAMAEL,
+  TALKING_ISLAND, HEINE, DION, GIRAN, ADEN, GODDARD,
+  GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY}
+  //Тут кусок кода по городам... Путь от телепорта до баффера.
+  case City of
+    TALKING_ISLAND: moveToLoc(talkingIslandToSupply);
+    HEINE : moveToLoc(heineToSupply);
+    DION : moveToLoc(dionToSupply);
+    GIRAN : moveToLoc(giranToSupply);
+    ADEN : moveToLoc(adenToSupply);
+    GODDARD : moveToLoc(goddardToSupply);
+    GLUDIO : moveToLoc(gludioToSupply);
+    GLUDIN : moveToLoc(gludinToSupply);
+    SHTUTTGART : moveToLoc(shtuttgartToSupply);
+    RUNE : moveToLoc(runeToSupply);
+    OREN : moveToLoc(orenToSupply);
+    KAMAEL : moveToLoc(kamaelToSupply);
+  end;
+  //Конец куска
 
-	//Сам бафф ;)
-	if getSupplyManager = nil then
-	begin
-		print('Supply manager not found..');
-		exit;
-	end;
-	
-	Engine.MoveTo(getSupplyManager);
-	Engine.SetTarget(getSupplyManager);
-	Engine.DlgOpen;
-	delay(500);
-	Engine.DlgSel(1);
+  //Сам бафф ;)
+  if getSupplyManager = nil then
+  begin
+    print('Supply manager not found..');
+    exit;
+  end;
 
-	delay(200);
+  Engine.MoveTo(getSupplyManager);
+  Engine.SetTarget(getSupplyManager);
+  Engine.DlgOpen;
+  delay(500);
+  Engine.DlgSel(1);
+
+  delay(200);
 end;
 
 function getNewbieQuest;
@@ -1581,37 +1581,37 @@ var
   stringIndex: integer;
   i: integer;
 begin
-	City := GetCity;
-	//Тут кусок кода по городам... Путь от телепорта до баффера.
-	//talking island
-	case City of
-		TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
-		HEINE : moveToLoc(heineToBuffer);
-		DION : moveToLoc(dionToBuffer);
-		giran : moveToLoc(giranToBuffer);
-		ADEN : moveToLoc(adenToBuffer);
-		GODDARD : moveToLoc(goddardToBuffer);
-		GLUDIO : moveToLoc(gludioToBuffer);
-		GLUDIN : moveToLoc(gludinToBuffer);
-		SHTUTTGART : moveToLoc(shtuttgartToBuffer);
-		RUNE : moveToLoc(runeToBuffer);
-		OREN : moveToLoc(orenToBuffer);
-		KAMAEL : moveToLoc(kamaelToBuffer);
-	end;
-	//Конец куска
+  City := GetCity;
+  //Тут кусок кода по городам... Путь от телепорта до баффера.
+  //talking island
+  case City of
+    TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
+    HEINE : moveToLoc(heineToBuffer);
+    DION : moveToLoc(dionToBuffer);
+    giran : moveToLoc(giranToBuffer);
+    ADEN : moveToLoc(adenToBuffer);
+    GODDARD : moveToLoc(goddardToBuffer);
+    GLUDIO : moveToLoc(gludioToBuffer);
+    GLUDIN : moveToLoc(gludinToBuffer);
+    SHTUTTGART : moveToLoc(shtuttgartToBuffer);
+    RUNE : moveToLoc(runeToBuffer);
+    OREN : moveToLoc(orenToBuffer);
+    KAMAEL : moveToLoc(kamaelToBuffer);
+  end;
+  //Конец куска
 
-	if getNewbieBuffer = nil then
-	begin
-		print('Newbie buffer not found..');
-		Result := false;
-		exit;
-	end;
+  if getNewbieBuffer = nil then
+  begin
+    print('Newbie buffer not found..');
+    Result := false;
+    exit;
+  end;
 
-	Engine.SetTarget(getNewbieBuffer);
-	Engine.DlgOpen;
+  Engine.SetTarget(getNewbieBuffer);
+  Engine.DlgOpen;
 
-	delay(200);
-	Result := true;
+  delay(200);
+  Result := true;
 
 end;
 
