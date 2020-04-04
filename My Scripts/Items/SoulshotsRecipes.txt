@@ -1,0 +1,68 @@
+{
+--------------------------------------------------------------------------------
+Soulshot D-Grade Recipe by Spoil
+Akaste Succubus Turen lvl 21 (Dwarven Village, Mithril Mines)
+Giant Poison Bee lvl 21 (Oracle of Dawn/Fellmere Harvest Grounds)
+Ruin Spartoi lvl 21 (Gludio, Ruins of Agony)
+Ol Mahum Deserter lvl 23 (Gludin Village, Abandoned Camp)
+Ol Mahum Reserve lvl 23 (Gludin Village, Abandoned Camp)
+--------------------------------------------------------------------------------
+}
+function  SoulshotDGradeRecipe: boolean;
+begin
+end;
+
+{
+--------------------------------------------------------------------------------
+  Blessed Spiritshot D-Grade Recipe by Spoil
+  Turek Orc Supplier (lvl 27) (Gludin Village, Orc Barracks)
+  1/29 chance, 33s avg. respawn time
+--------------------------------------------------------------------------------
+}
+function  BlessedSpiritshotDGradeRecipe: boolean;
+begin
+end;
+
+{
+--------------------------------------------------------------------------------
+  Recipe: Soulshot: C-Grade
+  Crockian Lad Warrior (lvl 43) (Heine, Aligator Island)
+  1/140 chance, 1m avg. respawn time
+--------------------------------------------------------------------------------
+}
+function  SoulshotCGradeRecipe: boolean;
+begin
+end;
+
+{
+--------------------------------------------------------------------------------
+  Recipe: Blessed Spiritshot C
+  Timak Orc Warrior (lvl 43) (Town of Oren, Timak Outpost)
+  1/252 chance, 1m avg. respawn time
+--------------------------------------------------------------------------------
+}
+function  BlessedSpiritshotCGradeRecipe: boolean;
+begin
+  //same location as a plated leather part
+  PlatedLeatherArmorRecipe;
+end;
+
+{
+--------------------------------------------------------------------------------
+Recipe: Soulshot: B-Grade
+Connabi lvl 54 (Town of Oren, Skyshadow Meadow)
+--------------------------------------------------------------------------------
+}
+function  BlessedSpiritshotCGradeRecipe: boolean;
+begin
+  // same location as sword of valhalla recipe 60%
+  SwordOfValhallaRecipe60;
+end;
+
+{
+--------------------------------------------------------------------------------
+Recipe: Blessed Spiritshot B-Grade
+Harit Lizardman Warrior lvl 53 (Hunters Village, Forest of Mirrors near Anghel Waterfall)
+Marluk Succubus lvl 55 (Town of Giran, Gorgon's Flower Garden)
+--------------------------------------------------------------------------------
+}

@@ -1,0 +1,71 @@
+{
+--------------------------------------------------------------------------------
+  Sealed Majestic Circlet Design by Spoil
+  Grazing Antelope (lvl 77) (Goddard, Varka Silenos)
+  1/27 chance, 1m 49s avg. respawn time
+--------------------------------------------------------------------------------
+}
+procedure  MajesticCircletDesign;
+begin
+  if  User.InRange (, 500, 200)  then begin
+    Print ('Moving from respawn to hunting ground');
+    Engine.MoveTo (147365, 87920, -3496);
+  end;
+  if  User.InRange (143700, 75680, -3360, 1000, 200)  then begin
+    Engine.LoadZone ('PlatedLeatherBootsSpoil.zmap');
+  end;
+end;
+
+{
+--------------------------------------------------------------------------------
+  Sealed Majestic Leather Armor Fabric by Spoil
+  Sepulcher Guard (lvl 75) (Aden, Fields of Massacre)
+  1/31 chance, 2m avg. respawn time
+--------------------------------------------------------------------------------
+}
+procedure  MajesticLeatherArmorFabric;
+begin
+  if  User.InRange (, 500, 200)  then begin
+    Print ('Moving from respawn to hunting ground');
+    Engine.MoveTo (147365, 87920, -3496);
+  end;
+  if  User.InRange (143700, 75680, -3360, 1000, 200)  then begin
+    Engine.LoadZone ('PlatedLeatherBootsSpoil.zmap');
+  end;
+end;
+
+{
+--------------------------------------------------------------------------------
+  Sealed Majestic Gauntlets Design by Spoil
+  Grazing Kookaburra (lvl 77) (Goddard, Ketra Orc Outpost)
+  1/12 chance, 2m avg. respawn time
+--------------------------------------------------------------------------------
+}
+procedure  MajesticGauntletsDesign;
+begin
+  if  User.InRange (, 500, 200)  then begin
+    Print ('Moving from respawn to hunting ground');
+    Engine.MoveTo (147365, 87920, -3496);
+  end;
+  if  User.InRange (143700, 75680, -3360, 1000, 200)  then begin
+    Engine.LoadZone ('PlatedLeatherBootsSpoil.zmap');
+  end;
+end;
+
+{
+--------------------------------------------------------------------------------
+  Sealed Majestic Boots Lining by Spoil (Goddard, Ketra Outpost)
+  Ketra's War Hound (lvl 77) 1/12 chance, 1m 34s avg. respawn time
+  Grazing Nepenthes (lvl 78) 1/13 chance, 1m 49s avg. respawn time
+  Grazing Windsus (lvl 78) 1/10 chance, 2m avg. respawn time
+  Ketra Orc White Captain (lvl 78) 1/9 chance, 2m avg. respawn time
+--------------------------------------------------------------------------------
+}
+procedure  MajesticBootsLining;
+begin
+  // TeleportTo ('ketra');
+end;
+
+
+BEGIN
+END.

@@ -1,0 +1,7 @@
+begin
+  while  true  do
+  begin
+    Engine.EnterText ('+>>> WTS many EWS 200g in HS<<<');
+    Delay (30 * 1000);
+  end;
+end.

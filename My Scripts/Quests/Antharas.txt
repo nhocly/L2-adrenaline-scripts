@@ -1,0 +1,407 @@
+uses  TeleportModule;
+
+const
+  Gabrielle = 30753;
+  Chakiris = 30705;
+  Orven = 30857;
+  Kendra = 30851;
+  Verona = 30727;
+  Kaiena = 30720;
+  Moke = 30498;
+  Helton = 30678;
+  Gilmore = 30754;
+  Theodric = 30755;
+  
+{
+  Audience with the Land Dragon
+
+  Description: make this quest in order to be able to fight with Antharas
+  Start lvl: 50
+  Location: Giran
+  NPC: Gabrielle
+  Type: Repeatable
+  Rewards: Portal Stone to enter Antharas Nest
+}
+
+procedure  AudienceWithTheLandDragon;
+begin
+  if  User.InRange (82937, 148620, -3495, 500, 200)  then
+  begin
+    Engine.MoveTo (82745, 149419, -3464);
+    Engine.MoveTo (81773, 149487, -3495);
+    Engine.MoveTo (81328, 149690, -3464);
+  end;
+
+{
+  The quest starts in Giran at Gabrielle. She is situated at the south-west of the center sqare. She will send you to 4 NPC. Every NPC will send you to kill a couple of mobs and bring them the quest items.
+}
+  if  User.InRange (81328, 149690, -3464, 200, 200)  then
+  begin
+    Engine.SetTarget (Gabrielle);
+    Engine.DlgOpen;
+    Delay (200);
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('npc_268464828_Quest 337_AudienceWithTheLandDragon');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30753-04.htm');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30753-05.htm');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30753-06.htm');
+	  PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Teleport to Giants Cave');
+    while  not User.InRange (174534, 52665, -4364, 200, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Hunt 1 Kranrot and 1 Hamrut in the Giants Cave: 
+  After Killing the mobs you will earn the quest items: Hamrut Leg and Kranrot Skin
+}
+  if  User.InRange (174534, 52665, -4364, 200, 200)  then
+  begin
+    Print ('Moving to Giant''s Cave hunting ground.');
+    Engine.MoveTo (174287, 52883, -4360);
+    Engine.MoveTo (173370, 53467, -4360);
+    Engine.MoveTo (173794, 52994, -4360);
+    Engine.MoveTo (173365, 53507, -4360);
+    Engine.MoveTo (173331, 56041, -4344);
+    Engine.MoveTo (173278, 60132, -4368);
+    Engine.MoveTo (173381, 61256, -4368);
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestGiantsCave.zmap');
+    Engine.FaceControl (0, true);
+    Delay (60 * 1000);
+    Engine.EnterText ('/unstuck');
+    Print ('Teleport to Seal of Silen');
+    while  not User.InRange (185358, 20380, -3264, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Kill Blood Queen in Seal of Silen until the quest mob appears
+  Kill the quest mob and you will earn the quest item: Remains Of Sacrified
+}
+  if  User.InRange (185358, 20380, -3264, 500, 200)  then
+  begin
+    Engine.MoveTo (185431, 19847, -3264);
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestSealOfSilen.zmap');
+    Engine.FaceControl (0, true);
+    Delay (60 * 1000);
+    GoHome;
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Teleport to Forsaken Plains');
+    while  not User.InRange (167287, 37129, -4003, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Hunt 1 Marsh Stalker and 1 Marsh Drake in Forsaken Plains
+  The mobs are situated in the crater of Forsaken Plains.
+  After killing the mobs you will get the items: Marsh Drake Talons, Marsh Stalker Horn.
+}
+  if  User.InRange (167287, 37129, -4003, 500, 200)  then
+  begin
+    Engine.MoveTo (168949, 40426, -4052);
+    Engine.MoveTo (170342, 42527, -4835);
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestForsakenPlains.zmap');
+    Engine.FaceControl (0, true);
+    Delay (60 * 1000);
+    GoHome;
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Teleport to Forest of Mirrors');
+    while  not User.InRange (150486, 85872, -2760, 500, 200)  do
+    Delay (1000);
+  end;
+
+{
+  Hunt: Harit Lizardman Matriarch, Harit Lizardman Shaman
+  Kill a couple of them and 3 quest mobs (Harit Lizardman Zealot) will appear,
+  kill the quest mobs an you will get the quest item: Totem Of Land Dragon
+}
+  if  User.InRange (150486, 85872, -2760, 500, 200)  then
+  begin
+    Engine.MoveTo (151660, 84248, -3376);
+    Engine.MoveTo (152971, 82975, -3224);
+    Engine.MoveTo (154282, 81451, -3192);
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestForestOfMirrors.zmap');
+    Engine.FaceControl (0, true);
+    Delay (5 * 60 * 1000);
+    GoHome;
+    MoveInCity;
+    while  not User.InRange (118081, 76133, -2718, 500, 200)  do
+      Delay (1000);
+  end;
+  if  User.InRange (118081, 76133, -2718, 500, 200)  then
+  begin
+    Engine.MoveTo (119537, 76574, -2288);
+    Engine.MoveTo (119727, 76616, -2272);
+    Engine.MoveTo (119751, 75541, -2264);
+    Engine.MoveTo (119684, 75018, -2400);
+    Engine.MoveTo (120028, 74869, -2368);
+  end;
+	if  User.InRange (120028, 74869, -2368, 200, 200)  then
+  begin
+    Engine.SetTarget (Chakiris);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Go to Aden''s Church entrance');
+    while  not User.InRange (147457, 25745, -2008, 500, 200)  do
+	    Delay (1000);
+  end;
+
+{
+  Go to High Priest Orven in Aden church
+}
+  if  User.InRange (147457, 25745, -2008, 500, 200)  then
+  begin
+    Engine.MoveTo (147455, 22628, -1984);
+  end;
+  if  User.InRange (147455, 22628, -1984, 200, 200)  then
+  begin
+    Engine.SetTarget (Orven);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('npc_268465204_Quest 337_AudienceWithTheLandDragon');
+    Engine.MoveTo (147455, 24991, -1984);
+    Engine.MoveTo (147457, 25745, -2008);
+    Engine.MoveTo (148472, 25684, -2039);
+    Engine.MoveTo (148710, 24352, -2008);
+    Engine.MoveTo (149866, 24513, -2136);
+    Engine.MoveTo (149733, 25237, -2167);
+    Engine.MoveTo (149337, 25334, -2120);
+    Engine.MoveTo (149224, 25617, -2148);
+    if  User.InRange (149337, 25334, -2120, 200, 200)  then
+    begin
+      Engine.SetTarget (Kendra);
+      Engine.DlgOpen;
+      Engine.DlgSel ('Quest');
+	end;
+    //TeleportTo ('ivory tower');
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Go to Ivory Tower');
+    while  not User.InRange (85350, 16144, -3689, 200, 200)  do
+      Delay (1000);
+  end;
+  
+{
+  Go to Ivory Tower
+}
+  if  User.InRange (85350, 16144, -3689, 200, 200)  then
+  begin
+    Engine.SetTarget (Verona);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Go to another floor.');
+    Engine.DlgSel (4);
+    Engine.MoveTo (85335, 16565, -1776);
+	  if  User.InRange  (85335, 16565, -1776, 200, 200)  then
+	  begin
+	    Engine.SetTarget (Kaiena);
+      Engine.DlgOpen;
+      Engine.DlgSel ('Quest');
+	    GoHome;
+	  end;
+	  //TeleportTo ('giran');
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Go to Ivory Tower');
+    while  not User.InRange (82937, 148620, -3495, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Bring the items to Gabrielle
+}  
+  if  User.InRange (82937, 148620, -3495, 500, 200)  then
+  begin
+    Engine.MoveTo (82745, 149419, -3464);
+    Engine.MoveTo (81773, 149487, -3495);
+    Engine.MoveTo (81328, 149690, -3464);
+  end;
+
+  if  User.InRange (81328, 149690, -3464, 200, 200)  then
+  begin
+    Engine.SetTarget (Gabrielle);
+    Engine.DlgOpen;
+    Delay (200);
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('npc_268464828_Quest 337_AudienceWithTheLandDragon');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30753-10.htm');
+    Delay (200);
+	//TeleportTo ('gludin');
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Teleport to Windy Hill');
+    while  not User.InRange (-88522, 83383, -2859, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Destroy the 1st Jewel
+}
+  if  User.InRange (-88522, 83383, -2859, 500, 200)  then
+  begin
+    Engine.MoveTo (-87800, 82747, -2864);
+    Engine.MoveTo (-84478, 79837, -3160);
+    Engine.MoveTo (-81325, 75873, -3376);
+  end;
+  if  User.InRange (-81325, 75873, -3376, 500, 200)  then
+  begin
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestWindyHill.zmap');
+    Engine.FaceControl (0, true);
+    Delay (2 * 60 * 1000);
+    GoHome;
+    //TeleportTo ('sea of spores');
+    PlaySound (exepath + '\sounds\beep.wav');
+	Print ('Teleport to Sea of Spores');
+    while  not User.InRange (64335, 26798, -3758, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Destroy the 2nd Jewel
+}
+  if  User.InRange (64335, 26798, -3758, 500, 200)  then
+  begin
+    Engine.MoveTo (63525, 30327, -3752);
+    Engine.MoveTo (63571, 30951, -3772);
+  end;
+  if  User.InRange (63571, 30951, -3772, 500, 200)  then
+  begin
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestSeaOfSpores.zmap');
+    Engine.FaceControl (0, true);
+    Delay (2 * 60 * 1000);
+    GoHome;
+	MoveInCity;
+	Print ('Move from the gatekeeper to the blacksmith');
+    while  not User.InRange (82761, 53602, -1517, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Talk to Oren's Blacksmith
+}
+  if  User.InRange (82761, 53602, -1517, 500, 200)  then
+  begin
+    Engine.MoveTo (82489, 54245, -1488);
+    Engine.MoveTo (82514, 55580, -1520);
+    Engine.MoveTo (83611, 55595, -1512);
+  end;
+  if  User.InRange (83611, 55595, -1512, 200, 200)  then
+  begin
+    Engine.SetTarget (Helton);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    //TeleportTo ('gludin');
+    PlaySound (exepath + '\sounds\beep.wav');
+	Print ('Teleport to Gludin');
+    while  not User.InRange (64335, 26798, -3758, 500, 200)  do
+      Delay (1000);
+  end;
+  
+{
+  Talk to Moke in Gludin Warehouse
+}
+  if  User.InRange (-80818, 149785, -3038, 500, 200)  then
+  begin
+    Engine.MoveTo (-81050, 150164, -3056);
+    Engine.MoveTo (-83025, 151906, -3120);
+    Engine.MoveTo (-83000, 153942, -3204);
+    Engine.MoveTo (-82272, 153864, -3204);
+    Engine.MoveTo (-82265, 153384, -3168);
+    Engine.MoveTo (-81974, 153391, -3200);
+    Engine.MoveTo (-81914, 153491, -3168);	
+  end;
+  if  User.InRange (-81914, 153491, -3168, 200, 200)  then
+  begin
+    Engine.SetTarget (Moke);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    //TeleportTo ('giran');
+    PlaySound (exepath + '\sounds\beep.wav');
+	Print ('Teleport to Giran');
+    while  not User.InRange (82937, 148620, -3495, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Take the 2 marks to Gabrielle in Giran.
+}  
+  if  User.InRange (82937, 148620, -3495, 500, 200)  then
+  begin
+    Engine.MoveTo (82745, 149419, -3464);
+    Engine.MoveTo (81773, 149487, -3495);
+    Engine.MoveTo (81328, 149690, -3464);
+  end;
+
+  if  User.InRange (81328, 149690, -3464, 200, 200)  then
+  begin
+    Engine.SetTarget (Gabrielle);
+    Engine.DlgOpen;
+    Delay (200);
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('npc_268464828_Quest 337_AudienceWithTheLandDragon');
+    Delay (200);
+	//TeleportTo ('death pass');
+    PlaySound (exepath + '\sounds\beep.wav');
+    Print ('Teleport to Dragon Valley entrance');
+    while  not User.InRange (72305, 117730, -3693, 500, 200)  do
+      Delay (1000);
+  end;
+  
+  if  User.InRange (72305, 117730, -3693, 500, 200)  then
+  begin
+    Engine.MoveTo (73183, 118466, -3696);
+  end;
+  if  User.InRange (73183, 118466, -3696, 200, 200)  then
+  begin
+    Engine.SetTarget (Gilmore);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('npc_268464801_Quest 337_AudienceWithTheLandDragon');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30754-03.htm');
+	GoHome;
+    //TeleportTo ('antharas lair');
+    PlaySound (exepath + '\sounds\beep.wav');
+	Print ('Teleport to Giran');
+    while  not User.InRange (131420, 114463, -3716, 500, 200)  do
+      Delay (1000);
+  end;
+
+{
+  Kill Cave Keepers and Cave Maiden until the 3rd Jewel appears and you destroy it
+}
+  if  User.InRange (131420, 114463, -3716, 500, 200)  then
+  begin
+    Engine.LoadZone (exepath + 'Zmaps\AntharasQuestAntharasLair.zmap');
+    Engine.FaceControl (0, true);
+    Delay (10 * 60 * 1000);
+    Engine.MoveTo (131128, 114683, -3720);
+  end;
+
+{
+  Take the 3rd fragment to Antharas Watchman Theodric in front of the entrance of Antharas Lair, give it to him and you will earn the Portal Stone Portal Stone
+}
+  if  User.InRange (131128, 114683, -3720, 200, 200)  then
+  begin
+    Engine.SetTarget (Theodric);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    Delay (200);
+    Engine.BypassToServer ('Quest 337_AudienceWithTheLandDragon 30755-05.htm');
+  end;
+
+{
+  Congratulations you now are able to enter Antharas Nest good luck killing it.
+  Every time you go to Antharas you have to make the quest again. You can have multiple stones in your quest inventory.
+}
+end;
+
+BEGIN
+  AudienceWithTheLandDragon;
+END.

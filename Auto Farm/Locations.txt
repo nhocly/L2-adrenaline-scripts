@@ -1,0 +1,253 @@
+unit  Locations;
+
+interface
+
+uses  TeleportModule, SettingsModule, Functions;
+
+const
+  Ziggurat = 31101;
+
+procedure  Ketra;
+procedure  StakatoNest;
+procedure  FinishMobs;
+
+implementation
+
+procedure  FinishMobs;
+begin
+  Engine.FaceControl (0, true);
+  Delay (500);
+  while  (User.Target <> nil)  do
+  begin
+    Delay (1111);
+    if  User.Target.Dead  then begin
+	    Engine.CancelTarget;
+	    Delay (1111);
+    end;
+  end;
+  Engine.FaceControl (0, false);
+end;
+
+{
+  Print('Teleport to Wall of Argos.');
+  Engine.SetTarget(31124);
+  Engine.MoveToTarget;
+  Engine.DlgOpen;
+  Delay(500);
+  Engine.DlgSel('Server Areas');
+  Delay(500);
+  Engine.DlgSel('Areas Of Goddard');
+  Delay(500);
+  Engine.DlgSel('Walls Of Argos');
+  Print('Teleported.');
+  Delay(5*1000);
+
+  Print('Moving to Wall of Argos zone.');
+  Engine.MoveTo(188513, -63854, -2800);
+  Engine.MoveTo(189077, -63243, -2784);
+  Engine.MoveTo(189830, -60928, -2888);
+  Engine.MoveTo(187774, -57270, -3157);
+  Engine.LoadConfig('1');
+  Engine.LoadZone(exepath + 'Zmaps\WallOfArgos.zmap');
+}
+
+procedure  Ketra;
+begin
+  //TeleportTo ('goddard');
+  Print ('Teleport to Ketra Orc Outpost.');
+  Engine.SetTarget (31124);
+  Engine.MoveToTarget;
+  Engine.DlgOpen;
+  Delay (500);
+  Engine.DlgSel ('Server Areas');
+  Delay (500);
+  Engine.DlgSel ('Areas Of Goddard');
+  Delay (500);
+  Engine.DlgSel ('Ketra Orc Outpost');
+  Print ('Teleported.');
+  Delay (5*1000);
+
+  Print ('Moving to Ketra Orc zone.');
+  Engine.MoveTo (131535, -72373, -3512);
+  Engine.MoveTo (133448, -72870, -3498);
+  Engine.MoveTo (134215, -75925, -3448);
+  Engine.MoveTo (135100, -80000, -3590);
+  Engine.MoveTo (136900, -81000, -4301);
+  //Engine.LoadConfig (User.Name);
+  Engine.LoadZone (exepath + '\Zmaps\KetraOrc.zmap');
+  inFight := true;
+  Print ('Arrived to hunting ground.');
+  Engine.Facecontrol (0, true); // turn on bot interface
+end;
+
+procedure  StakatoNest;
+var
+  i: Integer;
+  thereAreMobs: Boolean;
+  chamber: Integer;
+begin
+  if  not User.InRange (89701, -44683, -2136, 20000, 20000)  then begin
+    TeleportTo ('swamp of screams');
+  end;
+  if  User.InRange (89701, -44683, -2136, 500, 200)  then begin
+    //Engine.LoadConfig ('KillAgroMobs');
+    //Engine.FaceControl (0, true);
+    MoveAndWait (90403, -44036, -2128);
+    MoveAndWait (91394, -43167, -2488);
+    MoveAndWait (92013, -43255, -2600);
+    MoveAndWait (92379, -43699, -2712);
+    MoveAndWait (92363, -44397, -2864);
+    MoveAndWait (92015, -44672, -2925);
+    MoveAndWait (90830, -44802, -3224);
+    MoveAndWait (90595, -44595, -3296);
+    MoveAndWait (89915, -43429, -3792);
+    MoveAndWait (89367, -43063, -3944);
+    MoveAndWait (88065, -43056, -4128);
+    MoveAndWait (86126, -42462, -4132);
+    MoveAndWait (85004, -42461, -4616);
+    MoveAndWait (83320, -42637, -4640);
+    MoveAndWait (81410, -42634, -5128);
+    MoveAndWait (80919, -43162, -5160);
+    MoveAndWait (80828, -43738, -5128);
+  end;
+  if  User.InRange (80828, -43738, -5128, 20000, 8000)  then
+  begin
+    Engine.LoadConfig (User.Name);
+    if  (User.DistTo (79915, -48867, -5120) < User.DistTo (79857, -44997, -5120))  then
+      chamber := 2
+    else chamber := 1;
+    while  Engine.Status = lsOnline  do
+    begin
+      if  ( chamber = 1 )  then
+      begin
+	    Print ('You are in the first chamber');
+        Engine.LoadZone (exepath + 'Zmaps\StakatoNest1st.zmap');
+		Engine.FaceControl (0, true);
+	    Delay (5 * 1000);
+	    if  not User.InCombat  then
+	    begin
+          Print ('moving to second chamber');
+		  if  User.InRange (80554, -45029, -5128, 500, 200)  then begin
+            MoveAndWait (79954, -44746, -5160);
+		  end;
+		  Engine.FaceControl (0, false);
+          MoveAndWait (79428, -46165, -5129);
+          MoveAndWait (79284, -46526, -5128);
+          MoveAndWait (79373, -47022, -5160);
+          MoveAndWait (79696, -47618, -5160);
+		  chamber := 2;
+		end;
+      end;
+	  if  ( chamber = 2 )  then
+	  begin
+	  Print ('You are in the second room');
+      Engine.LoadZone (exepath + 'Zmaps\StakatoNest2nd.zmap');
+	  Engine.FaceControl (0, true);
+	  Delay (5 * 1000);
+	  if  not User.InCombat  then
+	  begin
+	    Engine.FaceControl (0, false);
+        Print ('Moving to first chamber');
+        MoveAndWait (79696, -47618, -5160);
+        MoveAndWait (79373, -47022, -5160);
+        MoveAndWait (79284, -46526, -5128);
+        MoveAndWait (79428, -46165, -5129);
+		chamber := 1;
+	  end;
+	  end;
+	  Delay (3 * 1000);
+    end;
+  end;
+end;
+
+procedure  Disciples;
+begin
+  if  User.InRange (172000, -17600, -4900, 200, 200)  then
+  begin
+    Print ('Moving to Disciples Necro hunting ground.');
+    Engine.SetTarget (Ziggurat);
+    Engine.MoveToTarget;
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel (1);
+    Delay (2 * 1000);
+  end;
+  if  User.InRange (172255, -17587, -4898, 200, 200)  then
+  begin
+    Engine.LoadConfig ('KillAggroMobs');
+    Engine.MoveTo (172636, -17426, -4896);
+    Engine.MoveTo (172700, -16465, -4896);
+    Engine.MoveTo (173168, -15825, -4896);
+    Engine.MoveTo (174644, -14357, -4896);
+    Engine.MoveTo (175134, -13758, -4896);
+    Engine.MoveTo (176120, -12775, -4896);
+    Engine.MoveTo (176558, -12969, -4896);
+    Engine.MoveTo (177260, -12656, -4896);
+    Engine.MoveTo (177264, -14727, -4900);
+    Engine.LoadZone (exepath + 'Zmaps\Disciples.zmap');
+    Engine.LoadConfig (User.Name);
+ 	Engine.FaceControl (0, true);
+  end;	
+end;
+
+procedure  DisciplesEAA;
+begin
+  if  User.InRange (172000, -17600, -4900, 200, 200)  then
+  begin
+    Print ('Moving to Disciples Necro hunting ground.');
+    Engine.SetTarget (Ziggurat);
+    Engine.MoveToTarget;
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel (1);
+    Delay (2 * 1000);
+  end;
+  if  User.InRange (172255, -17587, -4898, 200, 200)  then
+  begin
+    MoveAndWait (172636, -17426, -4896);
+    MoveAndWait (172700, -16465, -4896);
+    MoveAndWait (173168, -15825, -4896);
+    MoveAndWait (173148, -15141, -4896);
+    MoveAndWait (172654, -12993, -4925);
+    MoveAndWait (173465, -12972, -4927);
+    MoveAndWait (176236, -12669, -4896);
+    MoveAndWait (176240, -13001, -4896);
+    MoveAndWait (178336, -12987, -4896);
+    MoveAndWait (178354, -11894, -4896);
+    MoveAndWait (178350, -10292, -4927);
+  end;
+  if  User.InRange (178350, -10292, -4927, 2000, 200)  then
+  begin
+    while  Engine.Status = lsOnline  do
+    begin
+	  if  User.InRange (178897, -10016, -4896, 700, 200)  then
+	  begin
+        Engine.LoadZone (exepath + 'Zmaps\DisciplesEAA.zmap');
+        FinishMobs;
+	    if  (Party.Chars.Count > 0)  then
+	    begin
+          MoveAndWait (179343, -9892, -4896);
+          MoveAndWait (179313, -10070, -4896);
+	    end;
+	    MoveAndWait (179328, -10020, -4925);
+        MoveAndWait (179945, -10009, -4927);
+	  end;
+	  if  User.InRange (179945, -10009, -4927, 500, 200)  then
+	  begin
+	    Engine.LoadZone (exepath + 'Zmaps\DisciplesEAA2.zmap');
+        FinishMobs;
+	    MoveAndWait (180269, -10011, -4896);
+	    if  (Party.Chars.Count > 0)  then
+	    begin
+          MoveAndWait (180095, -10124, -4927);
+          MoveAndWait (180100, -9974, -4896);
+	    end;
+        MoveAndWait (179331, -10018, -4925);
+      end;
+    end;
+  end;  
+end;
+
+BEGIN
+  DisciplesEAA;
+END.

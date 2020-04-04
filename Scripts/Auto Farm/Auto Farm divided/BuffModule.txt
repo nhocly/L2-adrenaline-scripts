@@ -1,0 +1,55 @@
+unit BuffModule;
+
+interface
+
+uses SettingsModule, Classes; // for what?
+
+function rebuffNeeded: boolean;
+procedure goToBuff, buffing;
+
+implementation
+
+function rebuffNeeded: boolean;
+begin
+  result := false;
+  // All buffs ids interlude: https://maxcheaters.com/topic/71234-collection-all-buffs-ids-interlude/
+  if not User.Buffs.ById(1204, Buff) then  // check if it still has a specific buff
+  begin
+    result := true;
+  end
+end;
+
+procedure goToBuff;
+begin
+  Engine.EnterText('/unstuck');
+  // move from respawn to near buffer
+  Engine.SetTarget(31613); // Buffer id
+  Engine.MoveToTarget;
+  buffing;
+end;
+
+procedure buffing;
+begin
+  Print('Buffing...');
+
+  Delay(500);
+  Engine.DlgOpen;
+  Delay(500);
+  Engine.DlgSel(1);   //Open buffs
+  Delay(800);
+  Engine.DlgSel('Fighter buffs');   //Fighter buffs
+  Delay(500);
+  //Engine.DlgSel(7);   //Shield buff
+  //Engine.DlgSel(1);
+  Delay(500);
+
+  Print('Buffed');
+end;
+
+BEGIN
+  // while alive then
+  // begin
+    // if rebuffNeeded
+      // goToBuff;
+  // end;
+END.

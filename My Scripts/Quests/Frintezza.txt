@@ -1,0 +1,134 @@
+{
+--------------------------------------------------------------------------------
+Journey to a Settlement
+
+Minimum Level: 74
+Start Location: Four Sepulchers deep into Imperial Tomb
+Start NPC: Nameless Spirit
+Requirements: Completed quest Last Imperial Prince
+Reward: Frintezza's Magic Force Field Removal Scroll
+--------------------------------------------------------------------------------
+}
+
+const
+  Tatiana = 31275;
+  Nameless_Spirit = 31453;
+
+// You have to be noblesse
+procedure  TeleportToFourSepulchers;
+begin
+  if  User.InRange (147960, -55272, -2728, 300, 200)  then
+  begin
+    Engine.SetTarget (Tatiana);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Noblesse Only');
+    Delay (200);
+    Engine.BypassToServer ('npc_268465506_Chat 2');
+    Delay (200);
+    Engine.BypassToServer ('npc_268465506_goto 9067');
+  end;
+  if  User.InRange (178135, -84446, -7211, 500, 200)  then
+  begin
+    Engine.MoveTo (178286, -85547, -7243);
+    Engine.SetTarget (Nameless_Spirit);
+    Engine.DlgOpen;
+    Engine.DlgSel ('Quest');
+    Engine.DlgSel ('Journey To A Settlement');
+    Delay (200);
+    Engine.BypassToServer ('npc_268465579_Quest 654_JourneyToASettlement');
+  end;
+end;
+
+procedure  TeleportToWallOfArgos;
+begin
+  if  User.InRange (147960, -55272, -2728, 300, 200)  then
+  begin
+    Engine.SetTarget (Tatiana);
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel ('Teleport');
+    Delay (500);
+    Engine.DlgSel ('Wall of Argos - 2200 &#57');
+    Delay (500);
+  end;
+end;
+
+
+
+procedure  Frintezza;
+var
+  QuestItem: TL2Item;
+  Item: TL2Item;
+begin
+{
+  Nameless Spirit will ask you to bring antelope skin.
+}
+  TeleportToFourSepulchers;
+  Engine.MoveTo (178296, -85560, -7216);
+  if  User.InRange (178296, -85560, -7216, 300, 200)  then
+  begin
+    Engine.SetTarget (Nameless_Spirit);
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel ('Quest');
+    Delay (500);
+    Engine.DlgSel ('65402');
+    Delay (500);
+    Engine.DlgSel ('I will do it.');
+    Delay (500);
+    Engine.CancelTarget;
+  end;
+
+  // Recall
+  if  not (Inventory.User.ByID(8073, Item) = true)  and  (Item.Count < 5)  then begin
+    //Engine.UseItem (Scroll_of_Escape);
+    Delay (10 * 1000);
+
+{
+  Kill antelope canyon y antelope canyon slave en wall of argos to get the quest item antelope skin X 1
+  then go back to NPC.
+}
+    TeleportToWallOfArgos;
+    Engine.MoveTo (147960, -55272, -2728);
+    Delay (500);
+    if  not (Inventory.Quest.ByID(8072, QuestItem) = true)  then begin
+        Engine.FaceControl (0, true);
+    end;
+    Engine.FaceControl (0,false);
+    Engine.UseItem (736);
+    Delay (10000);
+
+{
+  Speak with Nameless Spirit and give him the antelope skin.
+  He gives you the Frintezza's Magic Force Field Removal Scroll.
+}
+    TeleportToFourSepulchers;
+    Engine.MoveTo (178296, -85560, -7216);
+    Engine.SetTarget (Nameless_Spirit);
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel ('Quest');
+    Delay (500);
+    Engine.DlgSel ('65402');
+    Delay (500);
+    Engine.DlgSel ('Here it is.');
+    Delay (500);
+
+{
+  Take the script again
+}
+    Engine.DlgOpen;
+    Delay (500);
+    Engine.DlgSel ('Quest');
+    Delay (500);
+    Engine.DlgSel ('65402');
+    Delay (500);
+    Engine.DlgSel ('I will do it.');
+    Delay (500);
+    Engine.CancelTarget;
+  end;
+end;
+
+begin
+  Frintezza;
+end.
