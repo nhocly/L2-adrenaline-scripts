@@ -5,16 +5,59 @@ interface
 uses
   SysUtils, Classes;
 type
+  DimensionArray = array of array of integer;
+
   TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, TALKING_ISLAND = 4,
     HEINE = 5, DION = 6, GIRAN = 7, ADEN = 8, GODDARD = 9, GLUDIO = 10, GLUDIN = 11,
     SHTUTTGART = 12, RUNE = 13, OREN = 14, HUNTER = 15, NON_CITY = 16);
 
+  TCity2 = record
+    Enum: TCity;
+    ID: integer;
+    Name: String;
+    gateKeeperID: integer;
+    supplyManagerID: integer;
+    newbieBufferID: integer;
+    pathToBuffer: DimensionArray;
+    pathToSupply: DimensionArray;
+    GateKeepersString: String;
+  end;
+
+{
+--------------------------------------------------------------------------------
+  SEARCH FRASE "CHANGE THIS" IN FILE AND MAKE THE PERTINENT CHANGES
+--------------------------------------------------------------------------------
+}
 const
+  HIRA = 31613;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM BUFFER. IF THERE'S NONE THEN DELETE BUFFING LINE NEAR THE END OF THE SCRIPT
+  NOVA = 31124;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM GATEKEEPER. IF THERE'S NONE CONFIGURE THE TELEPORT FUNCTION TO USE THE USUAL GATEKEEPER.
+  ZIGGURAT = 31101;
+  WIND_WALK = 1204;      // YOU MAY HAVE TO CHANGE THIS TO A BUFF YOU USE. IT'S USED TO KNOW WHEN YOU NEED TO BACK WHEN YOU'R BUFFS FINISH
   SCROLL_OF_SCAPE = 736;
   ROXXY = 30006;
 
+  DWARVEN2 = (Name: 'dwarven village', gateKeeperID: 30540, GateKeepersString: 'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"');
+  ORC2 = (Name: 'orc village', gateKeeperID: 30576, GateKeepersString: 'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"');
+  DARK_ELVEN2 = (Name: 'dark elf village', gateKeeperID: 30134, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"');
+  ELVEN2 = (Name: 'elf village', gateKeeperID: 30146, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","elven forest","elven fortress","neutral zone"');
+  TALKING_ISLAND2 = (Name: 'talking island', gateKeeperID: 30006, GateKeepersString: 'gludin,"dark elf village","dwarven village","elf village","orc village","elven ruins","singing waterfall","northen territory","obelisk of victory"');
+  HEINE2 = (Name: 'heine', gateKeeperID: 30899, GateKeepersString: 'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva"');
+  DION2 = (Name: 'dion', gateKeeperID: 30059, GateKeepersString: 'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"');
+  GIRAN2 = (Name: 'giran', gateKeeperID: 30080, GateKeepersString: 'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"');
+  ADEN2 = (Name: 'aden', gateKeeperID: 30848, GateKeepersString: 'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence"');
+  GODDARD2 = (Name: 'goddard', gateKeeperID: 31275, GateKeepersString: 'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence"');
+  GLUDIO2 = (Name: 'gludio', gateKeeperID: 30256, GateKeepersString: 'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","ruins of agony","ruins of despair","ant nest","windawood manor"');
+  GLUDIN2 = (Name: 'gludin', gateKeeperID: 30320, GateKeepersString: 'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"');
+  SHTUTTGART2 = (Name: 'schuttgart', gateKeeperID: 31964, GateKeepersString: 'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","frozen labyrinth","crypts of disgrace","pavel ruines"');
+  RUNE2 = (Name: 'rune', gateKeeperID: 31320, GateKeepersString: 'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"');
+  OREN2 = (Name: 'oren', gateKeeperID: 30177, GateKeepersString: 'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"');
+  HUNTER2 = (Name: 'hunter village', gateKeeperID: 30233, GateKeepersString: 'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"');
+
   TCities : array[0..16] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, TALKING_ISLAND,
     HEINE, DION, GIRAN, ADEN, GODDARD, GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
+
+  TCities2 : array[0..16] of TCity2 = (DWARVEN2, ORC2, DARK_ELVEN2, ELVEN2, TALKING_ISLAND2,
+    HEINE2, DION2, GIRAN2, ADEN2, GODDARD2, GLUDIO2, GLUDIN2, SHTUTTGART2, RUNE2, OREN2, HUNTER2, NON_CITY);
 
   CityNames: array[0..15] of string = ('dwarven village','orc village','dark elf village','elf village','talking island',
     'heine','dion','giran','aden','goddard','gludio','gludin','schuttgart','rune','oren','hunter village');
@@ -50,6 +93,32 @@ const
     'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"' //hunter
   );
 
+{
+--------------------------------------------------------------------------------
+  Check if the server is locked by trying to move the character.
+  If the character didn't move then unlock the server.
+--------------------------------------------------------------------------------
+}
+procedure unlockServer;
+var
+  pin: Integer;
+  Moved: Boolean;
+  lastX: Integer;
+  newX: Integer;
+begin
+  Delay (3000); // Wait 3s for the server to load
+  lastX := User.X;
+  newX  := User.X + 5;
+  Engine.MoveTo (newX, User.Y, User.Z);
+  if User.InRange (newX, User.Y, User.z, 3, 10) then Moved := true;
+
+  // If it didn't moved it is locked
+  if not Moved then
+  begin
+    //pin := xxxxxx; // TODO: add configuration for pin
+    //Engine.BypassToServer ('custom_pin_unlock ' + IntToStr(pin));
+  end;
+end;
   function  GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
   procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; move: boolean = false);
   procedure  MoveInCity;
@@ -66,7 +135,7 @@ implementation
   Finds the city in which the character is located
 --------------------------------------------------------------------------------
 }
-function  GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
+function GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
 var
   City: TCity;
 begin
@@ -84,6 +153,7 @@ begin
   if User.InRange (117144, 76824, User.Z, 5000, 100)       then City := HUNTER;
   if User.InRange (-45080, -113576, User.Z, 5000, 100)     then City := ORC;
   if User.InRange (81150, 54880, User.Z, 5000, 100)        then City := OREN;
+  if User.InRange (9677, -22176, -3722, 5000, 150)         then City := PRIMEVAL_ISLE;
   if User.InRange (43838, -48222, User.Z, 5000, 100) or
     User.InRange (38283, -48102, User.Z, 5000, 100)        then City := RUNE;
   if User.InRange (88041, -142502, User. Z, 5000, 100)     then City := SHTUTTGART;
@@ -111,41 +181,51 @@ var
   Item3: TL2Item;
   City: TCity;
 begin
-  if  not User.Dead  then
+  if not User.Dead then
   begin
-    Engine.EnterText('/unstuck');
+    //Engine.GoHome (rtclanhall);       // When you die go to clan hall
+    //Engine.UseItem (SCROLL_OF_SCAPE);
+    Engine.EnterText ('/unstuck');     // To enter '/ustuck' in chat window
+    //Unstuck; It appears in the script guide but doesn't work
 
-    City := GetCity (false, false);
-    if  City = NON_CITY  then
-	begin
-    // Use the item past as parameter
-    if  (itemID <> -1)  and  Inventory.User.ByID(itemID, Item)  then
-    begin
-      Engine.UseItem (itemID);
-      Delay (User.Cast.EndTime + TPDelay);
-    end;
-
-    // Use skill to teleport if no item past as parameter
-    if  (skillID <> -1)  and  (itemID = -1)  and  SkillList.ByID(skillID, Skill)  then
-    begin
-      Engine.UseSkill(skillID);
-      Delay (User.Cast.EndTime + TPDelay);
-    end;
-
-    // Use SoE if no item or skill provided
-    if  (skillID = -1)  and  (itemID = -1) and  Inventory.User.ByID(SCROLL_OF_SCAPE, Item)  then
-    begin
-      Engine.UseItem (Item);
-      Delay (User.Cast.EndTime + TPDelay);
-    end;
+  if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
+  begin
+    Engine.UseItem(itemID);
+    delay(100);
+    delay(User.Cast.EndTime + 100);
+  end;
 
     City := GetCity (false, false);
     if  City = NON_CITY  then
     begin
-      Print ('Couldn''t go home');
-      exit;
+      // Use the item past as parameter
+      if  (itemID <> -1)  and  Inventory.User.ByID(itemID, Item)  then
+      begin
+        Engine.UseItem (itemID);
+        Delay (User.Cast.EndTime + TPDelay);
+      end;
+
+      // Use skill to teleport if no item past as parameter
+      if  (skillID <> -1)  and  (itemID = -1)  and  SkillList.ByID(skillID, Skill)  then
+      begin
+        Engine.UseSkill(skillID);
+        Delay (User.Cast.EndTime + TPDelay);
+      end;
+
+      // Use SoE if no item or skill provided
+      if  (skillID = -1)  and  (itemID = -1) and  Inventory.User.ByID(SCROLL_OF_SCAPE, Item)  then
+      begin
+        Engine.UseItem (Item);
+        Delay (User.Cast.EndTime + TPDelay);
+      end;
+
+      City := GetCity (false, false);
+      if  City = NON_CITY  then
+      begin
+        Print ('Couldn''t go home');
+        exit;
+      end;
     end;
-	end;
 
     // Go to the Gatekeeper if move = true
     if  move  then MoveInCity;
@@ -172,31 +252,27 @@ begin
 ------------------------------------------------------------------------------
 }
   if  CITY = ADEN  then begin
-    if  User.InRange (149800, 24000, 2100, 600, 200)  then begin // Bottom of north-east stairs
-      Engine.MoveTo (148611, 24319, -2039); // climb stairs
+    if  User.InRange (149800, 24000, 2100, 600, 200)  then begin  // bottom of north-east stairs
+      Engine.MoveTo (148611, 24319, -2039);  // climb stairs
     end;
-    if  User.InRange (148611, 24319, -2039, 500, 200)  then begin // Top of east stairs
-      Engine.MoveTo (148437, 25683, -2008); // church corner
+    if  User.InRange (148611, 24319, -2039, 500, 200)  then begin  // top of east stairs
+      Engine.MoveTo (148437, 25683, -2008);  // south-east church corner
     end;
     if  User.InRange (148437, 25683, -2008, 500, 200)  then begin
-      Print ('You are in the south-east church''s corner');
       Engine.MoveTo (147604, 25774, -2008); // top of central stairs
     end;
-    if  User.InRange (146400, 25500, -2000, 500, 200)  then begin
-      Print ('You are in the south-west church''s corner');
-      Engine.MoveTo (146600, 25692, -2008);
-      Print ('Turning the corner');
-      Engine.MoveTo (147044, 25732, -2039);
-      Print ('Moving close to the gatekeeper');
+    if  User.InRange (146400, 25500, -2000, 500, 200)  then begin  // south-west church corner
+      Engine.MoveTo (146600, 25692, -2008);  // turn corner
+      Engine.MoveTo (147044, 25732, -2039);  // move next to gatekeeper
     end;
-    if  User.InRange (150000, 27600, -2270, 500, 200)  then begin // East
+    if  User.InRange (150000, 27600, -2270, 500, 200)  then begin  // east
       Engine.MoveTo (148385, 27571, -2256);  // move to east of the central square
     end;
-    if  User.InRange (148000, 27550, -2300, 450, 200)  then begin// right of central square
+    if  User.InRange (148000, 27550, -2300, 450, 200)  then begin  // right of central square
       Engine.MoveTo (147707, 26581, -2200); // move to the base of the central stairs
     end;
-    if  User.InRange (147707, 26581, -2200, 500, 200)  then begin // from the bottom of the central stairs
-      Engine.MoveTo (147604, 25774, -2008); // move to top of central stairs
+    if  User.InRange (147707, 26581, -2200, 500, 200)  then begin  // from the bottom of the central stairs
+      Engine.MoveTo (147604, 25774, -2008);  // move to top of central stairs
     end;
     if  User.InRange (146811, 27109, -2231, 500)  then begin
       Engine.MoveTo (146811, 27109, -2231);
@@ -356,8 +432,8 @@ begin
       Engine.MoveTo( 147250, 25969, -2039);
       Engine.MoveTo( 147206, 25899, -2039);
     end;
-    if  User.InRange (147604, 25774, -2008, 600, 200)  then begin // top of the stairs
-      Engine.MoveTo (147138, 25906, -2039); // go from top of central stairs to gatekeeper
+    if  User.InRange (147604, 25774, -2008, 600, 200)  then begin  // top of the stairs
+      Engine.MoveTo (147138, 25906, -2039);  // go from top of central stairs to gatekeeper
       Moved := true;
     end;
   end;
@@ -623,15 +699,6 @@ begin
 ------------------------------------------------------------------------------
 }
   if CITY = GLUDIO then begin
-    // Next to Black Marketeer of Mammon
-    if User.InRange (-12240, 121807, -3010, 250, 150) then begin
-      Engine.MoveTo (-12712, 122189, -2984);
-    end;
-      // Stairs in front of church close to gatekeeper
-      if User.InRange (-12712, 122189, -2984, 250, 150) then begin
-      Engine.MoveTo (-13257, 122669, -3048);
-      Engine.MoveTo (-12782, 122689, -3143);
-    end;
     if User.InRange(-14704,122032,-3056, 250, 150) then begin
       Engine.MoveTo(-14704,122032,-3056);
       Engine.MoveTo(-14538,122671,-3116);
@@ -711,7 +778,7 @@ begin
       Engine.MoveTo(147936, -55368, -2760);
     end;
     // East stairs
-    if User.InRange(149872, -57424, -2976, 250, 150) then begin
+    if User.InRange(149872, -57424, -2976, 250, 150) then begin //
       Engine.MoveTo(149897, -56910, -2979);
       Engine.MoveTo(149230, -56412, -2779);
       Engine.MoveTo(147939, -55999, -2772);
@@ -1400,17 +1467,17 @@ begin
       if  dialogIndex = 0  then
       begin
         dialogIndex := 1;
-          rightCity := false;
+        rightCity := false;
       end;
-      {
+    {
         Checks if we are in the right city or teleport us to the first city of the dialog options
-      }
+    }
       Engine.SetTarget (gatekeeper);
       Engine.MoveTo (gatekeeper);
       Engine.DlgOpen;
       Delay (500);
       // TODO: Check the gatekeepers that don't have the teleport dialog in the first option
-      if  gatekeeper.ID = ROXXY  then  // if we are in talking island
+      if  gatekeeper.ID = ROXXY  then  // if we are in talking island, the teleport is in the second option
         Engine.DlgSel (2)
       {
       else
@@ -1418,7 +1485,7 @@ begin
         case buffer.id of
           30256: Engine.DlgSel(2);
           30006: Engine.DlgSel(3);
-      }
+    }
       else
         Engine.DlgSel(1);
       Delay (500);
@@ -1426,9 +1493,10 @@ begin
       Delay (TPDelay);
       Result := true;
 
-      if  rightCity = false  then
-        TeleportTo (destination);
+    if  rightCity = false  then
+      TeleportTo (destination);
     end;
+
     teleportIndex.Free;
   end;
 end;
