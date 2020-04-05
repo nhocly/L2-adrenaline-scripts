@@ -1,126 +1,30 @@
-uses SysUtils, Classes;
+unit CityModule;
 
+interface
 
-type
-	TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, KAMAEL = 4,
-	TALKING_ISLAND = 5, HEINE = 6, DION = 7, GIRAN = 8, ADEN = 9, GODDARD = 10,
-	GLUDIO = 11, GLUDIN = 12, SHTUTTGART = 13, RUNE = 14, OREN = 15, HUNTER = 16, NON_CITY = 17);
+uses SettingsModule;
 
-const
-	TCities : array[0..17] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, KAMAEL,
-	TALKING_ISLAND, HEINE, DION, GIRAN, ADEN, GODDARD,
-	GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
-	afterDeathEvtDelay = 30;
-	
-	GkDlg  = 'Transparent';
-	CityNames : array[0..16] of string = ('dwarven village','orc village','dark elf village','elf village','kamael village','talking island',
-	'heine','dion','giran','aden','goddard','gludio','gludin','schuttgart','rune','oren','hunter village');
+procedure InCity;
 
-	GateKeepers : array[0..16] of integer = (30540, 30576, 30134, 30146, 32163, 30006, 30899, 30059, 30080, 30848, 31275, 30256, 30320, 31694, 31320, 30177, 30233);
-	GateKeepers1 : array[0..16] of integer = (50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124, 50124);
+implementation
 
-	TPDelay = 3000;
-	
-	GateKeepersStrings   : array[0..16] of string = (
-		'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","kamael village","abandoned coal mines","eastern mining zone","western mining zone","mithril mines w","mithril mines e"', //dwarven
-		'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","kamael village","immortal plateau","cave of trials","fozen waterfall"', //orc
-		'gludio,"dwarven village","talking island","orc village","kamael village","dark forest","swampland","spider nest","neutral zone"', //darkelven
-		'gludio,"dwarven village","talking island","orc village","kamael village","elven forest","elven fortress","neutral zone"', //elven
-		'gludio,aden,"talking island","dark elf village","elf village","ofc village","stronghold 1","stronghold 2","stronghold 3","isle of souls harbor"', //kamael
-		'gludin,"dark elf village","dwarven village","elf village","orc village","kamael village","elven ruins","singing waterfall","northen territory","obelisk of victory"', //talking island
-		'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva","isle of prayer"', //heine
-		'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"', //dion
-		'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"', //giran
-		'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"kamael village","hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence","giant cave"', //aden
-		'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence","forge of gods"', //goddard
-		'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","kamael village","ruins of agony","ruins of despair","ant nest","windawood manor"', //gludio
-		'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","kamael village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"', //gludin
-		'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","iceman hat","crypts of disgrace","pavel ruines","mithril mines"', //schuttgart
-		'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence","stakato nest","primeval isle wharf"', //rune
-		'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","sel mahum west","sel mahum south","sel mahum center","plains of the lizardmen","outlaw forest","sea of spores"', //oren
-		'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors","dragon valley","antharas lair","ivory tower"' //hunter
-	);
-
-function GetCity(shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
-var
-	City : TCity;
-begin
-	City := NON_CITY;
-	if User.InRange(-83139,243145,User.Z,5000,10) then City := TALKING_ISLAND;
-	if User.InRange(116569,-179848,User.Z,7000,10) then City := DWARVEN;
-	if User.InRange(-118184, 46024, User.Z, 7000, 10) then City := KAMAEL;
-	if User.InRange(44904, 49800, User.Z, 7000, 10) then City := ELVEN;
-	if User.InRange(-45080, -113576, User.Z, 5000, 10) then City := ORC;
-	if User.InRange(111434,220426,User.Z,5000,10)  then City := HEINE;
-	if User.InRange(18591,144708,User.Z,5000,10)   then City := DION;
-	if User.InRange(82876,148960,User.Z,5000,10)   then City := GIRAN;
-	if User.InRange(147509,25928,User.Z,5000,10)   then City := ADEN;
-	if User.InRange(147713,-56202,User.Z,5000,10)  then City := GODDARD;
-	if User.InRange(-14236,123701,User.Z,5000,10)  then City := GLUDIO;
-	if User.InRange(-81311,152663,User.Z,5000,10)  then City := GLUDIN;
-	if User.InRange(88041,-142502,User.Z,5000,10)  then City := SHTUTTGART;
-	if User.InRange(117144, 76824,User.Z,5000,10)  then City := HUNTER;
-	if User.InRange(11416, 16856,User.Z,5000,10)  then City := DARK_ELVEN;
-	if User.InRange(43838,-48222,User.Z,5000,10) or User.InRange(38283,-48102,User.Z,5000,10) then City := RUNE;
-	if User.InRange(81150,54880,User.Z,5000,10)    then City := OREN;
-	if (City = NON_CITY) and (shouldGoHome) then
-	begin
-		GoHome(-1, -1, inCityEvt);
-		City := GetCity;
-	end;
-	Result := City;
-end;
-
-procedure GoHome(ItemID: integer = -1; skillID: integer = -1; Val: boolean = false);
-var
-	Skill: TL2Skill;
-	Item: TL2Item;
-begin
-  if not User.Dead then
-  begin
-	if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
-	begin
-		Engine.UseItem(itemID);
-		delay(100);
-		delay(User.Cast.EndTime + 100);
-	end;
-
-	if (skillID <> -1) and (itemID = -1) and SkillList.ByID(skillID, Skill) then
-	begin
-		Engine.UseSkill(skillID);
-		delay(100);
-		delay(User.Cast.EndTime + 100);
-	end;
-	
-	if (skillID = -1) and (itemID = -1) and Inventory.User.ByID(736, Item) then
-	begin
-		Engine.UseItem(Item);
-		delay(20 * 1000);
-	end;
-	
-  end else
-	Engine.GoHome;
-
-  Delay(5 * 1000);
-  if Val then
-	InCity;
-end;
-
-{ 
-    For every city checks it's respawns and move you from the one in which you are
+{
+    For every city check it's respawns and move from the one in which you are
     to a position near to the city Gatekeeper
 }
 procedure InCity;
 var
-	City: TCity;
-	Moved : Boolean;
-	NPC: TL2Npc;
-	NewResp : TStringList;
+  City: TCity;
+  Moved : Boolean;
+  NPC: TL2Npc;
+  NewResp : TStringList;
 begin
   City := GetCity;
   //-----------------------talking island--------------------------------
-  if City = TALKING_ISLAND then begin
-    if User.InRange(-84376,242824,-3712, 3000, 150) then begin
+  if City = TALKING_ISLAND then
+  begin
+    if User.InRange(-84376,242824,-3712, 3000, 150) then
+    begin
       Engine.MoveTo(-84184, 243448, -3712);
       Engine.MoveTo(-84280, 243800, -3712);
       Engine.MoveTo(-84552, 244040, -3712);
@@ -128,6 +32,17 @@ begin
     end;
     if User.InRange(-84200, 244488, -3728, 500, 150) then Moved := true;
   end;
+  //-----------------------orc village--------------------------------
+  if City = ORC then
+    if User.InRange(-46000, -116600, -260, 300, 200) then  // North Gate
+    begin
+      Engine.MoveTo(-44882, -114463, -240);  // in front of Grocery Store
+      Engine.MoveTo(-44887, -113632, -192);  // center of square
+      Engine.MoveTo(-45020, -112554, -240);  // in fornt of Gatekeeper
+      Engine.MoveTo(-45020, -112554, -240);  // in fornt of Gatekeeper
+      Engine.MoveTo(-45264, -112512, -240);  // next to Gatekeeper
+    end;
+  begin
   //-----------------------heine--------------------------------
   if City = HEINE then begin
     if User.InRange(110912,219584,-3664, 250, 150) then begin
@@ -1067,140 +982,6 @@ begin
   end;
 end;
 
-{
-	Check if the city passed as parameter is the same as the one in which we are
-}
-function isRightCity(val: TCity; shouldGoHome: boolean = true): boolean;
-begin
-  Result := (GetCity(shouldGoHome) = val);
-end;
-
-{
-	Teleports through all cities until it finds the correct one
-}
-function toRightCity(val: TCity): boolean;
-var
-  currentCity: TCity;
-begin
-  if isRightCity(val) then
-  begin
-    Result := true;
-    exit;
-  end;
-
-  if not isRightCity(val) then
-  begin
-
-    currentCity := GetCity;
-
-    if currentCity = NON_CITY then
-      GoHome;
-
-    DoTeleport(CityNames[val]);
-
-  end;
-
-  delay(100);
-  Result := toRightCity(val);
-
-end;
-
-function  getCityToLocationGK (teleportName: String): integer;
-var
-  i: integer;
-begin
-  Result := -1;
-
-  while  Result = -1  do
-  begin
-    if  Pos (teleportName, GateKeepersStrings[i]) <> 0  then
-    begin
-      Result := i;
-    end;
-  end;
-end;
-
-{
-	What does this do?
-}
-function DoTeleportToLocation(TeleportValue: String): boolean;
-begin
-	Result := false;
-	if toRightCity(TCities[getCityToLocationGK(TeleportValue)]) then
-		Result := DoTeleport(TeleportValue);
-end;
-
-{
-	Teleports to the desired location.
-	Each city has an integer associated,
-	GateKeepersStrings has the possible target locations for each city.
-	I don't understand how this works, I think:
-	
-}
-function DoTeleport(TeleportValue: String): boolean;
-var
-	City: TCity;
-	gkId: integer;
-	cityIndex: integer;
-	buffer: TL2Live;
-	dialogIndex: integer;
-	teleportIndex: TStringList;
-begin
-	teleportIndex := TStringList.Create;
-
-	City := GetCity;
-	cityIndex := Ord(City);
-
-	if (City = NON_CITY) or (Length(TeleportValue) = 0) then
-	begin
-		Result := false;
-		exit;
-	end;
-
-	gkId := GateKeepers[cityIndex];
-	teleportIndex.Delimiter := ',';
-	teleportIndex.DelimitedText := GateKeepersStrings[cityIndex];
-
-	buffer := nil;
-
-	NpcList.ById(gkId, buffer);
-
-	if buffer = nil then
-	begin
-		Result := false;
-		exit;
-	end;
-
-	dialogIndex := teleportIndex.indexOf(TeleportValue) + 1;
-
-	if dialogIndex = 0 then
-	begin
-		DoTeleportToLocation(TeleportValue);
-		exit;
-	end;
-	
-	if dialogIndex > 0 then
-	begin
-		Engine.SetTarget(buffer);
-		Engine.MoveTo(buffer);
-		Engine.DlgOpen;
-
-		{if (Pos(buffer.name, 'Ragara') <> 0) then
-		  Engine.DlgSel(1)
-		else
-		  Engine.DlgSel(GkDlg);}
-		Engine.DlgSel(1);
-		delay(500);
-		Engine.DlgSel(dialogIndex);
-		Delay(3 * 1000);
-		Result := true;
-	end else
-		Result := false;
-
-	teleportIndex.Free;
-end;
-
 
 BEGIN
-  doteleport ('goddard');
 END.

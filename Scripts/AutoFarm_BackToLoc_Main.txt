@@ -5,26 +5,26 @@ uses SysUtils, Classes, SettingsModule, CityModule, BufferLocationModule, Telepo
 }
 function getCityToLocationGK(teleportName: string): integer;
 var
-	i: integer = 0;
+  i: integer = 0;
 begin
-	Result := -1;
-	while i <= 16  and  Pos(teleportName, GateKeepersStrings[i]) <> 0 do
-	begin
-			Result := i;
-	end;
+  Result := -1;
+  while i <= 16  and  Pos(teleportName, GateKeepersStrings[i]) <> 0 do
+  begin
+      Result := i;
+  end;
 end;
 
 function revertArray(arr: DimensionArray): DimensionArray;
 var
-	i: integer;
+  i: integer;
 begin
-	SetLength(Result, Length(arr), 3);
-	for i:=0 to Length(Result)-1 do
-	begin
-		Result[i, 0] := arr[Length(arr)-1 - i, 0];
-		Result[i, 1] := arr[Length(arr)-1 - i, 1];
-		Result[i, 2] := arr[Length(arr)-1 - i, 2];
-	end;
+  SetLength(Result, Length(arr), 3);
+  for i:=0 to Length(Result)-1 do
+  begin
+    Result[i, 0] := arr[Length(arr)-1 - i, 0];
+    Result[i, 1] := arr[Length(arr)-1 - i, 1];
+    Result[i, 2] := arr[Length(arr)-1 - i, 2];
+  end;
 end;
 
 function moveTo(iArray: array of integer): boolean;
@@ -36,14 +36,14 @@ begin
   end;
 
   Result := Engine.MoveTo(iArray[0], iArray[1], iArray[2]);
-  
+
 end;
 
 procedure writeToArray(var iArray: array of integer; val1, val2, val3: integer);
 begin
-	iArray[0] := val1;
-	iArray[1] := val2;
-	iArray[2] := val3;
+  iArray[0] := val1;
+  iArray[1] := val2;
+  iArray[2] := val3;
 end;
 
 function getClosestLoc(arr: DimensionArray): integer;
@@ -61,7 +61,7 @@ begin
        begin
         prelimLength := Trunc(distanceBetween(User.X, User.Y, User.Z,
                   arr[i, 0], arr[i, 1], arr[i, 2]));
-        prelimResult := i;          
+        prelimResult := i;
        end;
   end;
   Result := prelimResult;
@@ -69,16 +69,16 @@ end;
 
 function distanceBetween(x1, y1, z1, x2, y2, z2: int64): extended;
 begin
-	 Result := sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1)) + ((z2 - z1)*(z2 - z1)));
+   Result := sqrt(((x2 - x1)*(x2 - x1)) + ((y2 - y1)*(y2 - y1)) + ((z2 - z1)*(z2 - z1)));
 end;
 
 function inRange(obj: TL2Spawn; x1, y1, z1: integer; range: integer): boolean; overload;
 begin
-  Result := (distanceBetween(obj.X, obj.Y, obj.Z, x1, y1, z1) < range); 
+  Result := (distanceBetween(obj.X, obj.Y, obj.Z, x1, y1, z1) < range);
 end;
 
 function moveToLoc(coordHolder: DimensionArray): boolean;
-var                                                                 
+var
   i: integer;
   _index: integer;
 begin
@@ -90,39 +90,39 @@ begin
     begin
       if not (Engine.MoveTo(coordHolder[i, 0], coordHolder[i, 1], coordHolder[i, 2])) then
         continue;
-    end;  
+    end;
   end;
-  Result := true;       
+  Result := true;
 end;
 
 procedure deathEvt(farmLoc: string; arr: DimensionArray);
 begin
   Settings.SetFile(Script.Path + User.Name + '_Settings.ini');
-	isTakeBuff := Settings.LoadBool('Params', 'Take newbie buff', 'false');
-	lowMP := Settings.Load('Params', 'MP Value', 50);
-	print('Buffs taken: ' + booltostr(istakebuff)); 
+  isTakeBuff := Settings.LoadBool('Params', 'Take newbie buff', 'false');
+  lowMP := Settings.Load('Params', 'MP Value', 50);
+  print('Buffs taken: ' + booltostr(istakebuff));
   while Engine.Status = lsOnline do
   begin
     if User.Dead then
     begin
-	    delay(60 * 1000);
-	    if not User.Dead then
-	      continue;
+      delay(60 * 1000);
+      if not User.Dead then
+        continue;
 
       Engine.FaceControl(0, false);
-			
+
       Engine.GoHome;
       afterDeathEvt := GetTickCount + afterDeathEvtDelay * 1000;
       delay(2 * 3000);
-      
+
       InCity;
-      
+
       if isTakeBuff then
         GetBuff;
 
       while User.MP < lowMP do
-        delay(50);  
-      
+        delay(50);
+
       if DoTeleport(farmLoc) then
         moveToLoc(arr);
 
@@ -132,75 +132,75 @@ begin
   end;
 end;
 
-procedure GetBuff;  //dwarven; orc; dark elven; elven; hunter; 
+procedure GetBuff;  //dwarven; orc; dark elven; elven; hunter;
 var
   City: TCity;
   Item : TL2Item;
   stringIndex: integer;
   i: integer;
 begin
-	City := GetCity;
-	case City of
-		TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
-		HEINE : moveToLoc(heineToBuffer);
-		DION : moveToLoc(dionToBuffer);
-		GIRAN : moveToLoc(giranToBuffer);
-		ADEN : moveToLoc(adenToBuffer);
-		GODDARD : moveToLoc(goddardToBuffer);
-		GLUDIO : moveToLoc(gludioToBuffer);
-		GLUDIN : moveToLoc(gludinToBuffer);
-		SHTUTTGART : moveToLoc(shtuttgartToBuffer);
-		RUNE : moveToLoc(runeToBuffer);
-		OREN : moveToLoc(orenToBuffer);
-		KAMAEL : moveToLoc(kamaelToBuffer);
-	end;
+  City := GetCity;
+  case City of
+    TALKING_ISLAND: moveToLoc(talkingIslandToBuffer);
+    HEINE : moveToLoc(heineToBuffer);
+    DION : moveToLoc(dionToBuffer);
+    GIRAN : moveToLoc(giranToBuffer);
+    ADEN : moveToLoc(adenToBuffer);
+    GODDARD : moveToLoc(goddardToBuffer);
+    GLUDIO : moveToLoc(gludioToBuffer);
+    GLUDIN : moveToLoc(gludinToBuffer);
+    SHTUTTGART : moveToLoc(shtuttgartToBuffer);
+    RUNE : moveToLoc(runeToBuffer);
+    OREN : moveToLoc(orenToBuffer);
+    KAMAEL : moveToLoc(kamaelToBuffer);
+  end;
 
-	if getNewbieBuffer = nil then
-	begin
-		print('Newbie buffer not found..');
-		exit;
-	end;
+  if getNewbieBuffer = nil then
+  begin
+    print('Newbie buffer not found..');
+    exit;
+  end;
 
-	if ((getNewbieBuffer.ID >= 30598) and (getNewbieBuffer.ID <= 30602)) or (getNewbieBuffer.ID = 32135) then
-		stringIndex := 5
-	else
-		stringIndex := 1;
+  if ((getNewbieBuffer.ID >= 30598) and (getNewbieBuffer.ID <= 30602)) or (getNewbieBuffer.ID = 32135) then
+    stringIndex := 5
+  else
+    stringIndex := 1;
 
-	Engine.MoveTo(getNewbieBuffer);
-	Engine.SetTarget(getNewbieBuffer);
-	Engine.DlgOpen;
-	delay(500);
-	Engine.DlgSel(stringIndex);
-	delay(500);
-	Engine.DlgSel(1);
+  Engine.MoveTo(getNewbieBuffer);
+  Engine.SetTarget(getNewbieBuffer);
+  Engine.DlgOpen;
+  delay(500);
+  Engine.DlgSel(stringIndex);
+  delay(500);
+  Engine.DlgSel(1);
 
-	delay(200);
+  delay(200);
 
-	{if User.Level <= 39 then begin
-		Engine.DlgOpen;
-		delay(500);
-		Engine.DlgSel(3);
-		delay(500);
-		Engine.DlgSel(1);
-	end; }
+  {if User.Level <= 39 then begin
+    Engine.DlgOpen;
+    delay(500);
+    Engine.DlgSel(3);
+    delay(500);
+    Engine.DlgSel(1);
+  end; }
 end;
 
 function getNewbieBuffer: TL2Live;
 var
-	i: integer;
+  i: integer;
 begin
-	for i:=0 to 8 do
-	begin
-		if NpcList.ByID(nbArr[i], Result) then
-			exit;
-	end;
-	Result := nil;
+  for i:=0 to 8 do
+  begin
+    if NpcList.ByID(nbArr[i], Result) then
+      exit;
+  end;
+  Result := nil;
 end;
 
 function getState(stateType: string; stateValue: string; value: string): string;
 begin
-	Settings.SetFile(Script.Path + User.Name + '_Settings.ini');
-	Result := Settings.Load(stateType, stateValue, value);
+  Settings.SetFile(Script.Path + User.Name + '_Settings.ini');
+  Result := Settings.Load(stateType, stateValue, value);
 end;
 
 
@@ -235,7 +235,7 @@ begin
     begin
       trimCoordinates(getState('Params', 'Point ' + inttostr(i+1), '0;0;0'), ';', backToLocCoord[i]);
     end;
-   end; 
+   end;
 end;
 
 procedure killAgroMobsThread;
@@ -258,20 +258,20 @@ procedure killAgroMobs(arr: array of TL2Live);
 var
   i: integer;
 begin
-  
+
   for i:=0 to Length(arr)-1 do
   begin
     if arr[i].dead or (arr[i].target <> User) then
       continue;
-     
+
     while not arr[i].dead and not User.Dead do
     begin
-		  Engine.SetTarget(arr[i]);
-		  Engine.UseSkill(1235);
-			delay(500);
+      Engine.SetTarget(arr[i]);
+      Engine.UseSkill(1235);
+      delay(500);
     end;
   end;
-  
+
 
 end;
 
@@ -289,7 +289,7 @@ begin
     end;
   end;
 end;
-    
+
 begin
   print('Back location: ' + getState('Params', 'Back lock', '123'));
   loadArr;

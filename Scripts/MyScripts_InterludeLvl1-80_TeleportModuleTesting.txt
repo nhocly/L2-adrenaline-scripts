@@ -10,7 +10,7 @@ type
   TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, TALKING_ISLAND = 4,
     HEINE = 5, DION = 6, GIRAN = 7, ADEN = 8, GODDARD = 9, GLUDIO = 10, GLUDIN = 11,
     SHTUTTGART = 12, RUNE = 13, OREN = 14, HUNTER = 15, NON_CITY = 16);
-  
+
   TCity2 = record
     //Enum: TCity;
     //ID: integer;
@@ -26,7 +26,7 @@ type
 const
   SCROLL_OF_SCAPE = 736;
   ROXXY = 30006;
-  
+
   DWARVEN2 = (Name: 'dwarven village', gateKeeperID: 30540, GateKeepersString: 'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"');
   ORC2 = (Name: 'orc village', gateKeeperID: 30576, GateKeepersString: 'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"');
   DARK_ELVEN2 = (Name: 'dark elf village', gateKeeperID: 30134, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"');
@@ -43,13 +43,13 @@ const
   RUNE2 = (Name: 'rune', gateKeeperID: 31320, GateKeepersString: 'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"');
   OREN2 = (Name: 'oren', gateKeeperID: 30177, GateKeepersString: 'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"');
   HUNTER2 = (Name: 'hunter village', gateKeeperID: 30233, GateKeepersString: 'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"');
-  
+
   TCities : array[0..16] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, TALKING_ISLAND,
     HEINE, DION, GIRAN, ADEN, GODDARD, GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
 
   TCities2 : array[0..16] of TCity2 = (DWARVEN2, ORC2, DARK_ELVEN2, ELVEN2, TALKING_ISLAND2,
     HEINE2, DION2, GIRAN2, ADEN2, GODDARD2, GLUDIO2, GLUDIN2, SHTUTTGART2, RUNE2, OREN2, HUNTER2, NON_CITY);
-  
+
   CityNames: array[0..15] of string = ('dwarven village','orc village','dark elf village','elf village','talking island',
     'heine','dion','giran','aden','goddard','gludio','gludin','schuttgart','rune','oren','hunter village');
 
@@ -83,7 +83,7 @@ const
     'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"', //oren
     'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"' //hunter
   );
-  
+
   function  GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
   procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; move: boolean = false);
   procedure  MoveInCity;
@@ -92,7 +92,7 @@ const
   function  toRightCity (destination: TCity): boolean;
   function  TeleportToLocation (destination: String): boolean;
   function  TeleportTo (destination: String): boolean;
-  
+
 implementation
 
 {
@@ -730,7 +730,7 @@ begin
       Engine.MoveTo(147936, -55368, -2760);
     end;
     // East stairs
-    if User.InRange(149872, -57424, -2976, 250, 150) then begin //  
+    if User.InRange(149872, -57424, -2976, 250, 150) then begin //
       Engine.MoveTo(149897, -56910, -2979);
       Engine.MoveTo(149230, -56412, -2779);
       Engine.MoveTo(147939, -55999, -2772);
@@ -1343,7 +1343,7 @@ begin
   if  (City <> NON_CITY)  or  (Length(destination) <> 0)  then
   begin
     teleportIndex := TStringList.Create;
-	  dialogIndex := 0;
+    dialogIndex := 0;
 
     gkId := GateKeepers[cityIndex];  // Get the Gatekeeper ID of our current city
 
@@ -1366,18 +1366,18 @@ begin
       {
         We search the string destination in the possible destinations of our gatekeeper
         and assign it to dialogIndex. indexOf returns -1 if it wasn't found.
-		We add 1 to match the dialog option of the gatekeeper
+    We add 1 to match the dialog option of the gatekeeper
       }
       rightCity := true;
       dialogIndex := teleportIndex.indexOf (destination) + 1;
-	    if  dialogIndex = 0  then
-	    begin
-	      dialogIndex := 1;
-	      rightCity := false;
-	    end;
-	  {
+      if  dialogIndex = 0  then
+      begin
+        dialogIndex := 1;
+        rightCity := false;
+      end;
+    {
         Checks if we are in the right city or teleport us to the first city of the dialog options
-	  }
+    }
       Engine.SetTarget (gatekeeper);
       Engine.MoveTo (gatekeeper);
       Engine.DlgOpen;
@@ -1389,18 +1389,18 @@ begin
       else
         Engine.DlgSel (ifThen((Pos(buffer.name, 'Ragara') <> 0), 'Teleport', GkDlg));
         case buffer.id of
-          30256: Engine.DlgSel(2);  
+          30256: Engine.DlgSel(2);
           30006: Engine.DlgSel(3);
-		}
+    }
       else
         Engine.DlgSel(1);
       Delay (500);
       Engine.DlgSel (dialogIndex);
       Delay (TPDelay);
       Result := true;
-	  
-	  if  rightCity = false  then
-	    TeleportTo (destination);
+
+    if  rightCity = false  then
+      TeleportTo (destination);
     end;
 
     teleportIndex.Free;

@@ -125,29 +125,5 @@ begin
 		Result := valFalse;
 end;
 
-function ifThen;
-begin
-	if bool then
-		Result := valTrue
-	else
-		Result := valFalse;
-end;
-
-function ifThen;
-begin
-	if bool then
-		Result := valTrue
-	else
-		Result := valFalse;
-end;
-
-function ifThen;
-begin
-	if bool then
-		Result := valTrue
-	else
-		Result := valFalse;
-end;
-
 BEGIN
 END.

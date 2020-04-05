@@ -581,10 +581,10 @@ end;
 
 Begin
   initBuffPathArrays; // from LocationModule. It doesn't work without this
-  ExecuteSwordOfSolidarity;
-  doTeleport(CityNames[getCityToLocationGK('varka')]);
-  ExecuteSkirmishWithOrcs;
   script.newthread(@deathEvt);
+  //ExecuteSwordOfSolidarity;
+  //doTeleport(CityNames[getCityToLocationGK('varka')]);
+  //ExecuteSkirmishWithOrcs;
   exp1_18;
   DoTeleport('talking island');
 
