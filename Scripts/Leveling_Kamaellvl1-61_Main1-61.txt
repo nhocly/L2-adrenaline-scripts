@@ -58,7 +58,6 @@ begin
   print('Quest not found');
 end;
 
-
 procedure evt0_1;
 var
   npc: TL2Live;
@@ -77,14 +76,8 @@ begin
         Engine.Attack;
       end;
     end; }
-    Engine.UseItem(12753); //12753 GF
+    Engine.UseItem(12753); // Kamael Village Teleportation Scroll
     delay(21 * 1000);
-  end;
-
-  if toRightCity(KAMAEL) then
-      begin
-      if not startDialog(KAMAEL_NEWBIE_GUIDE) then //lvl 2
-        print('Cant find newbie master');
   end;
 end;
 
@@ -92,8 +85,9 @@ procedure evt2_5;
 begin
   if toRightCity(KAMAEL) then
   begin
-
-    if not SuplyCheckDone then
+	if not startDialog(KAMAEL_NEWBIE_GUIDE) then //lvl 2
+      print('Cant find Newbie Helper');
+    if not SuplyCheckDone then  // it's a quest from kamael village
       ExecuteSuplyCheck;
 
     if SuplyCheckDone and getState('Current state', 'Should take newbie quest', false) then

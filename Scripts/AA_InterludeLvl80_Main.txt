@@ -1,0 +1,23 @@
+{
+--------------------------------------------------------------------------------
+  Script to get to level 80 in Lineage 2 Interlude with Adrenaline Bot
+--------------------------------------------------------------------------------
+}
+uses
+  AA_FunctionsModule, AA_NpcFunctions, MyScripts_InterludeLvl80_Leveling;
+
+BEGIN
+  Print ('Starting...');
+  Engine.EnterText ('Let''s go!');
+
+  // if  (User.Level < 2)  or  (User.Level > 5)  then
+    // exit;
+
+  // Engine.MoveTo (-45082, -114738, -240);
+  // Engine.MoveTo (-46383, -117661, -256); North gate orc village
+  // TODO: proof of valor quest
+  // Check you have 50 Wolf Fang
+  equipItem(NecklaceCourage);
+  Engine.EnterText ('Bye');
+  Print ('Ended');
+END.

@@ -180,12 +180,12 @@ begin
 	npcAvoidList := TNpcList.Create;
 end;
 
-function isValidNpc;
+function isValidNpc(obj: TL2Live): boolean;
 begin
 	Result := not obj.Dead and (User.DistTo(obj) < 123) and (obj <> TL2Npc);
 end;
 
-function findFreeClosestEnemy;     //todo додумать условия: атака\каст\хуй его; если чарлист.итем физ а я маг и рейндж больше N
+function findFreeClosestEnemy(arr: array of integer): TL2Live;     //todo додумать условия: атака\каст\хуй его; если чарлист.итем физ а я маг и рейндж больше N
 var
 	i: integer;
 	prelimResult: TL2Live;
@@ -239,7 +239,7 @@ begin
 	isTakenNpc.Free;
 end;
 
-function attackNpc;
+function attackNpc: boolean;
 var
 	currentTarget: TL2Live;
 begin
@@ -254,7 +254,7 @@ begin
 	
 end;
 
-function getNpcById;
+function getNpcById(id: integer): TL2Live;
 var
 	res: TL2Live;
 begin
@@ -263,7 +263,7 @@ begin
 	Result := res;
 end;
 
-function startDialog;
+function startDialog(npcId: integer): boolean;
 begin
 	if getNpcById(npcId) = nil then
 	begin
@@ -275,7 +275,7 @@ begin
 	Result := Engine.DlgOpen();
 end;
 
-function countPlayersInZone;
+function countPlayersInZone(x, y, z: integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;
@@ -289,7 +289,7 @@ begin
 	Result := counter;
 end;
 
-function countMiliPlayersInZone;
+function countMiliPlayersInZone(x, y, z: integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;
@@ -303,7 +303,7 @@ begin
 	Result := counter;
 end;
 
-function countRangePlayersInZone;
+function countRangePlayersInZone(x, y, z: integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;
@@ -317,7 +317,7 @@ begin
 	Result := counter;
 end;
 
-function countPlayersInZone;
+function countPlayersInZone(iArray: array of integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;
@@ -331,7 +331,7 @@ begin
 	Result := counter;
 end;
 
-function countMiliPlayersInZone;
+function countMiliPlayersInZone(iArray: array of integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;
@@ -345,7 +345,7 @@ begin
 	Result := counter;
 end;
 
-function countRangePlayersInZone;
+function countRangePlayersInZone(iArray: array of integer; radius: integer = 2000): integer; overload;
 var
 	i: integer;
 	counter: integer;

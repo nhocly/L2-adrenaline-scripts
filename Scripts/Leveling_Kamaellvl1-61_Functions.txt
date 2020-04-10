@@ -12,17 +12,17 @@ type
 	ITEM_TYPE = (WEAPON, ARMOR, ACCESSORY);
 		
 	procedure writeToArray(var iArray: array of integer; val1, val2, val3: integer);
-	function getClosestLoc(arr: DimensionArray): integer;
-	function distanceBetween(x1, y1, z1, x2, y2, z2: int64): extended;
-	function inRange(obj: TL2Spawn; x1, y1, z1: integer; range: integer): boolean; overload;
-	function inRange(obj: TL2Spawn; iArray: array of integer; range: integer): boolean; overload;
-	function moveTo(iArray: array of integer): boolean;
-	function moveToLoc(coordHolder: DimensionArray): boolean;
-	function revertArray(arr: DimensionArray): DimensionArray;
-	function ifThen(bool: boolean; valTrue: integer; valFalse: integer): integer; overload;
-	function ifThen(bool: boolean; valTrue: string; valFalse: string): string; overload;
-	function ifThen(bool: boolean; valTrue: IntArr; valFalse: IntArr): IntArr; overload;
-	function ifThen(bool: boolean; valTrue: DimensionArray; valFalse: DimensionArray): DimensionArray; overload;
+	function  getClosestLoc(arr: DimensionArray): integer;
+	function  distanceBetween(x1, y1, z1, x2, y2, z2: int64): extended;
+	function  inRange(obj: TL2Spawn; x1, y1, z1: integer; range: integer): boolean; overload;
+	function  inRange(obj: TL2Spawn; iArray: array of integer; range: integer): boolean; overload;
+	function  moveTo(iArray: array of integer): boolean;
+	function  moveToLoc(coordHolder: DimensionArray): boolean;
+	function  revertArray(arr: DimensionArray): DimensionArray;
+	function  ifThen(bool: boolean; valTrue: integer; valFalse: integer): integer; overload;
+	function  ifThen(bool: boolean; valTrue: string; valFalse: string): string; overload;
+	function  ifThen(bool: boolean; valTrue: IntArr; valFalse: IntArr): IntArr; overload;
+	function  ifThen(bool: boolean; valTrue: DimensionArray; valFalse: DimensionArray): DimensionArray; overload;
 
 implementation
 

@@ -156,7 +156,7 @@ begin
 	Result := Inventory.User.ByID(itemID, item);
 end;
 
-procedure equipItem;
+procedure equipItem(itemID: integer);
 var
 	item: TL2Item;
 begin

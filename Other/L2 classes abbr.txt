@@ -1,0 +1,88 @@
+Pala - Paladin
+DA - Dark Avenger
+Gladi - Gladiator
+WL - Warlord
+TH - Treasure Hunter
+HE - Hawkeye
+WK - Warlock
+Necro - Necromancer (this abr sux totally...)
+Sorc - Sorcerer
+Bish - Bishop
+PP - Prophet
+TK - Temple Knight
+SwS - Swordsinger
+PW - Plains Walker
+SR - Silver Ranger
+SpS - Spellsinger
+ES - Elemental Summoner
+EE - Elven Elder
+SK - Shillen Knight
+BD - Bladedancer
+AW - Abyss Walker
+PR - Phantom Ranger
+SH - Spellhowler
+PS - Phantom Summoner
+SE - Shillen Elder
+Destro - Destroyer
+OL - Overlord
+WC - Warcryer
+BH - Bounty Hunter
+
+Some 3rd classes:
+
+HK - Hell Knight
+Cardi - Cardinal
+ST - Soultaker
+SwM - Sword Muse
+WR - Wind Rider
+MS - Moonlight Sentiniel
+MM - Mystic Muse
+EM - Elemental Master
+ST - Shillen Templar
+SD - Spectral Dancer
+GH - Ghost Hunter
+GS - Ghost Sentiniel
+StS - Storm Screamer
+GK - Grand Khavatari
+DC - Doomcryer
+FS - Fortune Seeker
+
+Some weapons, armors, etc:
+
+BW - Blue Wolf
+BoP - Bow of Peril
+SoeS - Staff of Evil Spirit
+DmG - Deadman's Glory
+AoBA - Art of Battle Axe
+GS - Great Sword/Guardian Sword
+DELB - Dark Elven Long Bow
+Kesh - Keshamberk
+Dama - Sword of Damascus
+Sls*sls - dual Samurai Long Sword*Samurai Long Sword
+
+MJ - Majestic armor
+NM - Nightmare armor
+DC - Dark Crystal armor
+SoM - Sword of Miracles
+MS - Meteor Shower
+SS - Soul Separator
+BO - Bloody Orchid
+BoTMT - Branch of the Mother Tree
+FDS - Flaming Dragon Skull
+SB - Soul Bow
+DG - Dragon Grinder
+DLE - Dark Legion's Edge
+
+MA - Major Arcana armor
+Draco - Draconic leather armor
+IC - Imperial Crusader armor
+TTS - Tateossian jewelry
+SS - Saint Spear
+AS - Angel Slayer
+AM - Arcana Mace
+FB - Forgotten Blade
+DB - Draconic Bow
+HD - Heaven's Divider
+IS - Imperial Staff
+BBH - Basalt Battlehammer
+

@@ -93,22 +93,21 @@ var
   giranToArmorShop: DimensionArray;
 
 
-  function GetCity(shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
-  procedure GoHome(ItemID: integer = -1; skillID: integer = -1; Val: boolean = false);
+  function  GetCity(shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
+  procedure GoHome(ItemID: integer = -1; skillID: integer = -1; shouldMoveInCity: boolean = false);
   procedure InCity;
-  function DoTeleport(TeleportValue: String): boolean;
-  function DoTeleportToLocation(TeleportValue: String): boolean;
-  function isRightCity(val: TCity; shouldGoHome: boolean = true): boolean;
-  function toRightCity(val: TCity): boolean;
-  function inStartLoc: boolean;
-  function getNewbieBuffer: TL2Live;
-  function getSupplyManager: TL2Live;
+  function  DoTeleport(destination: String): boolean;
+  function  DoTeleportToLocation(destination: String): boolean;
+  function  isRightCity(val: TCity; shouldGoHome: boolean = true): boolean;
+  function  toRightCity(val: TCity): boolean;
+  function  inStartLoc: boolean;
+  function  getNewbieBuffer: TL2Live;
+  function  getSupplyManager: TL2Live;
   procedure GetBuff;
   procedure GetSupplies;
   procedure initBuffPathArrays;
-  function getNewbieQuest: boolean;
-
-  function getCityToLocationGK(teleportName: string): integer;
+  function  getNewbieQuest: boolean;
+  function  getCityToLocationGK(destination: string): integer;
 
 implementation
 
@@ -149,37 +148,37 @@ var
 begin
   if not User.Dead then
   begin
-  if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
-  begin
-    Engine.UseItem(itemID);
-    delay(100);
-    delay(User.Cast.EndTime + 100);
-  end;
+    if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
+    begin
+      Engine.UseItem(itemID);
+      delay(100);
+      delay(User.Cast.EndTime + 100);
+    end;
 
-  if (skillID <> -1) and (itemID = -1) and SkillList.ByID(skillID, Skill) then
-  begin
-    Engine.UseSkill(skillID);
-    delay(100);
-    delay(User.Cast.EndTime + 100);
-  end;
+    if (skillID <> -1) and (itemID = -1) and SkillList.ByID(skillID, Skill) then
+    begin
+      Engine.UseSkill(skillID);
+      delay(100);
+      delay(User.Cast.EndTime + 100);
+    end;
 
-  if (skillID = -1) and (itemID = -1) and Inventory.User.ByID(10650, Item) then
-  begin
-    Engine.UseItem(Item); //Свиток телепорта
-    delay(10 * 1000);
-  end;
+    if (skillID = -1) and (itemID = -1) and Inventory.User.ByID(10650, Item) then
+    begin
+      Engine.UseItem(Item); //Свиток телепорта
+      delay(10 * 1000);
+    end;
 
-  if (skillID = -1) and (itemID = -1) and not Inventory.User.ByID(736, Item) then
-  begin
-    delay(100);
-    delay(5 * 60 * 1000);
-  end;
+    if (skillID = -1) and (itemID = -1) and not Inventory.User.ByID(736, Item) then
+    begin
+      delay(100);
+      delay(5 * 60 * 1000);
+    end;
   end else
   Engine.GoHome;
 
   Delay(5 * 1000);
-  if Val then
-  InCity;
+  if shouldMoveInCity then
+	InCity;
 end;
 
 //Пушествия от места появления в городе до гейткипера города.
@@ -1144,13 +1143,13 @@ begin
   end;
 end;
 
-function getCityToLocationGK(teleportName: string): integer;
+function getCityToLocationGK(destination: string): integer;
 var
   i: integer;
 begin
   for i:=0 to 16 do
   begin
-    if Pos(teleportName, GateKeepersStrings[i]) <> 0 then
+    if Pos(destination, GateKeepersStrings[i]) <> 0 then
     begin
       Result := i;
       exit;
@@ -1159,11 +1158,11 @@ begin
   Result := -1;
 end;
 
-function DoTeleportToLocation;
+function  DoTeleportToLocation(destination: String): boolean;
 begin
   Result := false;
-  if toRightCity(TCities[getCityToLocationGK(TeleportValue)]) then
-    Result := DoTeleport(TeleportValue);
+  if toRightCity(TCities[getCityToLocationGK(destination)]) then
+    Result := DoTeleport(destination);
 end;
 
 function DoTeleport;
@@ -1200,11 +1199,11 @@ begin
     exit;
   end;
 
-  dialogIndex := teleportIndex.indexOf(TeleportValue) + 1;
+  dialogIndex := teleportIndex.indexOf(destination) + 1;
   print(dialogIndex);
   if dialogIndex = 0 then
   begin
-    DoTeleportToLocation(TeleportValue);
+    DoTeleportToLocation(destination);
     exit;
   end;
 
@@ -1228,27 +1227,31 @@ begin
   teleportIndex.Free;
 end;
 
-//по массиву строк телепортов ищем наш тп, он будет равен ид города
-//делаем телепорт в город
-//потом в ту хуетень
+// by the array of teleport lines we are looking for our TP, it will be equal to the city id
+// make a teleport to the city
+// then to that crap
 
-
-function isRightCity;
+{-------------------------------------------------------------------------------
+  It takes us to a city if we aren't in any. Then in an array of teleport lines
+  we look for our destination, it will be equal to id of the city
+  It returns true if the destination is the city in which we are
+ -------------------------------------------------------------------------------}
+function  isRightCity(dest: TCity; shouldGoHome: boolean = true): boolean;
 begin
-  Result := (GetCity(shouldGoHome) = val);
+  Result := (GetCity(shouldGoHome) = dest);
 end;
 
-function toRightCity;
+function  toRightCity(dest: TCity): boolean;
 var
   currentCity: TCity;
 begin
-  if isRightCity(val) then
+  if isRightCity(dest) then
   begin
     Result := true;
     exit;
   end;
 
-  if not isRightCity(val) then
+  if not isRightCity(dest) then
   begin
 
     currentCity := GetCity;
@@ -1256,12 +1259,12 @@ begin
     if currentCity = NON_CITY then
       GoHome;
 
-    DoTeleport(CityNames[val]);  //replace
+    DoTeleport(CityNames[dest]);  //replace
 
   end;
 
   delay(100);
-  Result := toRightCity(val);
+  Result := toRightCity(dest);
 
 end;
 

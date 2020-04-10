@@ -1,0 +1,32 @@
+unit HuntingZones_CatacombApostate;
+
+interface
+
+//uses
+  //SysUtils, Classes, AA_SettingsModule;
+
+const
+  // Mobs level 50-60
+  // SS = slightly strong, SW = slightly weak, PA = physical attack, MD = magic deffense
+  // LA = light armor weak P def and strong evasion
+  // CryptArchon: Integer = 21244; // Crypt Archon* 50; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred, Weak Blunt
+  // Nephilim Priest 51; 4x, SSPA, SSMA, SWPD, Weak Dark
+  // Lilim Magus 51; 4x, SSPA, SSMA, SWPD, Resist Dark
+  // Crypt Inquisitor* 52; 4x, LA, Resist Dark
+  // Purgatory Wisp* 53, 4x, LA, Weak Wind, Weak Bow
+  // Nephilim Swordsman 54; 4x, SSPA, SSMA, SPD, SWMD, Weak Dark
+  // Lilim Knight Errant 54; 4x, SSPA, SSMA, SPD, SWMD, Resist Dark
+  // Tomb Archon* 55; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred
+  // Purgatory Serpent* 56; 4x, LA
+  // Tomb Inquisitor* 57; 4x, LA, Resist Dark
+  // Nephilim Guard 57; 4x, SSPA, SSMA, SPD, SWMD, LA, Weak Dark
+  // Lilim Marauder 57; 4x, SSPA, SSMA, SPD, SWMD, LA, Resist Dark
+  // Hell Keeper Medusa* 58; 4x, SWPA, SWMA, SSPD, SSMD
+  // Purgatory Conjurer* 59; 4x, LA, Weak Wind, Weak Bow
+  // Nephilim Bishop 60; 4x, SSPA, SSMA, SWPD, Weak Dark
+  // Lilim Priest 60; 4x, SSPA, SSMA, SWPD, Resist Dark
+
+implementation
+
+BEGIN
+END.

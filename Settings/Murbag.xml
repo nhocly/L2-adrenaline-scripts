@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BasicSettings>
+  <General Active="false" AutoAtk="true" AutoHeal="true" AutoBuff="true" AutoEvent="true" FRange1="0" FRange2="600" FAutoMove="false" Performance="1" Performance2="2" FastNuke="false" MTarget="false" BuffBypass0="_bbshome&#xA;_servicebuff 0&#xA;_servicebuff list 1_0 Воину&#xA;_servicebuff get 0 1_0 Воину" BuffBypass1="_bbshome&#xA;_servicebuff 0&#xA;_servicebuff list 1_0 Магу&#xA;_servicebuff get 0 1_0 Магу" BuffBypass2="_bbshome&#xA;_servicebuff 0&#xA;_servicebuff list 2_0 1&#xA;_servicebuff get 0 2_0 1" BuffBypass3="_bbshome&#xA;_servicebuff 0&#xA;_servicebuff list 2_0 2&#xA;_servicebuff get 0 2_0 2" BuffBypass4="_bbshome&#xA;_servicebuff 0&#xA;_servicebuff list 2_0 3&#xA;_servicebuff get 0 2_0 3"/>
+  <SelfHeal/>
+  <Relax SkillUse="false" SkillName="" minHPUse="false" minHP="40" minMPUse="false" minMP="20" maxHPUse="false" maxHP="100" maxMpUse="false" maxMP="100" PauseUse="false" PauseV1="1" PauseV2="3" Pos1Use="false" Pos2Use="false" Pos3Use="false" Pos1X="0" Pos1Y="0" Pos1Z="0" Pos2X="0" Pos2Y="0" Pos2Z="0" Pos3X="0" Pos3Y="0" Pos3Z="0"/>
+  <Death Resp="false" RespType="0" WaitResp="false" WaitRespV1="60" WaitRespV2="30" WaitFight="false" WaitFightV="10"/>
+  <SelfBuff/>
+  <Party Invite="false" InviteList="" DropType="1" Accept="false" AcceptList="" Assist="false" AssistList="" ProtectMA="false" ProtectMAV="5" AttackType="0" ProtectParty="false" ProtectPartyList="" ProtectMyPet="false" BreakRelax="false" BreakRelax2="true" FollowMov="true" FollowList="Sh1tHowler" FollovMinDist="0" FollowMaxDist="200" FollowType="1" RelaxWith="false" RelaxWithList="" RelaxWithNear="false" LeavePL="false" ProtectByOne="false" FriendList="" AcceptResp="false" AcceptRespType="1" PauseBuff="false" PauseBuffList="" PauseBuffTime="30" DeathAcceptMy="false" PartyAcceptMy="true"/>
+  <PartyBuff/>
+  <Fight>
+    <Items>
+      <Item_0 ObjEnabled="true" ObjType="4" ObjName="Attack" ObjID="2" Priority="0" ObjRepeat="true" RepFail="false" Delay="0" Selector="false" TargetMOB="true" TargetNPC="false" TargetCHAR="false" TargetFiltr="1" TargetFiltrList="" MoveDist="true" BaseDist="true" BaseDistV="75" DistToTargV1="0" DistToTargV2="75" AgroInRange="false" MonInRangeC="0" MonInRangeR="150" MonInRangeV="0" MonInRangeT1="true" C1="0" V1="0" C2="0" V2="0" C3="0" V3="0" C4="0" V4="0"/>
+    </Items>
+  </Fight>
+  <Path MapZoneName="" PathType="5" PathX="0" PathY="0" PathZ="0" PathR1="1500" ZLimit="true" ZLimitV="250" Return="false" ReturnV="10" AttackInRangeOnly="false" IsCircle="true" ZByUser="true" CAtkV="5" Evs="true" EvsTimeOut="3500" EvsBackV1="30" EvsBackV2="50" EvsSideV1="70" EvsSideV2="100">
+    <Points/>
+  </Path>
+  <Mons NoAtkInCombat="true" NoAtkInTarget="true" FullCombat="false" TargetDelay="false" TargetDelayV1="1000" TargetDelayV2="2000" FindAgro="true" FindTargetMe="false" MonsFindNear="true" SkeepTarget="false" SkeepRange="false" SkeepRangeV="300" SkeepChamp="false" SkeepChamp2="false" SkeepChampV="10000" SkeepHP="true" SkeepHPV1="60" SkeepHPV2="10" SkeepHPV3="7" SkeepInv="true" SkeepInvV="7" ProtectPVP="true" AttackPK="false" AttackPVP="true" AttackPVPR="1500" NoAtkPVP="true" MonsFriends="true" MonsMapNear="false" NoAtkLvl1="false" NoAtkLvlV1="3" NoAtkLvl2="false" NoAtkLvlV2="3" NoAtkResp="false" NoAtkRespV="5" NoAtkTitle="true" NoAtkTitleV="ВНИМАНИЕ АНТИБОТ, ANTIBOT" C1="0" C2="0" V1="0" V2="0"/>
+  <Drop PickUp="true" PickUpRange="600" ZLimit="true" ZLimitR="300" OnlyMy="true" OnlyInCZ="true" DropTime="15" TimeOut="10"/>
+  <Shot AutoShot="true" Extract1="false" Extract2="false" Extract3="false" ExtractName1="" ExtractName2="" ExtractName3="" ExtractItem1="" ExtractItem2="" ExtractItem3="" ExtractItem4="" ExtractCount1="1500" ExtractCount2="1500" ExtractCount3="1500" ExtractCount4="0" ExtractDelay1="5" ExtractDelay2="5" ExtractDelay3="5" Fishing="false" FishBreak="true" FishExtract="false" FishMov="false" FishInv="false" FishMTime="15" FishShots="true" FishMovC1="false" FishMovC2="true" FishTrigger="true" FishRelog="false" FishRelogV1="1" FishRelogV2="10" F1X1="0" F1Y1="0" F1Z1="0" F1X2="0" F1Y2="0" F1Z2="0" F2X1="0" F2Y1="0" F2Z1="0" F2X2="0" F2Y2="0" F2Z2="0" Craft="false" CraftList="1,2,3" CraftMP="5" CraftWeight="80" CraftDelay="1000"/>
+  <Event/>
+  <NpcFilter/>
+  <ItemFilter/>
+  <NpcFilterDef>
+    <Item_0 ObjType="0" ID="0" FAction="1" FPriority="1" FPNew="false" FAtkAlone="false" FAtkAloneV1="400" FAtkAloneC="0" FAtkAloneV2="3" FDodge="false" FDodgeV="300" FCAtk="false" FPosition="false" FPosX="0" FPosY="0" FPosZ="0" FPosR="0" FC="0" FV="0"/>
+    <Item_1 ObjType="1" ID="0" FAction="0" FPriority="1" FPNew="false" FAtkAlone="false" FAtkAloneV1="400" FAtkAloneC="0" FAtkAloneV2="3" FDodge="false" FDodgeV="300" FCAtk="false" FPosition="false" FPosX="0" FPosY="0" FPosZ="0" FPosR="0" FC="0" FV="0"/>
+  </NpcFilterDef>
+  <ItemFilterDef>
+    <Item_0 ObjType="-1" ID="0" FGrade="0" FPickup="true" FInFight="false" FFightR="150" FNpc="false" FNpcV="3" FNpcAgro="false" PCount="false" PCountV="0" PCond="0" PCondV="0" PLoad="false" PLoadV="55" FDel="false" FDelC="false" FDelCV="0" FDelL="false" FDelLV="54"/>
+  </ItemFilterDef>
+</BasicSettings>

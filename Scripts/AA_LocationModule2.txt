@@ -1,15 +1,18 @@
-unit  TeleportModule;
+unit  AA_LocationModule2;
 
 interface
 
 uses
-  SysUtils, Classes;
+  SysUtils, Classes, AA_FunctionsModule;
+(*---------------- Types ------------------------------------------------------*)
 type
-  DimensionArray = array of array of integer;
-
   TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, TALKING_ISLAND = 4,
     HEINE = 5, DION = 6, GIRAN = 7, ADEN = 8, GODDARD = 9, GLUDIO = 10, GLUDIN = 11,
     SHTUTTGART = 12, RUNE = 13, OREN = 14, HUNTER = 15, NON_CITY = 16);
+  TFarmZone = record
+    range: integer;
+    mili: integer;
+  end;
 
   TCity2 = record
     Enum: TCity;
@@ -22,36 +25,28 @@ type
     pathToSupply: DimensionArray;
     GateKeepersString: String;
   end;
-
-{
---------------------------------------------------------------------------------
-  SEARCH FRASE "CHANGE THIS" IN FILE AND MAKE THE PERTINENT CHANGES
---------------------------------------------------------------------------------
-}
+(*-------------- Constants ----------------------------------------------------*)
 const
-  HIRA = 31613;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM BUFFER. IF THERE'S NONE THEN DELETE BUFFING LINE NEAR THE END OF THE SCRIPT
-  NOVA = 31124;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM GATEKEEPER. IF THERE'S NONE CONFIGURE THE TELEPORT FUNCTION TO USE THE USUAL GATEKEEPER.
-  ZIGGURAT = 31101;
-  WIND_WALK = 1204;      // YOU MAY HAVE TO CHANGE THIS TO A BUFF YOU USE. IT'S USED TO KNOW WHEN YOU NEED TO BACK WHEN YOU'R BUFFS FINISH
-  SCROLL_OF_SCAPE = 736;
-  ROXXY = 30006;
+  TPDelayTime = 3 * 1000; // Time to wait after teleporting, change according to your computer
+  AdventurersScrollOfScape: Integer = 10650;
+  ScrollOfScape: Integer = 736;
 
-  DWARVEN2 = (Name: 'dwarven village', gateKeeperID: 30540, GateKeepersString: 'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"');
-  ORC2 = (Name: 'orc village', gateKeeperID: 30576, GateKeepersString: 'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"');
-  DARK_ELVEN2 = (Name: 'dark elf village', gateKeeperID: 30134, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"');
-  ELVEN2 = (Name: 'elf village', gateKeeperID: 30146, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","elven forest","elven fortress","neutral zone"');
-  TALKING_ISLAND2 = (Name: 'talking island', gateKeeperID: 30006, GateKeepersString: 'gludin,"dark elf village","dwarven village","elf village","orc village","elven ruins","singing waterfall","northen territory","obelisk of victory"');
-  HEINE2 = (Name: 'heine', gateKeeperID: 30899, GateKeepersString: 'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva"');
-  DION2 = (Name: 'dion', gateKeeperID: 30059, GateKeepersString: 'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"');
-  GIRAN2 = (Name: 'giran', gateKeeperID: 30080, GateKeepersString: 'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"');
-  ADEN2 = (Name: 'aden', gateKeeperID: 30848, GateKeepersString: 'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence"');
-  GODDARD2 = (Name: 'goddard', gateKeeperID: 31275, GateKeepersString: 'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence"');
-  GLUDIO2 = (Name: 'gludio', gateKeeperID: 30256, GateKeepersString: 'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","ruins of agony","ruins of despair","ant nest","windawood manor"');
-  GLUDIN2 = (Name: 'gludin', gateKeeperID: 30320, GateKeepersString: 'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"');
-  SHTUTTGART2 = (Name: 'schuttgart', gateKeeperID: 31964, GateKeepersString: 'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","frozen labyrinth","crypts of disgrace","pavel ruines"');
-  RUNE2 = (Name: 'rune', gateKeeperID: 31320, GateKeepersString: 'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"');
-  OREN2 = (Name: 'oren', gateKeeperID: 30177, GateKeepersString: 'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"');
-  HUNTER2 = (Name: 'hunter village', gateKeeperID: 30233, GateKeepersString: 'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"');
+  // DWARVEN2 = (Name: 'dwarven village', gateKeeperID: 30540, GateKeepersString: 'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"');
+  // ORC2 = (Name: 'orc village', gateKeeperID: 30576, GateKeepersString: 'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"');
+  // DARK_ELVEN2 = (Name: 'dark elf village', gateKeeperID: 30134, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"');
+  // ELVEN2 = (Name: 'elf village', gateKeeperID: 30146, GateKeepersString: 'gludio,"dwarven village","talking island","orc village","elven forest","elven fortress","neutral zone"');
+  // TALKING_ISLAND2 = (Name: 'talking island', gateKeeperID: 30006, GateKeepersString: 'gludin,"dark elf village","dwarven village","elf village","orc village","elven ruins","singing waterfall","northen territory","obelisk of victory"');
+  // HEINE2 = (Name: 'heine', gateKeeperID: 30899, GateKeepersString: 'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva"');
+  // DION2 = (Name: 'dion', gateKeeperID: 30059, GateKeepersString: 'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"');
+  // GIRAN2 = (Name: 'giran', gateKeeperID: 30080, GateKeepersString: 'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"');
+  // ADEN2 = (Name: 'aden', gateKeeperID: 30848, GateKeepersString: 'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence"');
+  // GODDARD2 = (Name: 'goddard', gateKeeperID: 31275, GateKeepersString: 'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence"');
+  // GLUDIO2 = (Name: 'gludio', gateKeeperID: 30256, GateKeepersString: 'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","ruins of agony","ruins of despair","ant nest","windawood manor"');
+  // GLUDIN2 = (Name: 'gludin', gateKeeperID: 30320, GateKeepersString: 'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"');
+  // SHTUTTGART2 = (Name: 'schuttgart', gateKeeperID: 31964, GateKeepersString: 'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","frozen labyrinth","crypts of disgrace","pavel ruines"');
+  // RUNE2 = (Name: 'rune', gateKeeperID: 31320, GateKeepersString: 'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"');
+  // OREN2 = (Name: 'oren', gateKeeperID: 30177, GateKeepersString: 'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"');
+  // HUNTER2 = (Name: 'hunter village', gateKeeperID: 30233, GateKeepersString: 'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"');
 
   TCities : array[0..16] of TCity = (DWARVEN, ORC, DARK_ELVEN, ELVEN, TALKING_ISLAND,
     HEINE, DION, GIRAN, ADEN, GODDARD, GLUDIO, GLUDIN, SHTUTTGART, RUNE, OREN, HUNTER, NON_CITY);
@@ -66,8 +61,6 @@ const
   GateKeepers: array[0..15] of integer = (30540, 30576, 30134, 30146, 30006,
     30899, 30059, 30080, 30848, 31275, 30256, 30320, 31964, 31320, 30177, 30233);
 
-  TPDelay = 10 * 1000; // Time to wait after teleporting, change according to your computer
-
 {
 --------------------------------------------------------------------------------
   Array with all the locations to which the gatekeeper of a city can teleport
@@ -75,24 +68,58 @@ const
 --------------------------------------------------------------------------------
 }
   GateKeepersStrings: array[0..15] of string = (
-    'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"', //dwarven
-    'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"', //orc
-    'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"', //darkelven
-    'gludio,"dwarven village","talking island","orc village","elven forest","elven fortress","neutral zone"', //elven
-    'gludin,"dark elf village","dwarven village","elf village","orc village","elven ruins","singing waterfall","northen territory","obelisk of victory"', //talking island
-    'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva"', //heine
-    'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"', //dion
-    'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"', //giran
-    'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence"', //aden
-    'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence"', //goddard
-    'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","ruins of agony","ruins of despair","ant nest","windawood manor"', //gludio
-    'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"', //gludin
-    'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","frozen labyrinth","crypts of disgrace","pavel ruines"', //schuttgart
-    'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"', //rune
-    'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"', //oren
-    'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"' //hunter
+    'gludio,schuttgart,"dark elf village","talking island","elf village","orc village","mithril mines","abandoned coal mines","eastern mining zone","western mining zone"',  // Dwarven Village
+    'gludio,schuttgart,"dark elf village","dwarven village","talking island","elf village","immortal plateau","immortal plateau south","fozen waterfall"',  // Orc Village
+    'gludio,"dwarven village","talking island","orc village","dark forest","swampland","spider nest","neutral zone"',  // Dark Elven Village
+    'gludio,"dwarven village","talking island","orc village","elven forest","elven fortress","neutral zone"',  // Elven Village
+    'gludin,"dark elf village","dwarven village","elf village","orc village","elven ruins","singing waterfall","northen territory","obelisk of victory"',  // Talking Island Village
+    'giran,oren,dion,aden,goddard,rune,schuttgart,gludio,"giran harbor","field of silence","field of whispers","alligator island","garden of eva"',  // Heine
+    'giran,heine,gludio,goddard,rune,schuttgart,aden,oren,"cruma marshland","cruma tower","fortress of resistance","plains of dion","bee hive","tanor canyon"',  // Dion
+    'oren,heine,dion,goddard,rune,schuttgart,gludio,aden,"giran harbor","hardins private academy","dragon valley","antharas lair","devils isle","breka stronghold"',  // Giran
+    'goddard,oren,giran,heine,schuttgart,dion,gludio,rune,"hunter village","coliseum","forsaken plains","seal of shilen","forest of mirrors","blazing swamp","field of massacre","ancient battleground","silent valley","tower of insolence"',  // Aden
+    'gludio,giran,dion,rune,heine,schuttgart,aden,oren,"varka","ketra","hot springs","wall of argos","monastery of silence"',  // Goddard
+    'schuttgart,heine,aden,oren,dion,goddard,giran,rune,gludin,"elf village","dark elf village","dwarven village","orc village","ruins of agony","ruins of despair","ant nest","windawood manor"',  // Gludio
+    'gludio,"talking island","elf village","dark elf village","dwarven village","orc village","langk lizardman dwellings","windmill hill","fellmere harvesting grounds","forgotten temple","orc barracks","windy hill",wasteland,"red rock ridge"',  // Gludin
+    'rune,goddard,aden,oren,heine,giran,dion,gludio,"orc village","dwarven village","den of evil","plunderous plains","frozen labyrinth","crypts of disgrace","pavel ruines"',  // Schuttgart
+    'goddard,gludio,giran,dion,heine,schuttgart,aden,oren,"wild beast pastues","valley of saints","forest of the dead","swamp of screams","monasterty of silence"',  // Rune
+    'aden,giran,rune,goddard,heine,dion,schuttgart,gludio,"ivory tower","hunter village","hardins private academy","skyshadow meadow","plains of the lizardmen","outlaw forest","sea of spores"',  // Oren
+    'aden,oren,"hardins private academy","enchanted valley south","enchanted valley north","forest of mirrors"'  // Hunters Village
   );
+  // Array of Newbie Helpers Ids
+  nbArr : array[0..8] of integer = (30598, 30599, 30600, 30601, 30602, 32135, 31076, 31077, 32327);
+(*-------------- Functions ----------------------------------------------------*)
+  procedure TPDelay;
+  procedure unlockServer;
+  function inStartingLocation: boolean;
+  function  GetCity (shouldGoHome: boolean = true; shouldMoveInCity: boolean = false): TCity;
+  procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; shouldMoveInCity: boolean = false);
+  procedure  MoveInCity;
+  function  getCityToLocationGK (teleportName: String): integer;
+  function  isRightCity (destination: TCity; shouldGoHome: boolean = true): boolean;
+  function  toRightCity (destination: TCity): boolean;
+  function  TeleportToLocation (destination: String): boolean;
+  function  TeleportTo (destination: String): boolean;
 
+implementation
+{--------------------------------------------------------------------------------
+  Returns true if the character is in one of the starting locations
+--------------------------------------------------------------------------------}
+function InStartingLocation: boolean;
+begin
+  Result :=
+   (inRange (User, -124776, 38104, 1208, 2000)       // Kamael
+    or inRange (User, -71338, 258271, -3088, 2000)   // Human fighter
+    or inRange (User, -90890, 248027, -3570, 2000)   // Human mage
+    or inRange (User, 45978, 41196, -3440, 2000)     // Elf
+    or inRange (User, 28377, 10916, -4224, 2000)     // Dark elf
+    or inRange (User, -56693, -113610, -690, 2000)   // Orc
+    or inRange (User, 108516, -174026, -400, 2000)   // Dwarf
+  );
+end;
+procedure TPDelay;
+begin
+  Delay(TPDelayTime);
+end;
 {
 --------------------------------------------------------------------------------
   Check if the server is locked by trying to move the character.
@@ -112,30 +139,18 @@ begin
   Engine.MoveTo (newX, User.Y, User.Z);
   if User.InRange (newX, User.Y, User.z, 3, 10) then Moved := true;
 
-  // If it didn't moved it is locked
-  if not Moved then
+  if not Moved then // If it didn't moved it is locked
   begin
     //pin := xxxxxx; // TODO: add configuration for pin
     //Engine.BypassToServer ('custom_pin_unlock ' + IntToStr(pin));
   end;
 end;
-  function  GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
-  procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; move: boolean = false);
-  procedure  MoveInCity;
-  function  getCityToLocationGK (teleportName: String): integer;
-  function  isRightCity (destination: TCity; shouldGoHome: boolean = true): boolean;
-  function  toRightCity (destination: TCity): boolean;
-  function  TeleportToLocation (destination: String): boolean;
-  function  TeleportTo (destination: String): boolean;
-
-implementation
-
 {
 --------------------------------------------------------------------------------
   Finds the city in which the character is located
 --------------------------------------------------------------------------------
 }
-function GetCity (shouldGoHome: boolean = true; inCityEvt: boolean = false): TCity;
+function GetCity (shouldGoHome: boolean = true; shouldMoveInCity: boolean = false): TCity;
 var
   City: TCity;
 begin
@@ -162,9 +177,10 @@ begin
   // If it isn't in one of the previous locations then goHome and try again
   if (City = NON_CITY) and (shouldGoHome) then
   begin
-    GoHome (-1, -1, inCityEvt);
-    City := GetCity;
+    GoHome (-1, -1, shouldMoveInCity);
+    City := GetCity(false, false); // end recursion
   end;
+  if  shouldMoveInCity  then  MoveInCity;
   Result := City;
 end;
 
@@ -173,7 +189,7 @@ end;
   Different ways to return home
 --------------------------------------------------------------------------------
 }
-procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; move: boolean = false);
+procedure  GoHome (ItemID: integer = -1; skillID: integer = -1; shouldMoveInCity: boolean = false);
 var
   Skill: TL2Skill;
   Item: TL2Item;
@@ -183,52 +199,61 @@ var
 begin
   if not User.Dead then
   begin
-    //Engine.GoHome (rtclanhall);       // When you die go to clan hall
-    //Engine.UseItem (SCROLL_OF_SCAPE);
-    Engine.EnterText ('/unstuck');     // To enter '/ustuck' in chat window
-    //Unstuck; It appears in the script guide but doesn't work
+    print('GoHome (ItemID = ' + IntToStr(ItemID) + ', skillID = ' + IntToStr(skillID) +//
+      ', shouldMoveInCity = ' + BoolToStr(shouldMoveInCity) + ')');
 
-  if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
-  begin
-    Engine.UseItem(itemID);
-    delay(100);
-    delay(User.Cast.EndTime + 100);
-  end;
+    // We use the specified item from the inventory if we have it
+    if (itemID <> -1) and Inventory.User.ByID(itemID, Item) then
+    begin
+      Engine.UseItem(itemID);
+      delay(User.Cast.EndTime);
+    end;
 
-    City := GetCity (false, false);
+    City := GetCity (false, false);  // shouldGoHome = false, shouldMoveInCity = false
     if  City = NON_CITY  then
     begin
-      // Use the item past as parameter
+
+      // Use the specified item to return to the city
       if  (itemID <> -1)  and  Inventory.User.ByID(itemID, Item)  then
       begin
         Engine.UseItem (itemID);
-        Delay (User.Cast.EndTime + TPDelay);
-      end;
+        Delay (User.Cast.EndTime);
+      end
 
-      // Use skill to teleport if no item past as parameter
-      if  (skillID <> -1)  and  (itemID = -1)  and  SkillList.ByID(skillID, Skill)  then
+      // Use the specified skill to return to the city
+      else if  (skillID <> -1)  and  SkillList.ByID(skillID, Skill)  then
       begin
         Engine.UseSkill(skillID);
-        Delay (User.Cast.EndTime + TPDelay);
-      end;
+        Delay (User.Cast.EndTime);
+      end
 
-      // Use SoE if no item or skill provided
-      if  (skillID = -1)  and  (itemID = -1) and  Inventory.User.ByID(SCROLL_OF_SCAPE, Item)  then
+      // Use SoE it no item or skill provided
+      else if Inventory.User.ByID(AdventurersScrollOfScape, Item) then
+      begin
+        Engine.UseItem(Item);
+        Delay (User.Cast.EndTime);
+      end
+      else if  Inventory.User.ByID(ScrollOfEscape, Item)  then
       begin
         Engine.UseItem (Item);
-        Delay (User.Cast.EndTime + TPDelay);
-      end;
-
-      City := GetCity (false, false);
-      if  City = NON_CITY  then
-      begin
-        Print ('Couldn''t go home');
-        exit;
-      end;
+        Delay (User.Cast.EndTime);
+      end else
+        Engine.EnterText ('/unstuck');  // to enter '/ustuck' in chat window
     end;
+  end else  // if User Dead
+  begin
+    Engine.GoHome;
+    // Engine.GoHome (rtclanhall);  // When you die go to clan hall
+  end;
+  TPDelay;
 
-    // Go to the Gatekeeper if move = true
-    if  move  then MoveInCity;
+  // Check that we are actually in a city
+  // Go to the Gatekeeper if shouldMoveInCity = true
+  City := GetCity (false, true);  // shouldGoHome = false, shouldMoveInCity = false
+  if  City = NON_CITY  then
+  begin
+    Print ('Couldn''t go home');
+    exit;
   end;
 end;
 
@@ -245,12 +270,9 @@ var
   NewResp : TStringList;
 begin
   City := GetCity;
-
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                               Aden
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if  CITY = ADEN  then begin
     if  User.InRange (149800, 24000, 2100, 600, 200)  then begin  // bottom of north-east stairs
       Engine.MoveTo (148611, 24319, -2039);  // climb stairs
@@ -437,12 +459,9 @@ begin
       Moved := true;
     end;
   end;
-
-  {
-  ------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                    Dion
-  ------------------------------------------------------------------------------
-  }
+ -------------------------------------------------------------------------------}
   if City = DION then begin
     if User.InRange(19134,144847,-3096, 250, 150) then begin
       Engine.MoveTo(19134,144847,-3096);
@@ -516,12 +535,9 @@ begin
     end;
     if User.InRange(15628,142920,-2704, 250, 150) then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                  Giran
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = giran then begin
     if User.InRange(81376,148095,-3464, 250, 150) then begin
       Engine.MoveTo(81376,148095,-3464);
@@ -609,12 +625,9 @@ begin
     end;
     if User.InRange(83402,147946,-3403,250,150) then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                 Gludin
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = GLUDIN then begin
     if User.InRange(-82909,150357,-3120, 250, 150) then begin
       Engine.MoveTo(-82909,150357,-3120);
@@ -692,12 +705,9 @@ begin
     end;
     if User.InRange(-81073,150110,-3042, 250, 150) then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                  Gludio
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = GLUDIO then begin
     if User.InRange(-14704,122032,-3056, 250, 150) then begin
       Engine.MoveTo(-14704,122032,-3056);
@@ -740,12 +750,9 @@ begin
     end;
     if User.InRange(-14510,124033,-3125, 250, 150) then Moved :=  true;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                 Goddard
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = GODDARD then begin
     if User.InRange(146272, -58176, -2976, 250, 150) then begin // Near storage
       Engine.MoveTo(147593, -58103, -3007);
@@ -873,12 +880,9 @@ begin
       Print ('You are in front of the church')
     end;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                  Heine
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if City = HEINE then begin
     if User.InRange(110912,219584,-3664, 250, 150) then begin
       Engine.MoveTo(110912,219584,-3664);
@@ -970,11 +974,9 @@ begin
     if User.InRange(111387,219387,-3544, 250, 150) then Moved := true;
   end;
 
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                                  Oren
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = OREN then begin
     if User.InRange(80334,54400,-1552, 250, 150) then begin
       Engine.MoveTo(80334,54400,-1552);
@@ -1080,12 +1082,9 @@ begin
     end;
     if User.InRange(82950,53186,-1494, 250, 150) then Moved :=  true;
   end;
-
-{
-------------------------------------------------------------------------------
+{------------------------------------------------------------------------------
                                   Rune
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
     if CITY = RUNE then begin
       if User.InRange(38608,-47168,896, 250, 150)
           or User.InRange(38272,-49008,896, 250, 150)
@@ -1165,12 +1164,9 @@ begin
       end;
       if User.InRange(43827,-47698,-794, 250, 150) then Moved :=  true;
     end;
-
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                                Schuttgart
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if CITY = SHTUTTGART then begin
     if User.InRange(87184,-140256,-1536, 250, 150) then begin
       Engine.MoveTo(87184,-140256,-1536);
@@ -1267,12 +1263,9 @@ begin
     end;
     if User.InRange(87070,-143418,-1290, 250, 150) then Moved :=  true;
   end;
-
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                              Talking Island
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if City = TALKING_ISLAND then begin
     if User.InRange(-84376,242824,-3712, 3000, 150) then begin
       Engine.MoveTo(-84184, 243448, -3712);
@@ -1282,12 +1275,9 @@ begin
     end;
     if User.InRange(-84200, 244488, -3728, 500, 150) then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                              Dwarven Island
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if City = DWARVEN then begin
     // North entrance
     if  User.InRange (116499, -183985, -1588, 500, 150)  then begin
@@ -1306,12 +1296,9 @@ begin
     end;
     if User.InRange (116322, -179598, -1104, 500, 150) then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
                              Dark Elven
-------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
   if City = DARK_ELVEN then begin
     // Next to newbie guide
     if  User.InRange (12094, 16709, -4580, 500, 150)  then begin
@@ -1328,24 +1315,24 @@ begin
     end;
     if  User.InRange (12094, 16709, -4580, 500, 150)  then Moved := true;
   end;
-
-{
-------------------------------------------------------------------------------
-  If no movement has taken place in the city
-------------------------------------------------------------------------------
-}
-  if  not Moved  then begin
-    //GoHome;
+  if  not Moved  then begin // If no movement has taken place in the city
     Print ('Unknown respawn.');
+    // Create file and save the new respawn location
+    if not Moved then
+    begin
+      //NewResp := TStringList.Create;
+      //if FileExists('File/Script/NewResp.txt') then NewResp.LoadFromFile('File/Script/NewResp.txt');
+      //NewResp.Add(City+':'+IntToStr(User.X)+','+IntToStr(User.Y)+','+IntToStr(User.Z));
+      //NewResp.SaveToFile('File/Script/NewResp.txt');
+      //NewResp.Free;
+      GoHome;
+    end;
   end;
 end;
-
-{
---------------------------------------------------------------------------------
+{ ------------------------------------------------------------------------------
   Returns the position in the array of the corresponding gatekeeper of the
   destination. Returns -1 if it's not found.
---------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
 function  getCityToLocationGK (teleportName: String): integer;
 var
   i: integer;
@@ -1361,144 +1348,141 @@ begin
   end;
 end;
 
-{
---------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
   It takes us to a city if we aren't in any. Then in an array of teleport lines
   we look for our destination, it will be equal to id of the city
   It returns true if the destination is the city in which we are
---------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
 function  isRightCity (destination: TCity; shouldGoHome: boolean = true): boolean;
 begin
   Result := (GetCity(shouldGoHome) = destination);
 end;
 
-{
---------------------------------------------------------------------------------
-  Give a description of this function
---------------------------------------------------------------------------------
-}
+{-------------------------------------------------------------------------------
+  Get us to the given city
+--------------------------------------------------------------------------------}
 function  toRightCity (destination: TCity): boolean;
 var
   currentCity: TCity;
 begin
 
-  // If we are in our destination return true
+  { If we aren't in a city it goes back to the city
+    Then if that city is our destination return true }
   if  isRightCity (destination)  then
+    Result := true
+  else  // if this city isn't our destination
   begin
-    Result := true;
-  end else  // else we get the name of the city in which we are
-  begin
-    currentCity := GetCity;
+    currentCity := GetCity;  // get the name of the city in which we are
 
-    // If we aren't in a city we go home
-    if  currentCity = NON_CITY  then  GoHome;
-
-    // We take the ordinal value of the destination from the CityNames array and we teleport there
+    { We have a TCity, we get the ordinal value, convert it to string
+      with the CityNames array and we teleport there }
     TeleportTo (CityNames[ord(destination)]);
 
     // We repeat the process until we are in our destination
     Result := toRightCity (destination);
   end;
 end;
-
-{
---------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
   Checks if the destination is actually the city to which we want to go.
---------------------------------------------------------------------------------
-}
+ -------------------------------------------------------------------------------}
 function  TeleportToLocation (destination: String): boolean;
 begin
   Result := false;
   if  toRightCity(TCities[getCityToLocationGK(destination)])  then
     Result := TeleportTo (destination);
 end;
-
-{
---------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
   Teleports to the destination
---------------------------------------------------------------------------------
+ -------------------------------------------------------------------------------}
 }
 function  TeleportTo (destination: String): boolean;
 var
   City: TCity;
   gkId: integer;
   cityIndex: integer;
-  gatekeeper: TL2Live;
+  buffer: TL2Live;
   dialogIndex: integer;
   teleportIndex: TStringList;
   rightCity: boolean;
 begin
-  City := GetCity;
-  cityIndex := Ord (City);
   Result := false;
+  City := GetCity;
 
-  // If we are in a city and the length of the destination is not 0 then we continue
-  if  (City <> NON_CITY)  or  (Length(destination) <> 0)  then
+  // If we aren't in a city exit
+  if  City = NON_CITY  then
   begin
-    teleportIndex := TStringList.Create;
-    dialogIndex := 0;
-
-    gkId := GateKeepers[cityIndex];  // Get the Gatekeeper ID of our current city
-
-    {
-      We specify the way in which the string is divided, in this case by commas.
-      And we assign to teleportIndex the String with the locations of the gatekeeper
-      of the current city
-    }
-    teleportIndex.Delimiter := ',';
-    teleportIndex.DelimitedText := GateKeepersStrings[cityIndex];
-
-    gatekeeper := nil;
-
-    // search the gaketeeper by id
-    NpcList.ById (gkId, gatekeeper);
-
-    // if it was found we continue
-    if  gatekeeper <> nil  then
-    begin
-      {
-        We search the string destination in the possible destinations of our gatekeeper
-        and assign it to dialogIndex. indexOf returns -1 if it wasn't found.
-        We add 1 to match the dialog option of the gatekeeper
-      }
-      rightCity := true;
-      dialogIndex := teleportIndex.indexOf (destination) + 1;
-      if  dialogIndex = 0  then
-      begin
-        dialogIndex := 1;
-        rightCity := false;
-      end;
-    {
-        Checks if we are in the right city or teleport us to the first city of the dialog options
-    }
-      Engine.SetTarget (gatekeeper);
-      Engine.MoveTo (gatekeeper);
-      Engine.DlgOpen;
-      Delay (500);
-      // TODO: Check the gatekeepers that don't have the teleport dialog in the first option
-      if  gatekeeper.ID = ROXXY  then  // if we are in talking island, the teleport is in the second option
-        Engine.DlgSel (2)
-      {
-      else
-        Engine.DlgSel (ifThen((Pos(buffer.name, 'Ragara') <> 0), 'Teleport', GkDlg));
-        case buffer.id of
-          30256: Engine.DlgSel(2);
-          30006: Engine.DlgSel(3);
-    }
-      else
-        Engine.DlgSel(1);
-      Delay (500);
-      Engine.DlgSel (dialogIndex);
-      Delay (TPDelay);
-      Result := true;
-
-    if  rightCity = false  then
-      TeleportTo (destination);
-    end;
-
-    teleportIndex.Free;
+    Print ('TeleportTo: We aren't in a City');
+    exit;
   end;
+
+  // If no destination provided exit
+  if  Length (destination) = 0  then
+  begin
+    Print ('TeleportTo: No destination provided');
+    exit;
+  end;
+
+  teleportIndex := TStringList.Create;
+  cityIndex := Ord (City);
+  dialogIndex := 0;
+
+  gkId := GateKeepers[cityIndex];  // Get the Gatekeeper ID of our current city
+
+  {
+    We specify the way in which the string is divided, in this case by commas.
+    And we assign to teleportIndex the String with the locations of the gatekeeper
+    of the current city
+  }
+  teleportIndex.Delimiter := ',';
+  teleportIndex.DelimitedText := GateKeepersStrings[cityIndex];
+
+  gatekeeper := nil;
+  NpcList.ById (gkId, gatekeeper);  // search the gaketeeper by id
+
+  // if we don't find the gatekeeper exit
+  if  gatekeeper = nil  then  exit;
+
+  {
+    We search the string destination in the possible destinations of our gatekeeper
+    and assign it to dialogIndex. indexOf returns -1 if it wasn't found.
+    We add 1 to match the dialog option of the gatekeeper
+  }
+  rightCity := true;
+  dialogIndex := teleportIndex.indexOf (destination) + 1;
+  if  dialogIndex = 0  then
+  begin
+    dialogIndex := 1;
+    rightCity := false;
+  end;
+  {
+    Checks if we are in the right city or teleport us to the first city of the dialog options
+  }
+  Engine.SetTarget (gatekeeper);
+  Engine.MoveTo (gatekeeper);
+  Engine.DlgOpen;
+  Delay (500);
+  // TODO: Check the gatekeepers that don't have the teleport dialog in the first option
+  if  gatekeeper.ID = ROXXY  then  // if we are in talking island, the teleport is in the second option
+    Engine.DlgSel (2)
+  {
+  else
+    Engine.DlgSel (ifThen((Pos(buffer.name, 'Ragara') <> 0), 'Teleport', GkDlg));
+    case buffer.id of
+      30256: Engine.DlgSel(2);
+      30006: Engine.DlgSel(3);
+  }
+  else
+    Engine.DlgSel(1);
+    Delay (500);
+    Engine.DlgSel (dialogIndex);
+    Delay (TPDelay);
+    Result := true;
+
+  if  rightCity = false  then
+    TeleportTo (destination);
+  end;
+
+  teleportIndex.Free;
 end;
 
 BEGIN

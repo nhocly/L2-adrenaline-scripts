@@ -1,0 +1,35 @@
+unit HuntingZones_CatacombWitch;
+
+interface
+
+//uses
+  //SysUtils, Classes, AA_SettingsModule;
+
+const
+  // Mobs level 60-72
+  // SS = slightly strong, SW = slightly weak, PA = physical attack, MD = magic deffense
+  // LA = light armor weak P def and strong evasion
+  // Crypt Guardian 60; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred, Weak Blunt, Resist Bow and dagger
+  // Nephilim Bishop 51; 4x, SSPA, SSMA, SWPD, Weak Dark
+  // Lilim Priest 60; 4x, SSPA, SSMA, SWPD, Resist Dark
+  // Purgatory Shadow* 61; 4x, LA, Weak Wind, Weak Bow
+  // Crypt Sage* 62; 4x, LA, Weak Sacred
+  // Nephilim Centurion 63 4x, SSPA, SSMA, VSPD, SLMD, Weak Dark
+  // Lilim Knight 63; 4x, SSPA, SSMA, VSPD, SWMD, Resist Dark
+  // Purgatory Tarantula* 64; 4x, LA
+  // Tomb Guardian* 65; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred
+  // x Nephilim Scout 66; 4x, SSPA, SSMA, VSPD, SWMD, LA, Weak Dark
+  // Lilim Assassin 66; 4x, SSPA, SSMA, VSPD, SWMD, LA, Resist Dark
+  // Tomb Sage* 67; 4x, SSPD, LA, Weak Sacred, Weak Blunt
+  // Purgatory Gargoyle* 68; 4x, Resist Dagger
+  // Nephilim Archbishop 69; 4x, SSPA, SSPD, SWPD, Weak Dark
+  // Lilim Soldier 69; 4x, SSPA, SSMA, SWPD, Resist Dark
+  // Crypt Guard* 70; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred, Weak Blunt, Resist Bow and dagger
+  // Purgatory Liviona* 71; 4x, LA, Weak Wind, Weak Bow
+  // Nephilim Praetorian 72; 4x, SSPA, SSMA, VSPD, SWMD, Weak Dark
+  // Lilim Knight Banneret/Captain 72; 4x, SSPA, SSMA, VSPD, SWMD, Resist Dark
+
+implementation
+
+BEGIN
+END.

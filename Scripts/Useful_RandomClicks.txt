@@ -1,0 +1,36 @@
+{
+  Simulation of random clicks near character. May be useful when stuck
+}
+uses SysUtils;
+
+procedure RandomClicksThread(d: integer);
+var X, Y, Z: integer;
+begin
+  X:= User.X;                                                              // set coordinates of point
+  Y:= User.Y;                                                              // near which we will move
+  Z:= User.Z;
+  while Delay(1000) do begin                                               // run an endless loop
+    if (Engine.Status = lsOnline) then begin                               // if we are in the game then
+      if (User.DistTo(X, Y, Z) > 2*d*d) then begin                         // if the base point has changed,
+        Print(Format('[RandomClicksThread] Base point coordinates updated: (%d, %d) -> (%d, %d)', [X, Y, User.X, User.Y]));
+        X:= User.X;                                                        // update coordinates
+        Y:= User.Y;
+        Z:= User.Z;
+      end;
+
+      if (not User.Moved) and (not User.Sitting)                           // if we are not moving and not sitting
+      and (not User.InCombat) and (User.Cast.EndTime = 0)                  // not in fight and dont cast anything
+      and ((User.Target = nil) or (User.Target.Dead)) then begin           // and we dont have a target or our target is dead, then
+        if Engine.DMoveTo(X+Random(2*d)-d, Y+Random(2*d)-d, User.Z) then   // make a random step to the side
+          Delay(1000+Random(5000));                                        // and wait for random delay
+      end;
+    end;
+  end;
+end;
+
+begin
+  Script.NewThread(@RandomClicksThread, Pointer(150));       // start the thread, second argument indicate max distance from the base point
+  // code...
+
+  Delay(-1);
+end.

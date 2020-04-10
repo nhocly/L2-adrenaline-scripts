@@ -1,3 +1,5 @@
+{ Notify you of a champion mob in case you need to pay attention to defeat it }
+
 var
   i: integer;
   mobTitle: string;
@@ -9,7 +11,7 @@ begin
     begin
       mobTitle := NpcList.Items (i).Title;
       p := pos ('GoldKeeper', mobTitle);
-      
+
       if  ( User.DistTo(NpcList.Items(i)) < 300 )  and
           NpcList.Items(i).Attackable  and
           not NpcList.Items(i).Dead  and

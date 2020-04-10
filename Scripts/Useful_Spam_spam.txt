@@ -1,6 +1,6 @@
-uses 
+uses
     Classes, SysUtils, SettingsModule;
-    
+
 var
   charName: string;
   i: integer;
@@ -30,7 +30,7 @@ end;
 
 function getRandomString(size: integer): string;
 const
-  alphabet = 'Im looking for an english speaking clan, Im hawkeye lvl 74';
+  alphabet = 'Im looking for an english speaking clan, I''m hawkeye lvl 74';
 var
   i: integer;
 begin
@@ -54,7 +54,7 @@ begin
         SL.add(charName);
         if Engine.Say(spamText + ' ' + getRandomString(randomSymbolsCount), 2, charName) then
           print('Spammed to: ' + charName);
-        
+
         delay(spamDelay);
       end else
         delay(100);

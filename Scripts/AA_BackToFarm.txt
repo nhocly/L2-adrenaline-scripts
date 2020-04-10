@@ -1,0 +1,27 @@
+// Buff time doesn't work in version 1.71 or Interlude client
+
+uses
+  SysUtils, Classes;
+const
+  // SafePoint: array of integer = [147593, -112774, -2144];  // where to run for recall without getting mob aggro
+  Hira : Integer = 31613;  // buffer
+  BuffID: Integer = 1413; // buff ID to check if rebuff needed
+  RebuffTime: Cardinal = 7 * 60 * 1000;  // if less than 7 minutes
+begin
+  // if not in party go home when bufftime < given time
+
+  { if in party check if dead and bufftime for everyone in party,
+change boolean to true if one needs rebuff so they all meet the same condition and go at the same time }
+  if (BuffTime(BuffID) < RebuffTime) then
+    Print('need buff')
+
+  // Engine.SetTarget (Hira);
+  // Engine.DlgOpen;
+  // Engine.bypasstoserver('npc_268471843_Quest 9999_NPCBuffer');
+
+  // check class
+  // if  fighter  then
+  //   Engine.bypasstoserver('Quest 9999_NPCBuffer 107')  // fighter buffs
+  // else
+  //   Engine.bypasstoserver('Quest 9999_NPCBuffer 108');  // mage buffs
+end.

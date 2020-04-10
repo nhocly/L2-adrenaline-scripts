@@ -1,0 +1,177 @@
+Human Fighter 0
+
+Human Warrior 1
+
+Human Gladiator 2
+
+Human Duelist 88
+
+Human Warlord 3
+
+Human Dreadnought 89
+
+Human Knight 4
+
+Human Paladin 5
+
+Human Phoenix Knight 90
+
+Human Dark Avenger 6
+
+Human Hell Knight 91
+
+Human Rogue 7
+
+Human Treasure Hunter 8
+
+Human Adventurer 93
+
+Human Hawkeye 9
+
+Human Sagittarius 92
+
+Human Mage 10
+
+Human Wizard 11
+
+Human Sorceror 12
+
+Human Archmage 94
+
+Human Necromancer 13
+
+Human Soultaker 95
+
+Human Warlock 14
+
+Human Arcana Lord 96
+
+Human Cleric 15
+
+Human Bishop 16
+
+Human Cardinal 97
+
+Human Prophet 17
+
+Human Hierophant 98
+
+Elf Fighter 18
+
+Elf Knight 19
+
+Elf Temple Knight 20
+
+Elf EvaTemplar 99
+
+Elf Sword Singer 21
+
+Elf Sword Muse 100
+
+Elf Scout 22
+
+Elf Plains Walker 23
+
+Elf Wind Rider 101
+
+Elf Silver Ranger 24
+
+Elf Moonlight Sentinel 102
+
+Elf Mage 25
+
+Elf Wizard 26
+
+Elf Spell Singer 27
+
+Elf Mystic Muse 103
+
+Elf Elemental Summoner 28
+
+Elf Elemental Master 104
+
+Elf Oracle 29
+
+Elf Elder 30
+
+Elf Eva Saint 105
+
+Dark Elf Fighter 31
+
+Dark Elf Paulus Knight 32
+
+Dark Elf Shillien Knight 33
+
+Dark Elf Shillien Templar 106
+
+Dark Elf Blade Dancer 34
+
+Dark Elf Spectral Dancer 107
+
+Dark Elf Assassin 35
+
+Dark Elf Abyss Walker 36
+
+Dark Elf Ghost Hunter 108
+
+Dark Elf Phantom Ranger 37
+
+Dark Elf Ghost Sentinel 109
+
+Dark Elf Mage 38
+
+Dark Elf Dark Wizard 39
+
+Dark Elf Spellhowler 40
+
+Dark Elf Storm Screamer 110
+
+Dark Elf Phantom Summoner 41
+
+Dark Elf Spectral Master 111
+
+Dark Elf Shillien Oracle 42
+
+Dark Elf Shillien Elder 43
+
+Dark Elf Shillien Saint 112
+
+Orc Fighter 44
+
+Orc Raider 45
+
+Orc Destroyer 46
+
+Orc Titan 113
+
+Orc Monk 47
+
+Orc Tyrant 48
+
+Orc Grand Khauatari 114
+
+Orc Mage 49
+
+Orc Shaman 50
+
+Orc Overlord 51
+
+Orc Dominator 115
+
+Orc Warcryer 52
+
+Orc Doomcryer 116
+
+Dwarf Fighter 53
+
+Dwarf Scavenger 54
+
+Dwarf Bounty Hunter 55
+
+Dwarf Fortune Seeker 117
+
+Dwarf Artisan 56
+
+Dwarf Warsmith 57
+
+Dwarf Maestro 118

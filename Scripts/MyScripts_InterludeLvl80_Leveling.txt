@@ -1,0 +1,100 @@
+unit  MyScripts_InterludeLvl80_Leveling;
+
+interface
+
+uses
+  SysUtils, Classes,
+  AA_FunctionsModule,
+  AA_LocationModule;
+
+(*---------------- Types ------------------------------------------------------*)
+
+(*---------------- Constants --------------------------------------------------*)
+const
+  // NPCs
+  Newbie_Helper: Integer = 30530;
+  OrcNewbieHelper: Integer = 30575;
+  OrcNewbieGuide: Integer = 30602;
+  //KAMAEL_NEWBIE_GUIDE
+  Vulkus: Integer = 30573;
+  Gremlin: Integer = 18342;
+  // Abilities
+  Wind_Strike: Integer = 1177;
+  // Items
+  KamaelVillageTeleportScroll: Integer = 12753;
+  NecklaceCourage: Integer = 1506;
+(*-------------- Variables ----------------------------------------------------*)
+var
+  mob: TL2Live;
+(*-------------- Functions ----------------------------------------------------*)
+  procedure KillGremlinsToObtainSoulshots;
+
+implementation
+
+{-------------------------------------------------------------------------------
+  Kill some gremlins and get soulshots
+  TODO: addapt to work for every class
+  TODO: change to using bot, right now it stops for too long after killing each mob
+ -------------------------------------------------------------------------------}
+procedure KillGremlinsToObtainSoulshots;
+begin
+  while  User.Level < 2 do
+  begin
+    // NpcList.ByID (Gremlin, mob);
+    // Engine.SetTarget (mob);
+    Engine.SetTarget (Gremlin);
+    while mob.HP > 0 do
+    begin
+      if isMage then
+        Engine.UseSkill (Wind_Strike)
+      else
+        Engine.Attack;
+    end;
+  end;
+end;
+
+procedure Leveling1;
+begin
+  if User.Level >= 3 then
+    exit;
+
+  if InStartingLocation then
+  begin
+    // Talk to Newbie Helper in Starting Location
+    Engine.SetTarget (OrcNewbieHelper);
+    Engine.DlgOpen;
+    Engine.DlgSel (1);
+
+    KillGremlinsToObtainSoulshots;
+
+    // Get soulshots
+    Engine.SetTarget (OrcNewbieHelper);
+    Engine.DlgOpen;
+    Engine.DlgSel (1);
+
+    Engine.SetTarget (Vulkus);
+    Engine.DlgOpen;
+    Engine.DlgSel (1);
+    Delay(400);
+    DlgSel (1, 'Quest 999_C3Tutorial 30573_02');
+  end;
+end;
+
+{
+  TODO: Addapt to use the apropriate newbie guide for each class
+}
+procedure Leveling2;
+begin
+  //if toRightCity(ORC) then
+  //begin
+    //if not startDialog(OrcNewbieGuide) then
+      //print('Can''t find the NewbieGuide');
+  //end;
+end;
+
+// Leveling3
+// Get Support Magic
+// DlgSel (6, 'npc_268464377_SupportMagic');
+
+BEGIN
+END.
