@@ -1,0 +1,87 @@
+uses SysUtils;
+
+function ShellExecuteW(hwnd: integer; lpOperation, lpFile, lpParameters, lpDirectory: PChar;  nShowCmd: integer): integer; stdcall;
+  external 'Shell32.dll';
+
+function keybd_event(bVk, bScan: byte; dwFlags, dwExtraInfo: integer): integer; stdcall;
+  external 'user32.dll';
+
+function ShowWindow(hwnd:cardinal; action:integer):boolean; stdcall;
+external 'user32.dll';
+
+procedure Reconnect;
+const
+  login = 'login';
+  password = 'pas';
+  gamePath = 'C:\Users\Pc\Desktop\server\Lineage II\system\l2.exe';
+begin
+  while engine.Delay(3000) do begin
+    if (Engine.Status = lsOffline) or (Engine.Status = lsOff) then begin
+      print('dc');
+      {Engine.FaceControl(0, false);
+      Delay(1000);
+      Engine.GameClose;
+      Delay(1000);
+      ShellExecuteW(0, 'open', PChar(gamePath), nil, nil, 0);
+      Delay(15000);}
+      Engine.UseKey('Enter');
+      Delay(3000);
+      enterText(login);
+      Engine.UseKey('Tab');
+      Delay(300);
+      enterText(password);
+      Delay(300);
+      Engine.UseKey('Enter');
+      Delay(2000);
+      Engine.UseKey('Enter');
+      Delay(2000);
+      Engine.UseKey('Enter');
+      Delay(2000);
+      Engine.UseKey('Enter');
+      Delay(10000);
+      ShowWindow(engine.gamewindow, 6);
+    end;
+  end;
+end;
+
+procedure enterText(const text: string);
+var
+  i: cardinal;
+  upperCase: boolean;
+begin
+  for i:= 1 to length(text) do begin
+    if isDigit(text[i]) then
+      Engine.UseKey(text[i])
+    else begin
+      upperCase:= text[i] = UpCase(text[i]);
+      if upperCase then begin
+          keybd_event(20, 0, 1, 0);
+          keybd_event(20, 0, 2, 0);
+          Engine.UseKey(text[i]);
+          delay(10);
+          keybd_event(20, 0, 1, 0);
+          keybd_event(20, 0, 2, 0);
+      end else
+        Engine.UseKey(text[i]);
+    end;
+    Delay(50);
+  end;
+end;
+
+function isDigit(ch: char): boolean;
+const
+  digits = '013456789';
+var
+  i: cardinal;
+begin
+  result:= false;
+  for i:= 0 to length(digits) do
+    if digits[i] = ch then begin
+      result:= true;
+      exit;
+    end;
+end;
+
+begin
+  Script.NewThread(@Reconnect);
+end.

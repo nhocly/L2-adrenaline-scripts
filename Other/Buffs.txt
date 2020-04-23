@@ -1,0 +1,78 @@
+For Interlude I want to know which buffs to use for PVE for mage and fighter if I have a 26 buff limit. I've been looking to which buffs cancel each other and made a list here. Also I want to know which buffs to use first in case somebody buffs me with useless buffs and I lose them. Specifically I'm using sps, necro, bounty hunter.
+I'd also like to see a topic about dyes for each class for farming, is there any? I only found one for dyes for each class but didn't specify if they were for pvp or pve.
+
+1. Wind Walk, 2. Song of Wind, 3. Mental Shield, 4. Bless the Body, 5. Song of Vitality, 6. Shield, 7.Song of Earth, 8. Greater Shield, 9. Magic barrier, 10. Song of Warding, 11. Resist Shock, 12. Acumen, 13. Empower, 14. Wild Magic, 17. Concentration, 18. Dance of concentration, 19. Dance of Mystic, 20. Dance of Siren, 21. Song of Champion, 22. Song of Renewal, 23. Magnus Chant, 24. Berserker Spirit15, 25. Elemental Protection, 26. Divine Protection, 
+
+Acumen / Chant of Flame: Casting Speed
+Advanced Block (EE): Shield def rate
+Agility (EE) / Chant of Evasion: Evasion
+Berserker Spirit: Increase Atk, Decrease Def
+Bless the Body / Body Avatar: Max HP
+Bless the Soul: Max MP
+Concentration: Lower Magic Cancel
+Chant of Revenge: Reflect Damage
+Chant of Spirit: Resist Cancel and Debuff
+Chant of Victory / Magnus' Chant / Prophet of Fire / Water / Wind: Fighter / Mage
+Death Wisper / Chant of Rage: Crit Atk Power
+Empower: M. Atk
+Focus / Chant of Predator: Crit Atk Rate
+Guidance / Chant of Eagle: Acuracy
+Haste / Chant of Fury: Atk Speed
+Magic Barrier / Chant of Fire: M. Def
+Mental Shield: Resist Hold and Sleep
+Might / Chant of Battle: P. Atk
+Greater Might (SE) / Chant of War / Greater Shield / Chant of Earth: Party P. Atk / Party P. Def
+Shield / Chant of Shielding: P. Def
+Vampiric Rage (SE) / Chant of Vampiric: Restore HP in Crit
+Wild Magic: Magic Crit Atk
+Wind Walk: Speed
+
+Holy Resistance: Resist Sacred
+Unholy Resistance (EE): Resist Dark
+Resist Aqua (EE)
+Resist Wind
+Resist Fire
+Resist Poison
+Elemental Protection (EE): Resist Fire/Wind/Water/Earth
+Arcane Protection (EE): Resist Cancel and Debuff
+Divine Protection (EE): Resist Dark
+Invigor: Resist Bleed
+Resist Shock (EE)
+Regeneration: HP Recovery
+Mana Regeneration
+Holy Weapon: Holy P. Atk
+
+Blessing of Seraphim: MP Regen
+Gift of Seraphim: Magic Skill recovery
+Gift of Queen: P. Atk and acuracy
+Blessing of Queen: Crit Damage and Power
+
+Songs
+Song of Earth: P. Def
+Song of Life: HP Regen
+Song of Water: Evasion
+Song of Warding: M. Def
+Song of Wind: Speed
+Song of Hunter: Crit Rate
+Song of Invocation: Resist Dark Magic
+Song of Vitality: Max HP
+Song of Vengeance: Reflect Damage
+Song of Flame Guard: Resist Fire
+Song of Storm Guard: Resist Wind
+Song of Meditation: Mp Regen
+Song of Champion: Max MP, reuse time
+Song of Renewal: Re-use skill
+
+Dances
+Dance of Warrior: P. Atk
+Dance of Mystic: M. Atk
+Dance of Inspiration: Acuracy
+Dance of Concentration: Lower Magic Cancel
+Dance of Fire: Critical Damage
+Dance of Light: Sacred Power
+Dance of Fury: Atk Speed
+Dance of Aqua Guard: Resist Water
+Dance of Earth Guard: Resist Stone
+Dance of Vampire: Restore HP in Crit Atk
+Dance of Protection: Resist Terrain
+Dance of Siren: Magic Crit Rate

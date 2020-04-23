@@ -1,0 +1,148 @@
+unit FarmModule;
+
+interface
+
+uses
+  Types, SysUtils, FunctionsModule, LocationModule;
+
+(*---------------- Types ------------------------------------------------------*)
+
+(*-------------- Constants ----------------------------------------------------*)
+const
+  HydroBlast: Integer = 1235;
+
+(*-------------- Functions ----------------------------------------------------*)
+  procedure Farm(Map: String; Config: String = ''; xpoff: Boolean = True);
+  procedure  FarmIn(Path: TIntegerArray; Map: String; Destination: String = ''; Config: String = ''; xpoff: Boolean = True);
+  procedure  FarmFor(ItemID, Num: Integer; Path: TIntegerArray; Map: String; TeleportValue: String = ''; Config: String = ''; Quest: Boolean = False);
+  // procedure  FarmFor(Items, Amount, Paths: TIntegerArray; Maps: String; TeleportValues: Array of String = []); Overload;  //
+  procedure killAgroMobsThread;
+  procedure killAgroMobs();
+  function GetWeakestHookedMob: TL2Live;
+
+implementation
+
+procedure Farm(Map: String; Config: String = ''; xpoff: Boolean = True);
+begin
+  if  xpoff  then Engine.EnterText('.xpoff');
+  //Engine.LoadZone(exepath + '\Zmaps\' + Map);
+  Engine.LoadZone(Map);
+  if  (Config <> '')  then
+    Engine.LoadConfig(Config) // TODO: Load config deppending on the user class
+  else
+    Engine.LoadConfig('Settings_Spoiler');
+  Engine.FaceControl(0, true);
+end;
+
+procedure  FarmIn(Path: TIntegerArray; Map: String; Destination: String = ''; Config: String = ''; xpoff: Boolean = True);
+var
+  len: Integer;
+begin
+  Engine.FaceControl(0, false);
+  if  Destination <> ''  then
+    TeleportTo(Destination);
+  PathMove(Path);
+  len := Length(Path);
+  if  User.InRange(Path[len-3], Path[len-2], Path[len-1], 1000, 500)  then
+    Farm(Map, Config, xpoff)
+  else  Print('FarmIn: couldn''t reach the hunting zone');
+end;
+
+{procedure  FarmIn(MoveToHuntingZone: TProc; Map: String; Config: String = ''; xpoff: Boolean = True); overload;
+begin
+  Engine.FaceControl(0, false);
+  MoveToHuntingZone;
+  Farm(Map, Config; xpoff);
+end;}
+
+{-------------------------------------------------------------------------------
+  Requires an item Id, a Quantity, a Path, and a Map
+  TeleportValue and Quest is optional
+  Moves through the path, loads the map and starts the bot until it has the given
+  Number of Item in the inventory
+ -------------------------------------------------------------------------------}
+procedure  FarmFor(ItemID, Num: Integer; Path: TIntegerArray; Map: String; TeleportValue: String = ''; Config: String = ''; Quest: Boolean = False);
+var
+  i: Integer;
+  Item: TL2Item;
+begin
+  FarmIn(Path, Map, TeleportValue, Config);
+
+  if  Quest  then
+    while  not Inventory.Quest.ById(ItemID, Item)  or  (Item.Count < Num)  do  Delay(1000)
+  else
+    while  not Inventory.User.ByID(ItemID, Item)  or  (Item.Count < Num)  do  Delay(1000);
+
+  Print('FarmForItem: You''ve got ' + IntToStr(Num) + ' ' + Item.Name);
+  { TODO: check class and load specific configuration to only kill aggro mobs
+    or use specific skill to kill aggro mobs deppending on the class }
+  // Engine.LoadConfig('Settings_BeatOffHooked');
+  // while  AggroMobs > 0  do Delay(500);
+  // while  User.InCombat  do Delay (500);
+  Engine.FaceControl(0, false);
+  Recall;
+end;
+
+{
+  Go from place to place getting the amount of items given
+}
+{
+procedure  FarmForItems(Items, Amount, Paths: TIntegerArray; Maps: String; TeleportValues: Array of String = []); Overload;
+var
+  ItemId: Integer;
+begin
+  for  i := 0 to Length(Items)  do
+    farm(Items[i], Amount[i], Path[i], TeleportValues[i]);
+end;
+}
+
+procedure killAgroMobsThread;
+begin
+  while  Engine.Status = lsOnline  do
+  begin
+    killAgroMobs();
+    delay(500);
+  end;
+end;
+
+procedure killAgroMobs();
+var
+  i: Integer;
+  Mob: TL2Live;
+begin
+
+  while  not User.Dead  do
+  begin
+    mob := GetWeakestHookedMob;
+    if  mob = nil  then
+      exit;
+
+    while  not mob.Dead  and  not User.Dead do
+    begin
+      Engine.SetTarget(mob);
+      Engine.UseSkill(HydroBlast);  // TODO: need different skills for each class
+      Delay(100);
+    end;
+  end;
+end;
+
+function GetWeakestHookedMob: TL2Live;
+var
+  i: integer;
+  weakest, next: TL2Live;
+begin
+  weakest := nil;
+  for  i := 0 to NpcList.Count - 1  do
+  begin
+    next := NpcList.Items(i);
+    if  (next.Target = User)  and  not next.Dead  and  (next <> nil)  then
+    begin
+      if  (weakest = nil)  or  (next.CurHP < weakest.CurHP)  then
+        weakest := next;
+    end;
+  end;
+  Result := weakest;
+end;
+
+BEGIN
+END.

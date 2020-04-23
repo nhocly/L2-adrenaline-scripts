@@ -1,0 +1,7 @@
+begin
+  while  true  do
+  begin
+    Engine.EnterText('+WTS 5 Gift Box 1k');
+    Delay (20 * 1000);
+  end;
+end.

@@ -1,0 +1,7 @@
+var
+  Item: TL2Item;
+
+begin
+  if (Inventory.Quest.ByName('Gemstone', Item)) then
+    print('User has quest item gemstone');
+end.

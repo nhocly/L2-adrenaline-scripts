@@ -1,0 +1,13 @@
+Uses sysutils;
+
+var
+  i, timeRemaining: Integer;
+  Buff: TL2Buff;
+
+begin
+  for i := 0 to User.Buffs.Count - 1 do
+  begin
+    timeRemaining := Round((User.Buffs.Items(0).EndTime) / (60 * 1000));  // Get the minutes remaining for each buff
+    Print(User.Buffs.Items(i).Name + ' ' + IntToStr(timeRemaining));
+  end;
+end.

@@ -1,0 +1,199 @@
+unit Items_GradeC;
+
+interface
+
+uses Types, Classes, FunctionsModule, LocationModule, FarmModule, MyAutoFarm;
+
+const
+  RecipeQuantity: Integer = 3;
+  ValentinaOrenGK: Integer = 30177;
+  MozellaCrumaGK: Integer = 30483;
+  BlessedSpiritshotCRecipe: Integer = 3954;
+  PlatedLeatherArmorRecipe: Integer = 2211;
+  PlatedLeatherBootsRecipe: Integer = 2992;
+  PlatedLeatherGlovesRecipe: Integer = 2999;
+
+  procedure  ArchaicLaboratory_EWC;
+  procedure  GetPlatedLeatherArmorRecipe;
+  procedure  GetPlatedLeatherFragment;
+  procedure  GetPlatedLeatherGlovesRecipeSpoil;
+  procedure  GetPlateLeatherBootLining;
+
+implementation
+
+procedure  ArchaicLaboratory_EWC;
+var
+  path: TIntegerArray;
+begin
+  // TeleportTo('pavel ruins');
+  UseGatekeeper(31964, 1, 'npc_268466851_goto 1120');
+  if  not User.InRange(88274, -125698, -3816, 1000, 500)  then
+  begin
+    Print('not in pavel ruins');
+  end;
+  path := [89468, -122526, -3720,  90327, -119697, -3832,  89430, -115550, -3376,
+      89179, -115030, -3328];
+  FarmIn(path, 'ArchaicLaboratoryEWC', '', 'Settings_Spoiler');
+end;
+
+{-------------------------------------------------------------------------------
+  Plated Leather Armor Recipe by Spoil
+  Timak Orc Archer (lvl 41) 1/36 (Oren, Timak Outpost)
+ -------------------------------------------------------------------------------}
+procedure  GetPlatedLeatherArmorRecipe;
+var
+  item: TL2Item;
+  // quantity: integer; // TODO: overload method to give the quantity
+begin
+  Print('GetPlatedLeatherArmorRecipe');
+  //TeleportTo('skyshadow meadow');
+
+  // TODO: Delete this when TeleportTo method works
+  {Engine.SetTarget(ValentinaOrenGK);
+  Engine.MoveToTarget;
+  Engine.DlgSel(1);
+  Delay(500);
+  // TODO: I can't do this teleport work
+  Engine.ByPassToServer('npc_268464862_goto 1076');
+  //DlgSel(12, 'npc_268464862_goto 1076');
+  TPDelay;}
+
+  if  User.InRange(82724, 61138, -3496, 500, 200)  then begin
+    Print('1');
+    Engine.MoveTo(81825, 61615, -3504);
+    Engine.MoveTo(80047, 62605, -3664);
+    Engine.MoveTo(77941, 63928, -3664);
+    Engine.MoveTo(77241, 64394, -3596);
+    Engine.MoveTo(76499, 65048, -3608);
+    Engine.MoveTo(73371, 67701, -3720);
+  end;
+  if  User.InRange(73371, 67701, -3720, 500, 200)  then begin
+    // Engine.LoadZone(exepath + '\Zmaps\TimakOrc.zmap');
+    Engine.LoadZone(exepath + '\Settings\TimakOrc.zmap');
+    Engine.LoadConfig('Spoiling');  // Load config that prioritizes our target
+    Engine.LoadZone ('TimakOutpost.zmap');
+    Engine.FaceControl(0, true);
+    // Wait while we haven't got the items
+    while  not Inventory.User.ByID(PlatedLeatherArmorRecipe, item)
+      or  not Inventory.User.ByID(BlessedSpiritshotCRecipe, item)
+      or  (item.Count < RecipeQuantity)  do Delay(10 * 1000);
+    Print ('You''ve found the recipe');
+    // TODO: go to a safe location and wait to kill hooked mobs before turning the bot off
+    Engine.FaceControl (0, false);
+    //GoHome;
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Plated Leather Gloves Recipe by Spoil
+  Tamlin Orc Archer (lvl 42) 1/11 (Near Hunters Village)
+  Crokian Lad Warrior (lvl 43) 1% chance (Alligator Island)
+ -------------------------------------------------------------------------------}
+procedure  GetPlatedLeatherGlovesRecipeSpoil;
+var
+  item: TL2Item;
+begin
+  // teleportTo(hunters);
+  if  User.InRange(117095, 76834, -2696, 500, 200)  then begin
+    Print('Moving from respawn to hunting ground');
+  end;
+  if  User.InRange(143700, 75680, -3360, 1000, 200)  then begin
+    Engine.LoadZone('TalimOrcArcher.zmap');
+    Engine.FaceControl(0, true);
+    while  not Inventory.User.ByID(PlatedLeatherGlovesRecipe, item)  do Delay (10 * 1000);  // finish when you get the recipe
+    Engine.FaceControl(0, false);
+    // GoHome;
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Plated Leather Boots Recipe Only by Drop
+  Taik Orc Shaman (lvl 43) 1/143 (East of Hunters Village)
+ -------------------------------------------------------------------------------}
+procedure  GetPlatedLeatherBootsAndGaitersRecipe;
+var
+  Boots: TL2Item;
+  inventary: TItemList;
+begin
+  // teleportTo('Forest of Mirrors');
+  if  User.InRange(150500, 86000, -2700, 500, 200)  then begin
+    Print('Moving from respawn to hunting ground');
+    Engine.MoveTo(142457, 80138, -3128);
+    Engine.MoveTo(142973, 78875, -3120);
+    Engine.MoveTo(142607, 77869, -3184);
+    Engine.MoveTo(143795, 75594, -3328);
+  end;
+  if  User.InRange(143795, 75594, -3328, 500, 200)  then begin
+    Engine.LoadZone('ForestOfMirror_TaikOrcShaman.zmap');
+    while  not inventary.ByID(PlatedLeatherBootsRecipe, Boots)  do Delay (10 * 1000);  // Finish when you get the recipe
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Plate Leather Boot Lining Only by Drop (lvl 44)
+  Snipe 1.03% chance
+  Krator 1/162 chance (Cruma tower, both on the right and at the end of first floor)
+ -------------------------------------------------------------------------------}
+procedure  GetPlateLeatherBootLining;
+begin
+  TeleportTo('cruma tower');
+  if  User.InRange(17165, 114178, -3466, 500, 100)  then
+  begin
+    Print('Cruma Tower Entrance');
+    Engine.SetTarget(MozellaCrumaGK);
+    Engine.MoveToTarget;
+    Engine.DlgOpen;
+    Engine.DlgSel(1);
+    Delay(500);
+    TPDelay;
+  end;
+  if  User.InRange(17751, 114043, -11672, 5000, 1000)  then
+  begin
+    Print('Cruma 1st Floor');
+    PathMove([17734, 114553, -11699,  17719, 115832, -11848,  17600, 117322, -12064,
+      16472, 117221, -12160,  16417, 116907, -12160,  15769, 116865, -12088,
+      15074, 116759, -12088,  15027, 116298, -12080,  14840, 115698, -12080,
+      14842, 114039, -11920,  14844, 112129, -12091,  14815, 111776, -12081]);
+  end;
+  if  User.InRange(14815, 111776, -12081, 1000, 200)  then begin
+    Engine.LoadZone('CrumaTower_SnipeAndKrator.zmap');
+    Engine.LoadConfig('Settings_Spoiler');
+    Engine.FaceControl(0, true);
+  end;
+end;
+
+{
+--------------------------------------------------------------------------------
+  Plated Leather Fragment by Spoil
+  Horrifying Cannon Golem IV (lvl 48) (Schuttgart, Pavel Ruins)
+  1/15 chance, 1m avg. respawn time
+  Vanor Silenos Warrior (lvl 48) (lvl 41) (Aden, West of the City)
+  1/16 chance, 30s avg. respawn time
+--------------------------------------------------------------------------------
+}
+procedure  GetPlatedLeatherFragment;
+begin
+  Engine.MoveTo(89040, -123781, -3768);
+  Engine.MoveTo(89675, -122416, -3744);
+  Engine.MoveTo(90382, -119668, -3832);
+  Engine.MoveTo(89982, -116958, -3848);
+  Engine.MoveTo(89357, -115885, -3504);
+  Engine.MoveTo(89352, -115433, -3336);
+end;
+
+{
+--------------------------------------------------------------------------------
+Plate Leather Gloves Design
+Forest Of Mirrors Ghost (lvl 48) 1/12 chance (Hunters Village, The Forest of Mirrors)
+Theeder Piker (48) 1/8 (Heine, Garden of Eva)
+Dragon Bearer Chief (49) 1/9 (Giran, Dragon Valley)
+
+--------------------------------------------------------------------------------
+  Plated Leather Boots Drop (lvl 44)
+  1/4287 chance, 45s avg. respawn time
+--------------------------------------------------------------------------------
+}
+
+BEGIN
+  ContinueFarming(@ArchaicLaboratory_EWC);
+END.

@@ -1,0 +1,33 @@
+unit Item_Mats;
+
+interface
+
+uses
+  Types, Classes, FunctionsModule, LocationModule, MyAutoFarm, FarmModule;
+
+const
+  EnchantArmorD = 12345;
+
+implementation
+
+procedure  GetEnchantArmorD(quantity: Integer);
+var
+  path: TIntegerArray;
+begin
+  //TeleportTo ('mithril mines');
+  if  not User.InRange (171957, -173356, 3453, 500, 200)  then begin
+    Print('we aren''t in mithril mines');
+    exit;
+  end;
+
+  path := [170512, -172245, 3448,  169541, -171950, 3240,  168247, -172456, 2936,
+    166038, -173679, 2448,  163845, -173862, 2427,  160364, -174096, 2428,
+    160397, -174132, 2428,  155709, -173591, 2488,  153686, -173467, 2384,
+    152685, -172836, 2034,  152396, -171300, 2256,  152387, -170973, 2272,
+    152336, -170090, 2184,  151817, -169001, 2056,  150589, -168459, 2024,
+    148561, -169250, 2008,  148272, -170049, 2256,  147263, -172343, 2248];
+
+  FarmFor(EnchantArmorD, quantity, path, 'EnchantArmorD', '', 'Settings_Spoiler');
+end;
+
+end.

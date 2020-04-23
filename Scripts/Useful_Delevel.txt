@@ -1,0 +1,29 @@
+uses
+  FunctionsModule, LocationModule;
+{-------------------------------------------------------------------------------
+Dwarf Delevel Script in Dion
+Use without armor for faster deleveling
+--------------------------------------------------------------------------------}
+const
+  Jacob = 30073;
+  StunAttack = 100;
+
+begin
+  //TeleportTo('Dion');
+  while  User.Level > 49  do
+  begin
+    if  User.Dead  then
+    begin
+      Engine.GoHome;
+      TPDelay;
+    end;
+    MoveInCity;
+    Engine.SetTarget(Jacob);
+    Engine.MoveToTarget;
+    PlaySound (exepath + '\sounds\sword.wav');
+    while  not User.Dead  do
+    begin
+      Delay(100);
+    end;
+  end;
+end.

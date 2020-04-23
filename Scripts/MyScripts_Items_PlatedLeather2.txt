@@ -1,0 +1,26 @@
+{-------------------------------------------------------------------------------
+  Plated Leather Fragment by Spoil
+  Eva's Seeker (lvl 47) 1/14 (Heine, Garden of Eva, Level 4) <- many mobs together but hard to reach
+  Garden Guard (lvl 48) 1/8 (Heine, Garden of Eva, Level 5) <- many mobs together but hard to reach
+  Vanor Silenos Warrior (lvl 48) 1/16 chance (Aden, West of the City)  <- many mobs and easy to get there
+ -------------------------------------------------------------------------------}
+// Teleport to Pavel Ruins from Schuttgart
+// Go to Archaic Lavoratory
+
+{-------------------------------------------------------------------------------
+  Plate Leather Gloves Design
+  Forest Of Mirrors Ghost (lvl 48) 1/12 chance (Hunters Village, The Forest of Mirrors)
+  Theeder Piker (48) 1/8 chance (Heine, Garden of Eva, Lvl 4) <- More mobs together but harder to reach
+  Dragon Bearer Chief (49) 1/9 chance (Giran, Dragon Valley)
+ -------------------------------------------------------------------------------}
+// Teleport to Heine and go to Garden of Eva, Lvl 4
+
+{-------------------------------------------------------------------------------
+  Plated Leather Gaiters Material
+  Death Flyer (lvl 47) 1/15 chance (Devil's Isle) <- many together but hard to reach
+  Cruel Vice Golem (lvl 49) 1/9 chance (Schuttgart, Archaic Laboratory) <- best
+ -------------------------------------------------------------------------------}
+
+BEGIN
+  PlatedLeatherArmorRecipe;
+END.

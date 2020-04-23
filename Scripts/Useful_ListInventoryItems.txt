@@ -1,0 +1,6 @@
+var
+  i: integer;
+
+begin
+  for i:= 0 to Inventory.User.Count - 1 do print(Inventory.User.Items(i).Name);
+end.
