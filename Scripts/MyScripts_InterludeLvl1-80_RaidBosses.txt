@@ -79,7 +79,11 @@ begin
   //use Unlock skill
   Engine.MoveTo (81985, 258157, -10376);
   Engine.MoveTo (77311, 258247, -10404);
-  
+end;
+
+function WaterSpiritLian;
+begin
+  TeleportTo('field of silence');
 end;
 
 BEGIN

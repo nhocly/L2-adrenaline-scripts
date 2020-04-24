@@ -43,6 +43,12 @@ begin
   {Engine.MoveTo (154781, 23522, -3070);
   Engine.MoveTo (154781, 23522, -3070);
   Engine.MoveTo (154781, 23522, -3070);}
+  if  User.InRange(154781, 23522, -3070, 1000, 200)  then
+  begin
+    Engine.LoadZone('ArcherOfGreed.zamp');
+    Engine.LoadConfig('Spoiler');
+    Engine.FaceControl(0, true);
+  end;
 end;
 
 {

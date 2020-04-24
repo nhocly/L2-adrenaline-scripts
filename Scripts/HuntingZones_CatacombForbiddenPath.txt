@@ -16,7 +16,7 @@ const
   // Mobs level 50-60
   // SS = slightly strong, SW = slightly weak, PA = physical attack, MD = magic deffense
   // LA = light armor weak P def and strong evasion
-  // x Tomb Guard* 75; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred
+  // x Tomb Guard* 75; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred; Drop Spoil: Adamantite Nugget 1/3,  EWA 1/1238, Sealed Leather Armor Of Nightmare Fabric 1/31
   // x Lesser Ancient Shaman* 76; 4x, LA, Weak Wind, Weak Bow
   // x Lilim Great Mystic 78; 4x, SSPA, SSMA, SWPD, Resist Dark
   // Tomb Preacher* 77; 4x, LA, Resist Dark
@@ -52,8 +52,8 @@ implementation
     Engine.MoveTo (110113, 84523, -4808); // entrance
     Engine.MoveTo (110304, 84532, -4904);
     Engine.MoveTo (110791, 84560, -6903);
-    Engine.MoveTo (112284, 84558, -6582);
     Engine.MoveTo (112904, 84513, -6536);  // respawn from teleport
+  Engine.MoveTo (112284, 84558, -6582);
   end;
 
   procedure KillHookedMobs;
@@ -67,7 +67,7 @@ implementation
       Engine.Msg('[KillHooked]', 'Fighting off mobs', 128);
       Engine.FaceControl(1, true);                            // turn on the interface
       while (HaveHookedMobs) do delay(555);                   // wait while there are agro mobs
-        Engine.FaceControl(1, false);                         // turn off the interface
+      Engine.FaceControl(1, false);                           // turn off the interface
     end;
   end;
 
@@ -96,7 +96,7 @@ implementation
       Engine.MoveToTarget;
       Engine.DlgOpen;
       DlgSel (1, 'npc_268468761_goto 260');  // enter
-      TPDelay;
+      Delay(3000);
     end;
 
     Engine.MoveTo (13813, -247416, -9576);  // room 1
@@ -106,8 +106,8 @@ implementation
     Engine.MoveTo (15126, -248122, -9576);
     Engine.MoveTo (16156, -248057, -9576);  // room 2
     Engine.MoveTo (16358, -247439, -9576);
-    //KillHookedMobs;
     Engine.MoveTo (16243, -246882, -9576);
+    //KillHookedMobs;
     Engine.MoveTo (17619, -246893, -9576);  // room 10
     Engine.MoveTo (17513, -248329, -9576);
     Engine.MoveTo (17861, -248516, -9576);  // room 11
@@ -115,13 +115,18 @@ implementation
     Engine.MoveTo (18572, -247620, -9576);
     //KillHookedMobs;
     Engine.MoveTo (19818, -247689, -9576);
-    Engine.MoveTo (19652, -245836, -9576);
-    Engine.MoveTo (20248, -245899, -9576);  // room 13
-
+    Engine.MoveTo (19652, -245836, -9576); // room 13
   end;
 
-BEGIN
+procedure Main();
+begin
+  Engine.FaceControl(0, false);
   //FromHuntersToForbiddenPath;
   goToRoom13;  // see CataForbiddenPathMobLoc.jpg to know which room
+  Engine.LoadConfig (User.Name);  // load config for only attack hooked
   Engine.FaceControl(0, true);
+end;
+
+BEGIN
+  Main();
 END.

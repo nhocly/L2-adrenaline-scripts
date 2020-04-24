@@ -1,6 +1,6 @@
 uses
-  SysUtils, Classes, SettingsModule, LocationModule, PathOfTheElvenOracleQuest,
-  NpcFunctions, Functions, Quest_SuplyCheck, UserFunctions, Quest_HeadForTheHills,
+  SysUtils, Classes, Original_SettingsModule, Original_LocationModule, PathOfTheElvenOracleQuest,
+  Original_NpcFunctions, Original_Functions, Quest_SuplyCheck, Original_UserFunctions, Quest_HeadForTheHills,
   Quest_SpiritOfMirrors, Quest_CureForFeverDisease, Quest_OminousNews, Quest_SwordOfSolidarity,
   Quest_SkirmishWithOrcs;
 
@@ -85,7 +85,7 @@ procedure evt2_5;
 begin
   if toRightCity(KAMAEL) then
   begin
-	if not startDialog(KAMAEL_NEWBIE_GUIDE) then //lvl 2
+  if not startDialog(KAMAEL_NEWBIE_GUIDE) then //lvl 2
       print('Cant find Newbie Helper');
     if not SuplyCheckDone then  // it's a quest from kamael village
       ExecuteSuplyCheck;

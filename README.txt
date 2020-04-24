@@ -3,7 +3,6 @@ Adrenaline scripts are written in delphi/pascal syntax so If you want to better 
 I'm gonna be doing a 1-80 leveler script for Interlude that includes some quests like pet quests, nobless, etc.
 
 TODO list:
-- WaitForParty, if party not in range bot Off, wait while party not in range. Then bot On
 - The teleport function currently teleports to the first location in the gatekeeper dialog if the destination is not reachable from this gatekeeper, and keeps repeating
 until the destination is reachable. The number of teleports should be minimized. A way could be to find from which city the destination is reachable, if that city is in
 the current gatekeeper dialog then we've finished, else look for a city to go to the previous city and see if it's reachable and so on.

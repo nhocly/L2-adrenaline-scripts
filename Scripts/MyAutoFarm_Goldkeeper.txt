@@ -17,9 +17,10 @@ begin
           not NpcList.Items(i).Dead  and
          ((NpcList.Items(i).MaxHP > 30000)  or  (p <> 0))  then
       begin
-        PlaySound (exepath + '\sounds\beep.wav');
+        Print('found goldkeeper');
+        PlaySound (exepath + '\Sounds\beep.wav');
       end;
     end;
-    Delay (3333);
+    Delay (10 * 1000);
   end;
 end.
