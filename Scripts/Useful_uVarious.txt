@@ -1,0 +1,114 @@
+unit Useful_uVarious;
+// unit Useful_ChatScanner
+
+interface
+
+uses SysUtils;
+
+(*------- Chat Scanner --------------------------------------------------------*)
+var
+  phrases: array of string = ['som', 'miracle'];   // set words we are looking for
+
+  procedure ChatScannerMain();
+  procedure CopyChatThread();
+  procedure ChatScanerThread();
+(*------- Chat Scanner --------------------------------------------------------*)
+
+  procedure TradeSpam;
+
+(*------- Exchanges item ------------------------------------------------------*)
+const
+  itemCount = 69; // for testing purposes make this number small
+  perActionDelay = 200;
+
+  // Exchanges itemCount number of items from the inventory
+  function SetCursorPos(x, y : integer): boolean; stdcall; external 'user32.dll';
+  function mouse_event(dwFlags, dx, dy, dwData: byte; dwExtraInfo: integer): void; stdcall; external 'user32.dll';
+(*------- Exchanges item ------------------------------------------------------*)
+
+implementation
+
+{
+  A simple example showing how you can scan all chat messages
+  A simple example that logs all chat messages
+  It doesn't work in Interlude or maybe with version 1.71 of the bot
+}
+
+(*------- Chat Scanner --------------------------------------------------------*)
+procedure ChatScannerMain();
+begin
+  Script.NewThread(@ChatScanerThread);
+  Delay(-1);
+end;
+
+procedure CopyChatThread();
+begin
+  while  true  do begin
+    if (ChatMessage.Unread) and (ChatMessage.Time < 3333) then begin
+      Print(ChatMessage.Sender+': '+IntToStr(Ord(ChatMessage.ChatType))+' :'+ChatMessage.text);
+    end;
+    Delay(100);
+  end;
+end;
+
+// It can be slightly improved to find the ads we need:
+
+procedure ChatScanerThread();
+var i: integer;
+begin
+  Print('Started Chat Scanner Thread');
+  while  true  do begin
+    // ChatType = (mtSystem, mtAll, mtPrivate, mtParty, mtClan, mtFriend, mtShout)
+    if (ChatMessage.Unread) and (ChatMessage.ChatType = mtAll)  then begin
+      for i:= Low(phrases) to High(phrases) do begin
+        if (Pos(LowerCase(phrases[i]), LowerCase(ChatMessage.text)) > 0) then begin
+          Print(ChatMessage.Sender+': '+ChatMessage.Text);
+          PlaySound(ExePath+'\Sounds\msg.mp3');
+          // Engine.SetGameWindow(true); // Undeclared in version 1.71
+          break;
+        end;
+      end;
+    end;
+    Delay(100);
+  end;
+    Print('Ended Chat Scanner Thread');
+end;
+(*------- Chat Scanner --------------------------------------------------------*)
+
+procedure TradeSpam();
+begin
+  while  true  do
+  begin
+    Engine.EnterText('+WTS 5 Gift Box 1k');
+    Delay (20 * 1000);
+  end;
+end;
+
+(*------- Exchanges item ------------------------------------------------------*)
+procedure mouseClick(x, y : integer);
+begin
+  SetCursorPos(x, y);
+  mouse_event($2, 0, 0, 0, 0);
+  delay(perActionDelay);
+  mouse_event($4, 0, 0, 0, 0);
+  delay(perActionDelay);
+end;
+
+procedure ExchangeItems();
+var
+  i : integer;
+begin
+  i := 1;
+  while i < itemCount do begin
+    mouseClick(690, 280);
+    mouseClick(690, 280);
+    mouseClick(890, 460);
+    mouseClick(690, 460);
+    i := i + 1;
+  end;
+end.
+(*------- Exchanges item ------------------------------------------------------*)
+
+begin
+  TradeSpam();
+end.

@@ -1,4 +1,4 @@
-uses SysUtils, Classes, SettingsModule, CityModule, BufferLocationModule, TeleportModule;
+uses SysUtils, Classes, AutoFarm_SettingsModule, CityModule, BufferLocationModule, TeleportModule;
 
 {
     It gets the integer corresponding to the Gatekeeper in you current cityIndex

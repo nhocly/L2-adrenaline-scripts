@@ -1,10 +1,21 @@
+{
+  Execute this with the dialogue open to get the html
+  For community board: Engine.CBText
+}
+
 uses classes;
+
+procedure GetDialogText;
 begin
-with Tstringlist.create do
-try
-  Text := Engine.DlgText;
-  SaveToFile(exepath+'show dlg'+'.txt');
-finally
-  Free;
- end;
-end.
+  with Tstringlist.create do
+  try
+    Text := Engine.DlgText;
+    SaveToFile(exepath + 'ServerByPassShow.txt'); // saves to where the bot.exe is
+  finally
+    Free;
+  end;
+end;
+
+BEGIN
+  GetDialogText;
+END.

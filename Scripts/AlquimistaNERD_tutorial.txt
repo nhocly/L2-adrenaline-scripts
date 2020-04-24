@@ -1,5 +1,0 @@
-To run the bot run start as admin, then run tunel as admin and with it select boot.
-Then open as many l2 clients as you want and they should appear in the bot.
-You may need to select Windows XP compatibility for the boot and the tunel files in Windows 10.
-
-To download the maps open the updater.exe. For interlude select H5 and click the right button to download.

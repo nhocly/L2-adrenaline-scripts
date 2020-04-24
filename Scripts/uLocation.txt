@@ -1,9 +1,9 @@
-unit  LocationModule;
+unit  uLocation;
 
 interface
 
 uses
-  SysUtils, Classes, FunctionsModule, SettingsModule;
+  SysUtils, Classes, uFunctions, uSettings;
 
 (*---------------- Types ------------------------------------------------------*)
 type

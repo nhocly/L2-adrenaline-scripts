@@ -1,9 +1,9 @@
-unit FunctionsModule;
+unit uFunctions;
 
 interface
 
 uses
-  SysUtils, Classes, SettingsModule;
+  SysUtils, Classes, uSettings;
 
 (*---------------- Types ------------------------------------------------------*)
 type

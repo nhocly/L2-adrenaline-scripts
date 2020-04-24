@@ -1,7 +1,0 @@
-begin
-  while  true  do
-  begin
-    Engine.EnterText ('+>>> Need BSSB. I have 100g <<<');
-    Delay (30 * 1000);
-  end;
-end.

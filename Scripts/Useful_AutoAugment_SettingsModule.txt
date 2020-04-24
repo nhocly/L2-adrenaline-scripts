@@ -1,4 +1,4 @@
-unit SettingsModule;
+unit Useful_AutoAugment_SettingsModule;
 
 
 interface
@@ -15,10 +15,10 @@ type
     procedure Save(const Section, Key: string; Data: Integer); overload;
     function  Load(const Section, Key: string; DefData: string  = ''): string; overload;
     function  Load(const Section, Key: string; DefData: integer = 0) : integer; overload;
-	function  Load(const Section, Key: string; DefData: boolean = false): boolean; overload;
+  function  Load(const Section, Key: string; DefData: boolean = false): boolean; overload;
   end;
 
-  	function BoolToStr(const value : boolean): string;
+    function BoolToStr(const value : boolean): string;
 
 implementation
 
@@ -29,15 +29,15 @@ function WritePrivateProfileStringW(lpAppName, lpKeyName, lpString, lpFileName: 
 var
   buf: array [0..2048] of Byte;
 
- 
+
 function BoolToStr;
 begin
    if value then
     Result := 'True'
    else
     Result := 'False';
-end; 
- 
+end;
+
 procedure TSettings.SetFile(const Name: string);
 begin
   fFile := Name;

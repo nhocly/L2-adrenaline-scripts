@@ -1,6 +1,0 @@
-uses
-  AA_FunctionsModule;
-
-begin
-  script.newthread(@WaitParty);
-end.
