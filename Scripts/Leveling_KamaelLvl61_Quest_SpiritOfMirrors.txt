@@ -1,9 +1,10 @@
-﻿unit Quest_SpiritOfMirrors;
+﻿unit Leveling_KamaelLvl61_Quest_SpiritOfMirrors;
 
 interface
 
 uses
-  SysUtils, Classes, Original_LocationModule, Original_SettingsModule, Original_Functions, Original_NpcFunctions, Original_UserFunctions;
+  SysUtils, Classes, Original_LocationModule, Original_SettingsModule,
+  Original_Functions, Original_NpcFunctions, Original_UserFunctions;
 
 const
   //npcs

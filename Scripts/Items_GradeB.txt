@@ -3,12 +3,22 @@ unit Items_GradeB;
 interface
 
 uses
-  Types, Classes, FunctionsModule, LocationModule, MyAutoFarm, FarmModule;
+  Classes, uTypes, uFunctions, uLocation, uAutoFarm, uFarm;
 
 type
-  TItemFuncion = function: Boolean;
 
 const
+  AvadonCircletRecipe = 4149;
+  AvadonCircletPattern = 4072;
+  AvadonRobeRecipe = 4148;
+  AvadonRobeFabric = 4071;
+  AvadonGlovesRecipe = 4150;
+  AvadonGlovesPart = 4073;
+  AvadonBootsRecipe = 4175;
+  AvadonBootsDesign = 4098;
+  AvadonShieldRecipe = 4441;
+  AvadonShieldFragment = 4439;
+
   BlueWolfHelmetRecipe = 4173;
   BlueWolfHelmetDesign = 4088;
   BlueWolfBreastplateRecipe = 4981;
@@ -20,6 +30,26 @@ const
   BlueWolfBootsRecipe = 4167;
   BlueWolfBootsDesign = 4090;
 
+  DoomHelmetRecipe = 4166;
+  DoomHelmetPattern = 4089;
+  DoomPlateArmorRecipe = 4158;
+  DoomPlateArmorTemper = 4081;
+  DoomGlovesRecipe = 4168;
+  DoomGlovesPart = 4091;
+  DoomBootsRecipe = 4176;
+  DoomBootsPart = 4099;
+
+  function  AvadonCircletRecipe: Boolean;
+  function  AvadonCircletPattern: Boolean;
+  function  AvadonRobeRecipe: Boolean;
+  function  AvadonRobeFabric: Boolean;
+  function  AvadonGlovesRecipe: Boolean;
+  function  AvadonGlovesBootsMats: Boolean;
+  function  AvadonBootsRecipe: Boolean;
+  function  AvadonBootsRecipe: Boolean;
+  function  AvadonShieldRecipe: Boolean;
+  function  AvadonShieldFragment: Boolean;
+
   function  BlueWolfRecipes: Boolean;
   function  BlueWolfBootsDesign2: Boolean;
   function  BlueWolfBootsRecipe3: Boolean;
@@ -30,7 +60,461 @@ const
   function  BlueWolfHelmetDesign2: Boolean;
   function  BlueWolfHelmet: Boolean;
 
+  function  DoomHelmetRecipe: Boolean;
+  function  DoomHelmetPattern: Boolean;
+  function  DoomPlateArmor: Boolean;
+  function  DoomPlateArmorTemper: Boolean;
+  function  DoomGlovesRecipe: Boolean;
+  function  DoomGlovesPart: Boolean;
+  function  DoomBootsRecipe: Boolean;
+  function  DoomBootsPart: Boolean;
+
+  procedure SwordOfValhallaRecipe;
+  procedure SwordOfValhallaRecipe60;
+  procedure SwordOfValhallaBlade;
+  procedure SwordOfValhalla;
+  procedure DemonDaggerRecipe;
+  procedure DemonDaggerRecipe60;
+  procedure DemonDaggerEdge;
+  function SwordOfDamascusRecipe: Boolean;
+  function SwordOfDamascusRecipe: Boolean;
+  function GuardianSwordRecipe: Boolean;
+  function GuardianSwordBlade: Boolean;
+  function BowOfPerilRecipe: Boolean;
+  function BowOfPerilShaft: Boolean;
+  function DeadmanGloryRecipe: Boolean;
+  function DeadmanGloryStone: Boolean;
+
 implementation
+
+{-------------------------------------------------------------------------------
+  Avadon Circlet Recipe 100% Only by Drop
+  Marsh Stalker (lvl 54) 1/1618 (Aden, Forsaken Plains)
+ -------------------------------------------------------------------------------}
+function  AvadonCircletRecipe: Boolean;
+begin
+  TeleportTo ('forsaken plains');
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Circlet Pattern by Drop
+  Grave Lich (lvl 57) 1/315 (Aden, Devastated Castle)
+ -------------------------------------------------------------------------------}
+function  AvadonCircletPattern: Boolean;
+begin
+  TeleportTo ('devastated castle');
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Robe Recipe by Spoil
+  Baby Panthera (lvl 55) 1/150 (Shuttgart, Frost Lake)
+ -------------------------------------------------------------------------------}
+function  AvadonRobeRecipe: Boolean;
+begin
+  TeleportTo ('frozen labirinth');
+  if  User.InRange (113869, -108865, -840, 500, 200)  then begin
+    Print ('Path to Baby Panthera');
+    Engine.MoveTo (113830, -109266, -848);
+    Engine.MoveTo (113433, -109810, -864);
+    Engine.MoveTo (112339, -110839, -952);
+    Engine.MoveTo (111971, -111552, -1000);
+    Engine.MoveTo (111514, -112082, -1160);
+    Engine.MoveTo (110606, -113173, -1880);
+    Engine.MoveTo (119234, -113872, -2128);
+    Engine.MoveTo (107926, -115882, -2810);
+  end;
+  if  User.InRange (107926, -115882, -2810, 500, 200)  then begin
+    Print ('Nice spot to farm lvl 50-60');
+    Engine.MoveTo (111514, -112082, -1160);
+    Engine.MoveTo (110606, -113173, -1880);
+    Engine.MoveTo (119234, -113872, -2128);
+    Engine.MoveTo (107926, -115882, -2810);
+  end;
+  if  User.InRange (107926, -115882, -2810, 500, 200)  then begin
+    Engine.FaceControl (0, true);
+  end;
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Valhalla Recipe (100%) Only by Drop
+  Garden Guard Leader (lvl 50) 1/5208 chance (Heine, Garden of Eva)
+ -------------------------------------------------------------------------------}
+procedure  SwordOfValhallaRecipe;
+begin
+
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Valhalla Recipe (60%) by Drop
+  Connabi (54) 1/579 chance (Oren, Skyshadow Meadow)
+ -------------------------------------------------------------------------------}
+procedure  SwordOfValhallaRecipe60;
+begin
+
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Valhalla Blade by Drop
+  Hamrut (lvl 58) 1/1091 chance (Aden, Giants Cave)
+ -------------------------------------------------------------------------------}
+procedure  SwordOfValhallaBlade;
+begin
+
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Valhalla by Drop
+  Bloody Lady (lvl 60) (Giran, Anthara's Lair)
+  1/142857 chance, 4m 10s avg. respawn time
+--------------------------------------------------------------------------------}
+procedure  SwordOfValhalla;
+begin
+  if  User.InRange (132839, 114438, -3720, 500, 200)  or
+      User.InRange (131423, 114461, -3716, 500, 200)  then
+  begin
+    Print ('Moving to hunting zone');
+    Engine.LoadConfig ('KillAgroMobs');
+    Engine.FaceControl (0, true);
+    Engine.MoveTo (134835, 114489, -3751);
+    Engine.MoveTo (136032, 115060, -3720);
+  end;
+  if  User.InRange (136032, 115060, -3720, 500, 200)  then begin
+    Engine.MoveTo (136834, 114537, -3712);
+    Engine.MoveTo (139934, 114361, -3720);
+    Engine.MoveTo (140890, 113430, -3720);
+    Engine.MoveTo (141731, 112430, -3720);
+    Engine.MoveTo (142600, 111915, -3944);
+  end;
+  if  User.InRange (142600, 111915, -3944, 500, 200)  then begin
+    Engine.LoadConfig (User.Name);
+    Engine.LoadZone ('BloodyLady.zmap');
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Demon Dager Recipe by Drop
+  Grave Predator (lvl 59) 1/22727 chance (Aden, Devastated Castle)
+ -------------------------------------------------------------------------------}
+procedure  DemonDaggerRecipe;
+begin
+  if  User.InRange (113869, -108865, -840, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Demon Dager Recipe (60%) by Drop
+  Slaughter Bathin (lvl 63) 1/9709 (Aden, Tower of Insolence, floor???)
+ -------------------------------------------------------------------------------}
+procedure  DemonDaggerRecipe60;
+begin
+  if  User.InRange (113869, -108865, -840, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Demon Dager Edge by Spoil
+  Platinum Guardian Archer (71) 1/25 chance
+ -------------------------------------------------------------------------------}
+procedure  DemonDaggerEdge;
+begin
+  if  User.InRange (113869, -108865, -840, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Damascus Recipe by Drop
+  Malruk Knight (lvl 66) 1/5319 (Giran, Anthara's Lair)
+ -------------------------------------------------------------------------------}
+function  SwordOfDamascusRecipe: Boolean;
+begin
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Sword Of Damascus Blade by Drop
+  Wailing Of Splendor (lvl 67) 1/57 chance (Rune, Valley of Saints)
+ -------------------------------------------------------------------------------}
+function  SwordOfDamascusRecipe: Boolean;
+begin
+  TeleportTo ('valley of saints');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Guardian Sword Recipe by Drop
+  Lost Gargoyle (lvl 55) 1/27778 chance (Schuttgart, Frozen Labyrinth)
+--------------------------------------------------------------------------------}
+function  GuardianSwordRecipe: Boolean;
+begin
+  TeleportTo ('valley of saints');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Guardian Sword Blade by Drop
+  Cave Howler (lvl 65) 1/559 chance (Schuttgart, Frozen Labyrinth)
+ -------------------------------------------------------------------------------}
+function  GuardianSwordBlade: Boolean;
+begin
+  TeleportTo ('frozen labyrinth');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Bow of Peril Recipe by Spoil
+  Death Wave (lvl 62) 1/230 chance (Giran, Anthara's Lair)
+ -------------------------------------------------------------------------------}
+function  BowOfPerilRecipe: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Bow of Peril Shaft by Spoil
+  Splinter Stakato (lvl 66) 1/70 chance (Rune, Swamp of Screams)
+ -------------------------------------------------------------------------------}
+function  BowOfPerilShaft: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Deadman's Glory Recipe by Spoil (Aden, The Giant Cave)
+  Hamrut (lvl 58) 1/17544 chance
+  Beast Guardian (lvl 59) 1/10417 chance
+ -------------------------------------------------------------------------------}
+function  DeadmanGloryRecipe: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Deadman's Glory Stone by Spoil
+  Sacrificed Man (lvl 67) (Rune, Forest of the Dead)
+   1/68 chance, 4m avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DeadmanGloryStone: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Star Buster Recipe by Spoil
+  Freya's White Bear (lvl 57) (where ???)
+  1/68 chance, 4m avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DeadmanGloryStone: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  if  User.InRange (, 500, 200)  then begin
+  end;
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Robe Fabric by Spoil
+  Malruk Succubus Turen (lvl 56) (Giran, Dragon Valley)
+  1/30 chance, 36s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonRobeFabric: Boolean;
+begin
+  TeleportTo ('antharas lair');
+  {if  User.InRange (126438, 174785, -3074, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Gloves Recipe by Drop
+  Falibati (lvl 64) (Aden, Seal of Shillen)
+  1/781 chance, 25s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonGlovesRecipe: Boolean;
+begin
+  TeleportTo ('seal of shillen');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Gloves Part by Drop (Aden, The Giant's Cave)
+  Avadon Boots Design by Drop
+  Yintzu (lvl 56) 1/179 chance, 1m 14s avg. respawn time
+  Paliote (lvl 57) 1/166 chance, 1m 15s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonGlovesBootsMats: Boolean;
+begin
+  TeleportTo ('giant cave');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Boots Recipe by Drop
+  Past Knight (lvl 64) (Aden, Ancient Battleground)
+  1/884 chance, 37s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonBootsRecipe: Boolean;
+begin
+  TeleportTo ('ancient battleground');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Boots Design by Drop
+  Past Knight (lvl 64) (Aden, Ancient Battleground)
+  1/884 chance, 37s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonBootsRecipe: Boolean;
+begin
+  TeleportTo ('ancient battleground');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Shield Recipe by Drop
+  Marsh Drake (lvl 55) (Aden, Forsaken Plains)
+  1/989 chance, 27s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonShieldRecipe: Boolean;
+begin
+  TeleportTo ('forsaken plains');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+{-------------------------------------------------------------------------------
+  Avadon Shield Fragment by Drop
+  Ghost Of The Tower (lvl 60) (Aden, Tower of Insolence)
+  1/3 chance, 2m 28s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  AvadonShieldFragment: Boolean;
+begin
+  TeleportTo ('tower of insolence');
+  {if  User.InRange (, 500, 200)  then begin
+    Engine.MoveTo (125406, 175937, -3352);
+  end;
+  if  User.InRange (125406, 175937, -3352, 500, 200)  then begin
+    Engine.MoveTo (122550, 177468, -3472);
+  end;
+  if  User.InRange (122550, 177468, -3472, 500, 200)  then begin
+    Engine.MoveTo (119338, 177971, -3768);
+  end;
+  if  User.InRange (119338, 177971, -3768, 500, 200)  then begin
+    Engine.LoadZone ('KarmianTunicGaiters.zmap');
+  end;
+  Result := true;}
+end;
+
+procedure GetAvadon;
+begin
+ {GetItem (@AvadonCircletRecipe, AVADON_CIRCLET_RECIPE, -1, -1, 54, 2, -1, -1);
+  GetItem (@AvadonShieldRecipe, AVADON_SHIELD_RECIPE, -1, -1, 55, 2, -1, -1);
+  GetItem (@AvadonRobeRecipe, AVADON_ROBE_RECIPE, -1, -1, 55, 2, -1, -1);
+  GetItem (@AvadonRobeFabric, AVADON_ROBE_FABRIC, -1, -1, 56, 1 * 12, -1, -1);
+  GetItem (@AvadonGlovesBootsMats, AVADON_GLOVES_PART, AVADON_BOOTS_DESIGN, -1, 56, 1 * 12, 1 * 12, -1);
+  GetItem (@AvadonCircletPattern, AVADON_CIRCLET_PATTERN, -1, -1, 57, 1 * 12, -1, -1);
+  GetItem (@AvadonShieldFragment, AVADON_SHIELD_FRAGMENT, -1, -1, 60, 1 * 12, -1, -1);
+  GetItem (@AvadonGlovesRecipe, AVADON_GLOVES_RECIPE, -1, -1, 64, 2, -1, -1);
+  GetItem (@AvadonBootsRecipe, AVADON_BOOTS_RECIPE, -1, -1, 64, 2, -1, -1);
+   }
+end;
+
+// Get recipes and parts of blue wolf armor
+procedure GetBlueWolf;
+begin
+{
+  GetItem(@BlueWolfHelmetRecipe, BLUE_WOLF_HELMET_RECIPE, -1, -1, 58, 2, -1, -1);
+  GetItem(@BlueWolfRecipes, BLUE_WOLF_BREASTPLATE_RECIPE, BLUE_WOLF_GAITERS_RECIPE, -1, 58, 2, 2, -1);
+  GetItem(@BlueWolfBootsRecipe, BLUE_WOLF_BOOTS_RECIPE, -1, -1, 58, 2, -1, -1);
+  GetItem(@BlueWolfGlovesRecipe, BLUE_WOLF_GLOVES_RECIPE, -1, -1, 61, 2, -1, -1);
+  GetItem(@BlueWolfMaterials, BLUE_WOLF_BREASTPLATE_PART, BLUE_WOLF_GAITERS_MATERIAL,
+  BLUE_WOLF_BOOTS_DESIGN, 62, 1 * 13, 1 * 13, 1 * 13);
+  GetItem(@BlueWolfGlovesFabric, BLUE_WOLF_GLOVES_FABRIC, -1, -1, 67, 1 * 13, -1, -1);
+  GetItem(@BlueWolfHelmetDesign, BLUE_WOLF_HELMET_DESIGN, -1, -1, 67, 1 * 13, -1, -1);
+}
+end;
 
 {-------------------------------------------------------------------------------
   Recipe: Blue Wolf Breastplate (100%) by Spoil
@@ -240,16 +724,116 @@ begin
   Result := true;
 end;
 
+{-------------------------------------------------------------------------------
+  Doom Helmet Recipe by Drop
+  Doom Guard (lvl 61) (Aden, Devastated Castle)
+  1/2062 chance, 1m 15s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomHelmetRecipe: Boolean;
+begin
+  BlueWolfMaterials;  // same as Blue Wolf Boots Design
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Helmet Pattern by Spoil
+  Chimera Piece (lvl 73) (Aden, The Giant Cave)
+  1/11 chance, 1m avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomHelmetPattern: Boolean;
+begin
+  TeleportTo ('beast farm');
+  if  User.InRange (, 500, 200)  then begin
+    Print ('Moving from respawn to hunting zone');
+    Engine.MoveTo (170082, 38731, -4048);
+  end;
+  if  User.InRange (180626, 39767, -3751, 500, 200)  then begin
+    //User.InRange (, 500, 200) then begin
+    Engine.LoadZone (exepath + '\Zmaps\AlpineKokaburra');
+  end;
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Plate Armor Recipe by Spoil
+  Anger Of Splendor (lvl 63) (Rune, Valley of Saints)
+  1/32 chance, 48s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomPlateArmor: Boolean;
+begin
+  BlueWolfRecipes;
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Plate Armor Temper by Spoil
+  Doom Knight (lvl 65) (Aden, Devastated Castle)
+  1/169 chance, 1m 15s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomPlateArmorTemper: Boolean;
+begin
+  if  User.InRange (178418, -13892, -2284, 500, 200)  then begin
+    Engine.MoveTo (179609, -13691, -2264);
+  end;
+  if  User.InRange (187648, -16525, -1304, 500, 200)  then begin
+    Engine.LoadZone (exepath + '\Zmaps\DoomKnight.zmap');
+  end;
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Gloves Recipe by Drop
+  Kranrot (lvl 59) (Aden, Giant Cave)
+  1/911 chance, 1m 20s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomGlovesRecipe: Boolean;
+begin
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Gloves Part by Spoil
+  Splinter Stakato Worker (lvl 67) (Goddard, Swamp of Screams)
+  1/8 chance, 47s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomGlovesPart: Boolean;
+begin
+  // same as Blue Wolf Gloves Fabric
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Boots Recipe by Drop
+  Yintzu (lvl 56) (Aden, Giant Cave)
+  1/1121 chance, 1m 14s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomBootsRecipe: Boolean;
+begin
+  if  User.InRange (82512, 53266, -1488, 500, 200)  then begin
+    Engine.MoveTo (80997, 53507, -1552);
+  end;
+  if  User.InRange (80997, 53507, -1552, 500, 200)  then begin
+    Engine.MoveTo (81020, 53029, -1560);
+    Engine.MoveTo (80966, 50100, -2152);
+    Engine.MoveTo (82348, 50293, -3174);
+    Engine.MoveTo (84600, 50441, -3480);
+    // TODO: fix this. Doesn't go through the river
+    Engine.MoveTo (90673, 50468, -3685);
+  end;
+  if  User.InRange (90673, 50468, -3685, 500, 200)  then begin
+    Engine.LoadZone ('Luminun.zmap');
+  end;
+  Result := true;
+end;
+
+{-------------------------------------------------------------------------------
+  Doom Boots Part by Spoil
+  Fang Of Splendor (lvl 67) (Rune, Valley of Saints)
+  1/6 chance, 48s avg. respawn time
+ -------------------------------------------------------------------------------}
+function  DoomBootsPart: Boolean;
+begin
+  Result := true;
+end;
+
 BEGIN
-  //ContinueFarming(@BlueWolfRecipes);
-{
-  GetItem (@BlueWolfHelmetRecipe, BLUE_WOLF_HELMET_RECIPE, -1, -1, 58, 2, -1, -1);
-  GetItem (@BlueWolfRecipes, BLUE_WOLF_BREASTPLATE_RECIPE, BLUE_WOLF_GAITERS_RECIPE, -1, 58, 2, 2, -1);
-  GetItem (@BlueWolfBootsRecipe, BLUE_WOLF_BOOTS_RECIPE, -1, -1, 58, 2, -1, -1);
-  GetItem (@BlueWolfGlovesRecipe, BLUE_WOLF_GLOVES_RECIPE, -1, -1, 61, 2, -1, -1);
-  GetItem (@BlueWolfMaterials, BLUE_WOLF_BREASTPLATE_PART, BLUE_WOLF_GAITERS_MATERIAL,
-  BLUE_WOLF_BOOTS_DESIGN, 62, 1 * 13, 1 * 13, 1 * 13);
-  GetItem (@BlueWolfGlovesFabric, BLUE_WOLF_GLOVES_FABRIC, -1, -1, 67, 1 * 13, -1, -1);
-  GetItem (@BlueWolfHelmetDesign, BLUE_WOLF_HELMET_DESIGN, -1, -1, 67, 1 * 13, -1, -1);
-}
 END.

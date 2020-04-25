@@ -1,9 +1,11 @@
-﻿unit Quest_OminousNews;
+﻿unit Leveling_KamaelLvl61_Quest_OminousNews;
 
 interface
 
 uses
-  SysUtils, Classes, Original_LocationModule, Original_SettingsModule, Original_Functions, Original_NpcFunctions, Original_UserFunctions, Quest_WalkOfFate;
+  SysUtils, Classes, Original_LocationModule, Original_SettingsModule,
+  Original_Functions, Original_NpcFunctions, Original_UserFunctions,
+  Leveling_KamaelLvl61_Quest_WalkOfFate;
 
 const
   //npcs

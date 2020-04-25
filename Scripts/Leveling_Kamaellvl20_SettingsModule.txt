@@ -1,4 +1,4 @@
-unit Leveling_lvl20_SettingsModule;
+unit Leveling_KamaelLvl20_SettingsModule;
 
 interface
 

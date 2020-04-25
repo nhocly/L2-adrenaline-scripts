@@ -1,0 +1,14 @@
+unit Types;
+
+interface
+
+type
+  TIntegerArray = Array of Integer;
+  TProc = Procedure();
+  TFunc = function: Boolean;
+  //TProcParam = Procedure(arr: TIntegerArray);
+
+implementation
+
+BEGIN
+END.

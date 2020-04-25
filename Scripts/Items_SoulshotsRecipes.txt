@@ -1,0 +1,55 @@
+unit Items_SoulshotsRecipes;
+
+{-------------------------------------------------------------------------------
+Recipe: Soulshot: D-Grade
+Akaste Succubus Turen lvl 21 (Dwarven Village, Mithril Mines)
+Giant Poison Bee lvl 21 (Oracle of Dawn/Fellmere Harvest Grounds)
+Ruin Spartoi lvl 21 (Gludio, Ruins of Agony)
+Ol Mahum Deserter lvl 23 (Gludin Village, Abandoned Camp)
+Ol Mahum Reserve lvl 23 (Gludin Village, Abandoned Camp)
+ -------------------------------------------------------------------------------}
+function  SoulshotDGradeRecipe: Boolean;
+begin
+end;
+
+{-------------------------------------------------------------------------------
+Recipe: Blessed Spiritshot D-Grade
+Turec Orc Supllier (lvl 27) 1/29 chance (Gludin Village, Orc Barracks)
+ -------------------------------------------------------------------------------}
+function  BlessedSpiritshotDGradeRecipe: Boolean;
+begin
+end;
+
+{-------------------------------------------------------------------------------
+  Recipe: Soulshot: C-Grade by Spoil
+  Snipe Cohort (lvl 42) 1/130 chance (Dion, Cruma Tower)
+ -------------------------------------------------------------------------------}
+function  SoulshotCGradeRecipe: Boolean;
+begin
+end;
+
+{-------------------------------------------------------------------------------
+Recipe: Blessed Spiritshot C
+Enchanted Stone Golem lvl 42, (Town of Oren, Ivory Tower - inside the crater)
+ -------------------------------------------------------------------------------}
+function  BlessedSpiritshotCGradeRecipe: Boolean;
+begin
+  GetVarnish;  // same location as varnish
+end;
+
+{
+--------------------------------------------------------------------------------
+Recipe: Soulshot: B-Grade
+Connabi lvl 54 (Town of Oren, Skyshadow Meadow)
+--------------------------------------------------------------------------------
+}
+function  BlessedSpiritshotCGradeRecipe: Boolean;
+begin
+  SwordOfValhallaRecipe;  // same location as sword of valhalla recipe
+end;
+
+{-------------------------------------------------------------------------------
+Recipe: Blessed Spiritshot B-Grade
+Harit Lizardman Warrior lvl 53 (Hunters Village, Forest of Mirrors near Anghel Waterfall)
+Marluk Succubus lvl 55 (Town of Giran, Gorgon's Flower Garden) 
+ -------------------------------------------------------------------------------}

@@ -1,9 +1,9 @@
-unit Leveling_lvl20_ModuleFunctions;
+unit Leveling_KamaelLvl20_ModuleFunctions;
 
 interface
 
 uses
-  SysUtils, Classes, Leveling_lvl20_SettingsModule;//, TNpcListModule;
+  SysUtils, Classes, Leveling_KamaelLvl20_SettingsModule;//, Leveling_KamaelLvl20_TNpcListModule;
 
 var
   Settings: TSettings;

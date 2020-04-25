@@ -1,9 +1,18 @@
 {
+by lvl 20, M.ore and cokes from Hobgoblins and Grim Grizzlys (not sure) near dion
+lvl 25 go to wastelands and spoil Lesser Basilisks for A.bones
+at 30 go to crypts of disgrace for M.ore from Grave Rober Rangers
+at 33 EG for hangman trees (rly nice Steel drops) stay there until ur lvl 39, then do quest for BH
+at about lvl 40, u can either go cruma tower 1 and get Karmian Gloves recipe, which wont take long, since u need only 1
+got to branded, there u have great SOP and CBP spoils...
+by lvl 45 or 46 u could go to cruma tower 2 and spoil Karmian Gloves Fabric
+later u can go to Patriots Necropolis for tons of A.bones and skins, and some B jewelry recipes
+by lvl 60 go to valley of saints for M.ore, some B and A recipes and parts, and some EABs
 Steel, SOP, CL -> enchanted valley
-Varnish -> iron golems under IT and Cemetery ghosts/orcs.
-DMP, craft en...if you have high lvl dorf, Flava in HS.
-SoP, Liele elders in EV or later buffalos x1 mage and x2 fighter in BF.}
-
+Varnish -> iron golems under IT and Cemetery ghosts/orcs
+DMP, craft en...if you have high lvl dorf, Flava in HS
+SoP, Liele elders in EV or later buffalos x1 mage and x2 fighter in BF
+}
 unit Item_Mats;
 
 interface

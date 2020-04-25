@@ -11,12 +11,13 @@
     6. Talk to Blacksmith Altran in the middle of the Talking Island Village and get the reward.
 }
 
-unit Quest_SwordOfSolidarity;
+unit Leveling_KamaelLvl61_Quest_SwordOfSolidarity;
 
 interface
 
 uses
-  SysUtils, Classes, Original_LocationModule, Original_SettingsModule, Original_Functions, Original_NpcFunctions, Original_UserFunctions;
+  SysUtils, Classes, Original_LocationModule, Original_SettingsModule,
+  Original_Functions, Original_NpcFunctions, Original_UserFunctions;
 
 const
   // NPCs

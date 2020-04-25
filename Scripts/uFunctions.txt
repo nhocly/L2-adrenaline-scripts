@@ -92,13 +92,13 @@ var
 (*-------------- Functions ----------------------------------------------------*)
   function  DlgSel(Index: Integer; s: String = ''): Boolean; overload;
   function  DlgSel(Caption: String; s: String = ''): Boolean; overload;
-  procedure WaitParty;
-  procedure TPDelay;
+  procedure WaitParty();
+  procedure TPDelay();
   procedure MyPrint(s: String);
   // procedure  checkForCaptchaThread;
   function  PathMove(path: Array of Integer): boolean;
   procedure MoveAndWait(x, y, z: integer);
-  procedure UnlockServer;
+  procedure UnlockServer();
   procedure updateState(stateType: string; stateValue: string; value: string); overload;
   procedure updateState(stateType: string; stateValue: string; value: integer); overload;
   function  getState(stateType: string; stateValue: string; value: string): string; overload;
@@ -117,20 +117,20 @@ var
   function  ifThen(bool: Boolean; valTrue: String; valFalse: String): String; overload;
   function  ifThen(bool: Boolean; valTrue: IntArr; valFalse: IntArr): IntArr; overload;
   function  ifThen(bool: Boolean; valTrue: DimensionArray; valFalse: DimensionArray): DimensionArray; overload;
-  procedure equipNewbieItems;
-  function  isMage(obj: TL2Char): boolean; overload;
-  function  isMage: boolean; overload;
-  procedure GetCoupon;
-  procedure getShadowWeaponFromCoupon(itemID: integer);
-  function  couponItemTaken(itemID: integer): boolean;
-  procedure equipItem(itemID: integer);
-  function  getNewbieBuffer: TL2Live;
-  function  countItems(itemID: integer): integer;
-  function  shouldRebuff: boolean;
+  procedure equipNewbieItems();
+  function  isMage(obj: TL2Char): Boolean; overload;
+  function  isMage(): Boolean; overload;
+  procedure GetCoupon();
+  procedure getShadowWeaponFromCoupon(itemID: Integer);
+  function  couponItemTaken(itemID: Integer): Boolean;
+  procedure equipItem(itemID: Integer);
+  function  getNewbieBuffer(): TL2Live;
+  function  countItems(itemID: Integer): Integer;
+  function  shouldRebuff(): Boolean;
 
 implementation
 
-procedure TPDelay;
+procedure TPDelay();
 begin
   Delay(TPDelayTime);
 end;
@@ -206,7 +206,7 @@ begin
   end;
 end;
 
-procedure  WaitParty;
+procedure  WaitParty();
 var
   i, x1, y1, z1, x2, y2, z2, followDistance: Integer;
   switch: Boolean;
@@ -222,30 +222,30 @@ begin
       z2 := Party.Chars.Items(i).Z;
       switch := false;
 
-      if  (distanceBetween (User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) < 2000)  then
+      if  (distanceBetween(User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) < 2000)  then
       begin
         // switch bot only if it's on. Gives undeclared GetSaceState
         // if  (Engine.GetFaceState(0) = true)  and  (distanceBetween (x1, y1, z1, x2, y2, z2) > 200)  then
-        if  (distanceBetween (User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) > followDistance)  then
+        if  (distanceBetween(User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) > followDistance)  then
         begin
-          Engine.FaceControl (0, false);
+          Engine.FaceControl(0, false);
           switch := true;
           // print(Party.Chars.Items(i).Name + ' too far');
         end;
-        while  not (distanceBetween (User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) <= followDistance)  do
+        while  not (distanceBetween(User.X, User.Y, User.Z, Party.Chars.Items(i).X, Party.Chars.Items(i).Y, Party.Chars.Items(i).Z) <= followDistance)  do
         begin
           x2 := Party.Chars.Items(i).X;
           y2 := Party.Chars.Items(i).Y;
           z2 := Party.Chars.Items(i).Z;
-          Delay (100);
+          Delay(100);
         end;
         // Print(Party.Chars.Items(i).Name + ' close again. Let''s go!');
-        Engine.FaceControl (0, true);
+        Engine.FaceControl(0, true);
         // if  (switch = true)  then
           // Engine.FaceControl (0, true);
       end;
     end;
-    Delay (500); // check every half second
+    Delay(500); // check every half second
   end;
 end;
 
@@ -253,18 +253,18 @@ end;
   Check if the server is locked by trying to move the character.
   If the character didn't move then unlock the server.
  -------------------------------------------------------------------------------}
-procedure  UnlockServer;
+procedure  UnlockServer();
 var
   pin: Integer;
   Moved: Boolean;
   lastX: Integer;
   newX: Integer;
 begin
-  Delay (3000); // Wait 3s for the server to load
+  Delay(3000); // Wait 3s for the server to load
   lastX := User.X;
   newX  := User.X + 5;
-  Engine.MoveTo (newX, User.Y, User.Z);
-  if User.InRange (newX, User.Y, User.z, 3, 10) then Moved := true;
+  Engine.MoveTo(newX, User.Y, User.Z);
+  if User.InRange(newX, User.Y, User.z, 3, 10) then Moved := true;
 
   // If it didn't moved it is locked
   if  not Moved  then
@@ -274,13 +274,13 @@ begin
   end;
 end;
 
-procedure  MoveAndWait (x, y, z: integer);
+procedure  MoveAndWait(x, y, z: integer);
 var
   i: integer;
   x1, y1, z1: integer;
   x2, y2, z2: integer;
 begin
-  Engine.MoveTo (x, y, z);
+  Engine.MoveTo(x, y, z);
   for  i := 0  to  Party.Chars.Count-1  do
   begin
     x1 := User.X;  y1 := User.Y;  z1 := User.Z;
@@ -288,9 +288,9 @@ begin
     y2 := Party.Chars.Items(i).Y;
     z2 := Party.Chars.Items(i).Z;
 
-    if  (distanceBetween (x1, y1, z1, x2, y2, z2) < 2000)  then
+    if  (distanceBetween(x1, y1, z1, x2, y2, z2) < 2000)  then
     begin
-      while  not (distanceBetween (x1, y1, z1, x2, y2, z2) < 150)  do
+      while  not (distanceBetween(x1, y1, z1, x2, y2, z2) < 150)  do
       begin
         x2 := Party.Chars.Items(i).X;
         y2 := Party.Chars.Items(i).Y;
@@ -474,7 +474,7 @@ begin
     Result := valFalse;
 end;
 
-procedure equipNewbieItems;
+procedure equipNewbieItems();
 var
   i: integer;
   item: TL2Item;
@@ -496,7 +496,7 @@ begin
   Result := isMage(User);
 end;
 
-procedure GetCoupon;
+procedure GetCoupon();
 var
   couponItem: TL2Item;
 begin
@@ -555,7 +555,7 @@ begin
     Engine.UseItem(itemID);
 end;
 
-function getNewbieBuffer;
+function getNewbieBuffer();
 var
   i: integer;
 begin
@@ -567,7 +567,7 @@ begin
   Result := nil;
 end;
 
-function countItems;
+function countItems();
 var
   i: integer;
   counter: integer;
@@ -581,7 +581,7 @@ begin
   Result := counter;
 end;
 
-function shouldRebuff;
+function shouldRebuff();
 var
   eff: TL2Buff;
   i: integer;

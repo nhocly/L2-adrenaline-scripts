@@ -1,8 +1,11 @@
 uses
-  SysUtils, Classes, Original_SettingsModule, Original_LocationModule, PathOfTheElvenOracleQuest,
-  Original_NpcFunctions, Original_Functions, Quest_SuplyCheck, Original_UserFunctions, Quest_HeadForTheHills,
-  Quest_SpiritOfMirrors, Quest_CureForFeverDisease, Quest_OminousNews, Quest_SwordOfSolidarity,
-  Quest_SkirmishWithOrcs;
+  SysUtils, Classes,
+  Original_SettingsModule, Original_LocationModule, Original_NpcFunctions, Original_Functions,
+  Leveling_KamaelLvl61_Quest_PathOfTheElvenOracle, Leveling_KamaelLvl61_Quest_SuplyCheck,
+  Leveling_KamaelLvl61_Original_UserFunctions, Leveling_KamaelLvl61_Quest_HeadForTheHills,
+  Leveling_KamaelLvl61_Quest_SpiritOfMirrors, Leveling_KamaelLvl61_Quest_CureForFeverDisease,
+  Leveling_KamaelLvl61_Quest_OminousNews, Leveling_KamaelLvl61_Quest_SwordOfSolidarity,
+  Leveling_KamaelLvl61_Quest_SkirmishWithOrcs;
 
 const
   SCROLL_TO_KAMAEL_VILLAGE = 9716;

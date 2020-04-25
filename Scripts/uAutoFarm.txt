@@ -1,0 +1,183 @@
+unit uAutoFarm;
+{-------------------------------------------------------------------------------
+  Whenever the character dies, needs buffs or isn't in combat it goes to village,
+  buffs, teleports and move to the desired hunting ground
+ -------------------------------------------------------------------------------}
+{-------------------------------------------------------------------------------
+  Make the necessary move commands to arrive to the desired location
+  TODO: CREATE ARRAY OF HUNTING GROUND LOCATIONS
+ -------------------------------------------------------------------------------}
+interface
+
+uses  uTypes, uFunctions, uLocation, uFarm;
+
+{
+--------------------------------------------------------------------------------
+  SEARCH FRASE "CHANGE THIS" IN FILE AND MAKE THE PERTINENT CHANGES
+--------------------------------------------------------------------------------
+}
+type
+  TClassType = record
+    isMage: Boolean;
+    secondClass: TSecondClass;
+  end;
+
+const
+  HIRA = 31613;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM BUFFER. IF THERE'S NONE THEN DELETE BUFFING LINE NEAR THE END OF THE SCRIPT
+  NOVA = 31124;          // YOU HAVE TO CHANGE THIS TO YOUR SERVER CUSTOM GATEKEEPER. IF THERE'S NONE CONFIGURE THE TELEPORT FUNCTION TO USE THE USUAL GATEKEEPER.
+  WindWalk = 1204;      // YOU MAY HAVE TO CHANGE THIS TO A BUFF YOU USE. IT'S USED TO KNOW WHEN YOU NEED TO BACK WHEN YOU'R BUFFS FINISH
+  StarDragonBugle = 4423;
+
+  function GetEquippedItems: TIntegerArray;
+  function HasStrider: Integer;
+  function  isDead: Boolean;
+  function  needsBuffs: Boolean;
+  procedure BuffInHunter;
+  procedure Buffing;
+  procedure continueFarming(toHuntingZone: TProc);
+
+implementation
+
+{-------------------------------------------------------------------------------
+  Check if the character is dead and go to village
+ -------------------------------------------------------------------------------}
+function  isDead: Boolean;
+begin
+  isDead := false;
+  //if  User.Dead  then Delay (60 * 1000); // In case of resurrection
+  if  User.Dead  then
+  begin
+    Engine.GoHome;
+    TPDelay;
+    isDead := true;
+  end;
+end;
+
+{
+--------------------------------------------------------------------------------
+  Check if the character needs buffs
+--------------------------------------------------------------------------------
+}
+function  needsBuffs: Boolean;
+var
+  buff: TL2Buff;
+begin
+  needsBuffs := false;
+  // check for any buff that you use
+  if  not User.Buffs.ByID (WindWalk, buff)  or
+    User.Buffs.ById(WindWalk, buff)  and  (buff.EndTime < 60 * 1000)  then
+  begin
+    needsBuffs := true;
+  end;
+end;
+
+procedure BuffInHunter;
+begin
+  UseGatekeeper(30233, 2, 'npc_268465019_goto 43');
+  Engine.MoveTo(82502, 53257, -1488);
+  Buffing;
+  UseGatekeeper(30177, 10, 'npc_268464862_goto 49');
+end;
+
+{-------------------------------------------------------------------------------
+  Buffs in the server custom's buffer
+  YOU MAY WANT TO CHANGE THIS
+ -------------------------------------------------------------------------------}
+procedure  Buffing;
+begin
+  Print('Buffing...');
+  Engine.SetTarget(HIRA); // NPC ID
+  Engine.MoveToTarget;
+  Delay(500);
+  Engine.DlgOpen;
+  Delay(500);
+  Engine.DlgSel(1);   //Open buffs
+  Delay(500);
+  if  isMage  then
+    Engine.BypassToServer('Quest 9999_NPCBuffer 108')     // Mage Buffs
+  else
+  begin
+    Engine.BypassToServer('Quest 9999_NPCBuffer 107');    // Fighter buffs
+    Delay(500);
+    Engine.BypassToServer('Quest 9999_NPCBuffer 2.htm');  // Buffs
+    Delay(500);
+    Engine.BypassToServer('Quest 9999_NPCBuffer 11');     // Berserker Spirit
+    Delay(500);
+    Engine.BypassToServer('Quest 9999_NPCBuffer 1.htm');  // Back
+    Delay(500);
+    Engine.BypassToServer('Quest 9999_NPCBuffer 6.htm');  // Special
+    Delay(500);
+    Engine.BypassToServer('Quest 9999_NPCBuffer 200');    // Anti Buff Shield
+    Delay(500);
+  end;
+  Print('Buffing: done');
+end;
+
+function GetEquippedItems: TIntegerArray;
+var
+  item: TL2Item;
+  items: TIntegerArray;
+  i, num: Integer;
+begin
+  SetLength(items, Inventory.User.Count);
+  num := 0;
+  for  i:= 0 to Inventory.User.Count-1  do
+  begin
+    item := Inventory.User.Items(i);
+    if  item.Equipped  then
+    begin
+      items[i] := item.ID;
+      Inc(num);
+    end;
+  end;
+  SetLength(items, num);
+  Result := items;
+end;
+
+function HasStrider: Integer;
+var
+  item: TL2Item;
+begin
+  Result := 0;
+  if  Inventory.User.ByID(StarDragonBugle, item)  then
+    Result := item.ID;
+end;
+
+procedure continueFarming(toHuntingZone: TProc);
+var
+  inFight: Boolean;
+  city: TCity;
+  //equipped: TIntegerArray;
+  //strider: Integer;
+begin
+  inFight := User.InCombat;
+
+  while  Engine.Status = lsOnline  do
+  begin
+    if  not inFight  or  isDead  or  needsBuffs  then
+    begin
+      Engine.FaceControl(0, False);
+      Recall();
+      {strider := HasStrider;
+      if  strider <> 0  then
+      begin
+        Engine.UseItem(StarDragonBugle);
+        Delay(6 * 1000);
+        Engine.UseAction(38);
+        equipped := GetEquippedItems();
+      end;}
+      MoveInCity();
+      city := GetCity();
+      if  city = HUNTER  then
+        BuffInHunter()
+      else
+        Buffing();
+      toHuntingZone();
+      inFight := True;
+      Delay(1000);
+    end;
+  end;
+end;
+
+BEGIN
+END.

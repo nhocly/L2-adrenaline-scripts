@@ -1,129 +1,88 @@
-unit HuntingZones_CatacombApostate;
+unit HuntingZones_CatacombForbiddenPath;
 
 interface
 
 uses
-  AA_FunctionsModule;
-  //SysUtils, Classes, AA_SettingsModule;
+  uTypes, uFunctions; //, SysUtils, Classes, uSettings;
 
 const
-
-  BeatOffHooked: String = 'SphBeatOff';  // Change this for the configuration of your character that only attacks hooked mobs
-  UsualConfig: String = '';  // You can also specify the normal configuration. It will use the name of your character if this is empty
   GatekeeperZiggurat: Integer = 31119;
-  TPDelay = 3 * 1000;
 
-  // Mobs level 50-60
-  // SS = slightly strong, SW = slightly weak, PA = physical attack, MD = magic deffense
-  // LA = light armor weak P def and strong evasion
-  // x Tomb Guard* 75; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred; Drop Spoil: Adamantite Nugget 1/3,  EWA 1/1238, Sealed Leather Armor Of Nightmare Fabric 1/31
-  // x Lesser Ancient Shaman* 76; 4x, LA, Weak Wind, Weak Bow
-  // x Lilim Great Mystic 78; 4x, SSPA, SSMA, SWPD, Resist Dark
-  // Tomb Preacher* 77; 4x, LA, Resist Dark
-  // x Nephilim Cardinal 79; 4x SSPA, SSMA, SWPD, SWMD, Weak Dark
-  // Guardian Spirit of Ancient Holy Ground* 79, 4x, LA, Weak Wind, Weak Bow
-  // Lilim Court Knight 80; 4x, SSPA, SSMA, SPD, SWMD, Weak Dark
-  // Nephilim Commander 80; 4x, SSPA, SSMA, SPD, SWMD, Resist Dark
-  // Lesser Ancient Warrior* 80; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred
+{
+  Mobs level 50-60
+  SS = slightly strong, SW = slightly weak, PA = physical attack, MD = magic deffense
+  LA = light armor weak P def and strong evasion
+  Tomb Guard* 75; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred; Drop Spoil: Adamantite Nugget 1/3,  EWA 1/1238, Sealed Leather Armor Of Nightmare Fabric 1/31
+  Lesser Ancient Shaman* 76; 4x, LA, Weak Wind, Weak Bow
+  Lilim Great Mystic 78; 4x, SSPA, SSMA, SWPD, Resist Dark
+  Tomb Preacher* 77; 4x, LA, Resist Dark
+  Nephilim Cardinal 79; 4x SSPA, SSMA, SWPD, SWMD, Weak Dark
+  Guardian Spirit of Ancient Holy Ground* 79, 4x, LA, Weak Wind, Weak Bow
+  Lilim Court Knight 80; 4x, SSPA, SSMA, SPD, SWMD, Weak Dark
+  Nephilim Commander 80; 4x, SSPA, SSMA, SPD, SWMD, Resist Dark
+  Lesser Ancient Warrior* 80; 4x, SSPA, SSMA, SWPD, SWMD, Weak Sacred
+}
 
-  procedure FromHuntersToForbiddenPath;
-  procedure goToRoom13;
-  function IsAgr(Mob: TL2Npc): boolean;
-  function  HaveHookedMobs(): boolean;
-  procedure KillHookedMobs;
+  procedure FromHuntersToForbiddenPath();
+  procedure GoToCataForbiddenPathRoom13();
 
 implementation
 
-  procedure FromHuntersToForbiddenPath;
+procedure FromHuntersToForbiddenPath();
+var
+  path: TIntegerArray;
+begin
+  path := [114690, 78012, -2600,  // north entrance
+    112279, 78587, -2576,  109837, 77505, -2096,  106597, 77472, -1576,  // TODO: fix around here, it jumps and gets stucked
+    104628, 82201, -2616,  105768, 82598, -2881,  // top of ramp
+    106886, 81265, -3368,  107059, 79901, -3744,  107593, 78720, -4352,
+    108937, 78738, -4648,  110323, 79677, -5096,  109804, 80971, -5088,
+    110151, 83836, -4832,  110113, 84523, -4808,  // entrance
+    110304, 84532, -4904,  110791, 84560, -6903,  112904, 84513, -6536,    // respawn from teleport
+    112284, 84558, -6582];
+  PathMove(path);
+end;
+
+procedure EnterCataForbiddenPath();
+begin
+  if  User.InRange(112904, 84513, -6536, 200)  then
   begin
-    Engine.MoveTo (114690, 78012, -2600);  // north entrance
-    Engine.MoveTo (112279, 78587, -2576);
-    Engine.MoveTo (109837, 77505, -2096);
-    Engine.MoveTo (106597, 77472, -1576);  // TODO: fix around here, it jumps and gets stucked
-    Engine.MoveTo (104628, 82201, -2616);
-    Engine.MoveTo (105768, 82598, -2881);  // up ramp
-    Engine.MoveTo (106886, 81265, -3368);
-    Engine.MoveTo (107059, 79901, -3744);
-    Engine.MoveTo (107593, 78720, -4352);
-    Engine.MoveTo (108937, 78738, -4648);
-    Engine.MoveTo (110323, 79677, -5096);
-    Engine.MoveTo (109804, 80971, -5088);
-    Engine.MoveTo (110151, 83836, -4832);
-    Engine.MoveTo (110113, 84523, -4808); // entrance
-    Engine.MoveTo (110304, 84532, -4904);
-    Engine.MoveTo (110791, 84560, -6903);
-    Engine.MoveTo (112904, 84513, -6536);  // respawn from teleport
-  Engine.MoveTo (112284, 84558, -6582);
+    Engine.SetTarget(GatekeeperZiggurat);
+    Engine.MoveToTarget;
+    Engine.DlgOpen;
+    DlgSel(1, 'npc_268468761_goto 260');  // enter
+    Delay(3000);
   end;
+end;
 
-  procedure KillHookedMobs;
-  begin
-    Engine.LoadConfig (BeatOffHooked);  // load config for only attack hooked
-    Engine.FaceControl(1, true);
-    Delay(3 * 1000); // wait for mobs to reach you so they count as hooked
-
-    if (HaveHookedMobs) then                                  // if agro mobs are hanging on us, then
-    begin
-      Engine.Msg('[KillHooked]', 'Fighting off mobs', 128);
-      Engine.FaceControl(1, true);                            // turn on the interface
-      while (HaveHookedMobs) do delay(555);                   // wait while there are agro mobs
-      Engine.FaceControl(1, false);                           // turn off the interface
-    end;
-  end;
-
-  function HaveHookedMobs(): boolean;  // the function checks if mobs hang on us
-  var i: integer;
-  begin
-    result:= false;
-    for i:= 0 to NpcList.Count-1 do begin
-      if (IsAgr(NpcList(i))) then begin
-        result:= true;
-        break;
-      end;
-    end;
-  end;
-
-  function IsAgr(Mob: TL2Npc): boolean;
-  begin
-    result:= (Mob.AtkOID = User.OID) and (not Mob.Dead);
-  end;
-
-  procedure goToRoom13;  // see CataForbiddenPathMobLoc.jpg to know which room
-  begin
-    if  User.InRange(112904, 84513, -6536, 200)  then
-    begin
-      Engine.SetTarget (GatekeeperZiggurat);
-      Engine.MoveToTarget;
-      Engine.DlgOpen;
-      DlgSel (1, 'npc_268468761_goto 260');  // enter
-      Delay(3000);
-    end;
-
-    Engine.MoveTo (13813, -247416, -9576);  // room 1
-    Engine.MoveTo (14624, -246990, -9576);
-    Engine.MoveTo (15229, -247024, -9576);
-    //KillHookedMobs;
-    Engine.MoveTo (15126, -248122, -9576);
-    Engine.MoveTo (16156, -248057, -9576);  // room 2
-    Engine.MoveTo (16358, -247439, -9576);
-    Engine.MoveTo (16243, -246882, -9576);
-    //KillHookedMobs;
-    Engine.MoveTo (17619, -246893, -9576);  // room 10
-    Engine.MoveTo (17513, -248329, -9576);
-    Engine.MoveTo (17861, -248516, -9576);  // room 11
-    Engine.MoveTo (18681, -248140, -9576);
-    Engine.MoveTo (18572, -247620, -9576);
-    //KillHookedMobs;
-    Engine.MoveTo (19818, -247689, -9576);
-    Engine.MoveTo (19652, -245836, -9576); // room 13
-  end;
+procedure GoToCataForbiddenPathRoom13();  // see CataForbiddenPathMobLoc.jpg to know which room
+begin
+  EnterCataForbiddenPath();
+  Engine.MoveTo(13813, -247416, -9576);  // room 1
+  Engine.MoveTo(14624, -246990, -9576);
+  Engine.MoveTo(15229, -247024, -9576);
+  //KillHookedMobs;
+  Engine.MoveTo(15126, -248122, -9576);
+  Engine.MoveTo(16156, -248057, -9576);  // room 2
+  Engine.MoveTo(16358, -247439, -9576);
+  Engine.MoveTo(16243, -246882, -9576);
+  //KillHookedMobs;
+  Engine.MoveTo(17619, -246893, -9576);  // room 10
+  Engine.MoveTo(17513, -248329, -9576);
+  Engine.MoveTo(17861, -248516, -9576);  // room 11
+  Engine.MoveTo(18681, -248140, -9576);
+  Engine.MoveTo(18572, -247620, -9576);
+  //KillHookedMobs;
+  Engine.MoveTo(19818, -247689, -9576);
+  Engine.MoveTo(19652, -245836, -9576); // room 13
+end;
 
 procedure Main();
 begin
   Engine.FaceControl(0, false);
   //FromHuntersToForbiddenPath;
-  goToRoom13;  // see CataForbiddenPathMobLoc.jpg to know which room
-  Engine.LoadConfig (User.Name);  // load config for only attack hooked
+  GoToCataForbiddenPathRoom13();
+  Engine.LoadConfig(User.Name);
   Engine.FaceControl(0, true);
 end;
 

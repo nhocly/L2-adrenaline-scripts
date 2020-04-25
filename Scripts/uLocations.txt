@@ -1,0 +1,354 @@
+unit uLocations;
+
+interface
+
+uses uTypes, uFunctions;
+
+// HEINE
+  function GoToGardenOfEva(FloorLevel: Integer = 1): Boolean;
+
+// GODDARD
+  procedure  GoToFoGLow;
+
+implementation
+
+function CheckFloorLevel(floorLevel, curLevel: Integer; moved: Boolean): Boolean;
+begin
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t get inside');
+    exit;
+  end;
+    (FloorLevel < 1)  then  Print('GoToGardenOfEva: arrived')
+  else
+end;
+
+function GoToGardenOfEva(FloorLevel: Integer = 1): Boolean;
+var
+  path: TIntegerArray;
+begin
+  if  (FloorLevel < 0)  or  (FloorLevel > 5)  then
+  begin
+    Print('GoToGardenOfEva: expecting input between 0 and 5');
+    exit;
+  end;
+
+  // DoTeleportTo('garden of eva');
+  if  not User.InRange(85998, 231070, -3595, 500, 100) then
+  begin
+    Print('GoToGardenOfEva: not in garden of evan teleport respawn');
+    exit;
+  end;
+
+  Print('GoToGardenOfEva: Going to Garden of Eva');
+  path := [85619, 231367, -3528,  84525, 235012, -3751,  85166, 238905, -4416,
+    85139, 242047, -4742,  85023, 242090, -4814,  84670, 241968, -7130,
+    84184, 241691, -7152,  84184, 241691, -7152,  83376, 241711, -6898,
+    82748, 241738, -6712];
+  Result := PathMove(path);
+
+  //CheckFloorLevel(floorLevel, curLevel, Result);
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t get inside');
+    exit;
+  end
+  else begin
+    if  (FloorLevel < 1)  then
+    begin
+      Print('GoToGardenOfEva: arrived');
+      exit;
+    end;
+  end;
+
+  Print('GoToGardenOfEva: going to first level');
+  path := [82757, 244738, -7160,  86289, 244752, -7672,  86184, 244314, -7672,
+    82833, 245078, -8208,  84535, 245478, -8856,  86380, 246645, -8823]
+  Result := PathMove(path);
+
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t reach first level');
+    exit;
+  end
+  else begin
+    if  (FloorLevel < 2)  then
+    begin
+      Print('GoToGardenOfEva: arrived to first level');
+      exit;
+    end;
+  end;
+
+  Print('GoToGardenOfEva: going to second level');
+  path := [86319, 246917, -8824,  86104, 247220, -8847];
+  PathMove(path);
+
+  while  not User.InRange(86104, 247220, -8847, 5, 10)  do
+  begin
+    Print('GoToGardenOfEva: Waiting for door to open');
+    Delay(10 * 1000);
+    Engine.MoveTo(86104, 247220, -8847);
+  end;
+  Result := Engine.MoveTo(86942, 247817, -9311);
+
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t reach second level');
+    exit;
+  end
+  else begin
+    if  (FloorLevel < 3)  then
+    begin
+      Print('GoToGardenOfEva: arrived to second level');
+      exit;
+    end;
+  end;
+
+  Print('GoToGardenOfEva: going to third level');
+  path := [87659, 248808, -9336,  88106, 250266, -9365,  87721, 250458, -9328];
+  PathMove(path);
+
+  while  not User.InRange(87721, 250458, -9328, 5, 10)  do
+  begin
+    Print('GoToGardenOfEva: Waiting for door to open');
+    Delay(10 * 1000);
+    Engine.MoveTo(87721, 250458, -9328)
+  end;
+  Result := Engine.MoveTo(88066, 251495, -9848);
+
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t reach third level');
+    exit;
+  end
+  else begin
+    if  (FloorLevel < 4)  then
+    begin
+      Print('GoToGardenOfEva: arrived to third level');
+      exit;
+    end;
+  end;
+
+  Print('GoToGardenOfEva: going to fourth level');
+  Engine.MoveTo(87182, 253432, -9877);
+  Engine.MoveTo(86843, 253339, -9840);
+  while  not User.InRange(86843, 253339, -9840, 5, 10)  do
+  begin
+    Print('GoToGardenOfEva: Waiting for door to open');
+    Delay(10 * 1000);
+    Engine.MoveTo(86843, 253339, -9840)
+  end;
+  Result := Engine.MoveTo(87135, 252357, -10336);
+
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t reach fourth level');
+    exit;
+  end
+  else begin
+    if  (FloorLevel < 5)  then
+    begin
+      Print('GoToGardenOfEva: arrived to fourth level');
+      exit;
+    end;
+  end;
+
+  Engine.MoveTo(87008, 252252, -10389);
+  Engine.MoveTo(86384, 253252, -10389);
+  Engine.MoveTo(86079, 253159, -10389);
+  while  not User.InRange(86843, 253339, -9840, 5, 10)  do
+  begin
+    Print('GoToGardenOfEva: Waiting for door to open');
+    Delay(10 * 1000);
+    Engine.MoveTo(86079, 253159, -10389)
+  end;
+
+  Result := Engine.MoveTo (83428, 252654, -10680);
+
+  if  not Result  then
+  begin
+    Print('GoToGardenOfEva: couldn''t reach fith level');
+    exit;
+  end
+  else
+    Print('GoToGardenOfEva: arrived to fith level');
+
+  if  User.InRange (83428, 252654, -10680, 200, 100) then begin
+    Engine.MoveTo (82933, 252441, -10618);
+    Result := Engine.MoveTo (81973, 252445, -10592);
+    Print ('You''ve arrived to Garden of Eva');
+  end;
+end;
+
+procedure  GoToFoGLow;
+begin
+  if  User.InRange (170209, -116238, -2079, 500, 200)  then begin
+    Engine.MoveTo (171469, -116228, -2144);
+  end;
+  if  User.InRange (171469, -116228, -2144, 500, 200)  then begin
+    Engine.MoveTo (171564, -116190, -2183);
+  end;
+  if  User.InRange (171564, -116190, -2183, 500, 200)  then begin
+    Engine.MoveTo (171795, -116124, -2816);
+  end;
+  if  User.InRange (171795, -116124, -2816, 500, 200)  then begin
+    Engine.MoveTo (172498, -116436, -3216);
+  end;
+  if  User.InRange (172498, -116436, -3216, 500, 200)  then begin
+    Engine.MoveTo (173368, -116102, -3592);
+  end;
+  if  User.InRange (173368, -116102, -3592, 500, 200)  then begin
+    Engine.MoveTo (173603, -115475, -3760);
+  end;
+  if  User.InRange (173603, -115475, -3760, 500, 200)  then begin
+    Engine.MoveTo (175187, -115767, -3784);
+  end;
+  if  User.InRange (175187, -115767, -3784, 500, 200)  then begin
+    Engine.MoveTo (175669, -116001, -3810);
+  end;
+  if  User.InRange (175669, -116001, -3810, 500, 200)  then begin
+    Engine.MoveTo (177391, -116482, -3688);
+  end;
+  if  User.InRange (177391, -116482, -3688, 500, 200)  then begin
+    Engine.MoveTo (178245, -116805, -3600);
+  end;
+  if  User.InRange (178245, -116805, -3600, 500, 200)  then begin
+    Engine.MoveTo (179030, -117037, -3633);
+  end;
+  if  User.InRange (179030, -117037, -3633, 500, 200)  then begin
+    Engine.MoveTo (179956, -117974, -3641);
+  end;
+  if  User.InRange (179956, -117974, -3641, 500, 200)  then begin
+    Engine.MoveTo (178864, -118398, -3824);
+  end;
+  if  User.InRange (178864, -118398, -3824, 500, 200)  then begin
+    Engine.MoveTo (177473, -118801, -4112);
+  end;
+  if  User.InRange (177473, -118801, -4112, 500, 200)  then begin
+    Engine.MoveTo (177011, -119858, -4112);
+  end;
+  if  User.InRange (177011, -119858, -4112, 500, 200)  then begin
+    Engine.MoveTo (177225, -120569, -4142);
+  end;
+  if  User.InRange (177225, -120569, -4142, 500, 200)  then begin
+    Engine.MoveTo (177787, -121050, -4056);
+  end;
+  if  User.InRange (177787, -121050, -4056, 500, 200)  then begin
+    Engine.MoveTo (179275, -120980, -3824);
+  end;
+  if  User.InRange (179275, -120980, -3824, 500, 200)  then begin
+    Engine.MoveTo (180162, -120630, -3680);
+  end;
+  if  User.InRange (180162, -120630, -3680, 500, 200)  then begin
+    Engine.MoveTo (180479, -120475, -3701);
+  end;
+  if  User.InRange (180479, -120475, -3701, 500, 200)  then begin
+    Engine.MoveTo (181461, -119376, -3608);
+  end;
+  if  User.InRange (181461, -119376, -3608, 500, 200)  then begin
+    Engine.MoveTo (181652, -118364, -3360);
+  end;
+  if  User.InRange (181652, -118364, -3360, 500, 200)  then begin
+    Engine.MoveTo (182228, -117269, -3336);
+  end;
+  if  User.InRange (182228, -117269, -3336, 500, 200)  then begin
+    Engine.MoveTo (181886, -116809, -3328);
+  end;
+  if  User.InRange (181886, -116809, -3328, 500, 200)  then begin
+    Engine.MoveTo (183474, -117430, -3336);
+  end;
+  if  User.InRange (183474, -117430, -3336, 500, 200)  then begin
+    Engine.MoveTo (185412, -117438, -3288);
+  end;
+  if  User.InRange (185412, -117438, -3288, 500, 200)  then begin
+    Engine.MoveTo (186016, -117585, -3314);
+  end;
+  if  User.InRange (186016, -117585, -3314, 500, 200)  then begin
+    Engine.MoveTo (186652, -118823, -3288);
+  end;
+  if  User.InRange (186652, -118823, -3288, 500, 200)  then begin
+    Engine.MoveTo (187520, -118879, -3280);
+  end;
+  if  User.InRange (187520, -118879, -3280, 500, 200)  then begin
+    Engine.MoveTo (189238, -118246, -3314);
+  end;
+  if  User.InRange (189238, -118246, -3314, 500, 200)  then begin
+    Engine.MoveTo (189254, -116299, -3288);
+  end;
+  if  User.InRange (189254, -116299, -3288, 500, 200)  then begin
+    Engine.MoveTo (186702, -115290, -3314);
+  end;
+  if  User.InRange (186702, -115290, -3314, 500, 200)  then begin
+    Engine.MoveTo (186597, -112211, -3288);
+  end;
+  if  User.InRange (186597, -112211, -3288, 500, 200)  then begin
+    Engine.MoveTo (186269, -111847, -3314);
+  end;
+  if  User.InRange (186269, -111847, -3314, 500, 200)  then begin
+    Engine.MoveTo (186552, -111195, -3288);
+  end;
+  if  User.InRange (186552, -111195, -3288, 500, 200)  then begin
+    Engine.MoveTo (184321, -109056, -3288);
+  end;
+  if  User.InRange (184321, -109056, -3288, 500, 200)  then begin
+    Engine.MoveTo (182556, -109070, -3697);
+  end;
+  if  User.InRange (182556, -109070, -3697, 500, 200)  then begin
+    Engine.MoveTo (181222, -110693, -3664);
+  end;
+  if  User.InRange (181222, -110693, -3664, 500, 200)  then begin
+    Engine.MoveTo (178744, -110936, -3697);
+  end;
+  if  User.InRange (178744, -110936, -3697, 500, 200)  then begin
+    Engine.MoveTo (177843, -111177, -3664);
+  end;
+  if  User.InRange (177843, -111177, -3664, 500, 200)  then begin
+    Engine.MoveTo (177742, -112501, -3496);
+  end;
+  if  User.InRange (177742, -112501, -3496, 500, 200)  then begin
+    Engine.MoveTo (177570, -113045, -3488);
+  end;
+  if  User.InRange (177570, -113045, -3488, 500, 200)  then begin
+    Engine.MoveTo (174861, -113097, -3517);
+  end;
+  if  User.InRange (174861, -113097, -3517, 500, 200)  then begin
+    Engine.MoveTo (173547, -112737, -3723);
+  end;
+  if  User.InRange (173547, -112737, -3723, 500, 200)  then begin
+    Engine.MoveTo (173357, -113123, -3640);
+  end;
+  if  User.InRange (173357, -113123, -3640, 500, 200)  then begin
+    Engine.MoveTo (173288, -113383, -4768);
+  end;
+  if  User.InRange (173288, -113383, -4768, 500, 200)  then begin
+    Engine.MoveTo (173653, -112853, -5040);
+  end;
+  if  User.InRange (173653, -112853, -5040, 500, 200)  then begin
+    Engine.MoveTo (173734, -112224, -5232);
+  end;
+  if  User.InRange (173734, -112224, -5232, 500, 200)  then begin
+    Engine.MoveTo (176415, -112261, -5520);
+  end;
+  if  User.InRange (176415, -112261, -5520, 500, 200)  then begin
+    Engine.MoveTo (178706, -112537, -5824);
+  end;
+  if  User.InRange (178706, -112537, -5824, 500, 200)  then begin
+    Engine.MoveTo (179868, -111829, -5832);
+  end;
+  if  User.InRange (179868, -111829, -5832, 500, 200)  then begin
+    Engine.MoveTo (180772, -110757, -5864);
+  end;
+  if  User.InRange (180772, -110757, -5864, 500, 200)  then begin
+    Engine.MoveTo (180504, -109345, -5832);
+  end;
+  if  User.InRange (180504, -109345, -5832, 500, 200)  then begin
+    Engine.MoveTo (179935, -108921, -5864);
+  end;
+  if  User.InRange (173288, -113383, -4768, 500, 200)  then begin
+    Engine.MoveTo (173653, -112853, -5040);
+  end;
+end;
+
+BEGIN
+  GoToGardenOfEva(5);
+END.

@@ -1,6 +1,6 @@
 uses
-  SysUtils, Classes, Leveling_lvl20_SettingsModule, Leveling_lvl20_ModuleFunctions,
-  Leveling_lvl20_Functions;
+  SysUtils, Classes, Leveling_KamaelLvl20_SettingsModule, Leveling_KamaelLvl20_ModuleFunctions,
+  Leveling_KamaelLvl20_Functions;
 
 type
   TCity = (DWARVEN = 0, ORC = 1, DARK_ELVEN = 2, ELVEN = 3, KAMAEL = 4,

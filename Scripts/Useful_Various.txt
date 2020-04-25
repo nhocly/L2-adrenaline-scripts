@@ -1,0 +1,310 @@
+unit Useful_Various;
+
+interface
+
+uses Classes, SysUtils;
+
+const
+  Rooney = 32049;
+
+(*------- Chat Scanner --------------------------------------------------------*)
+var
+  phrases: array of string = ['som', 'miracle'];   // set words we are looking for
+
+  procedure ChatScannerMain();
+  procedure CopyChatThread();
+  procedure ChatScanerThread();
+(*------- Chat Scanner --------------------------------------------------------*)
+
+  procedure TradeSpam;
+
+(*------- Exchange items ------------------------------------------------------*)
+const
+  itemCount = 69; // for testing purposes make this number small
+  perActionDelay = 200;
+
+  // Exchanges itemCount number of items from the inventory
+  function SetCursorPos(x, y : integer): boolean; stdcall; external 'user32.dll';
+  function mouse_event(dwFlags, dx, dy, dwData: byte; dwExtraInfo: integer): void; stdcall; external 'user32.dll';
+(*------- Exchange items ------------------------------------------------------*)
+
+(*-------- For the Lulz -------------------------------------------------------*)
+  procedure ShoutObstacles();
+  procedure Shout();
+  procedure Move();
+  procedure ForTheLulz();
+(*-------- For the Lulz -------------------------------------------------------*)
+
+implementation
+
+{
+  A simple example showing how you can scan all chat messages
+  A simple example that logs all chat messages
+  It doesn't work in Interlude or maybe with version 1.71 of the bot
+}
+
+procedure ChatScannerMain();
+begin
+  Script.NewThread(@ChatScanerThread);
+  Delay(-1);
+end;
+
+procedure CopyChatThread();
+begin
+  while  true  do begin
+    if (ChatMessage.Unread) and (ChatMessage.Time < 3333) then begin
+      Print(ChatMessage.Sender+': '+IntToStr(Ord(ChatMessage.ChatType))+' :'+ChatMessage.text);
+    end;
+    Delay(100);
+  end;
+end;
+
+// It can be slightly improved to find the ads we need:
+
+procedure ChatScanerThread();
+var i: integer;
+begin
+  Print('Started Chat Scanner Thread');
+  while  true  do begin
+    // ChatType = (mtSystem, mtAll, mtPrivate, mtParty, mtClan, mtFriend, mtShout)
+    if (ChatMessage.Unread) and (ChatMessage.ChatType = mtAll)  then begin
+      for i:= Low(phrases) to High(phrases) do begin
+        if (Pos(LowerCase(phrases[i]), LowerCase(ChatMessage.text)) > 0) then begin
+          Print(ChatMessage.Sender+': '+ChatMessage.Text);
+          PlaySound(ExePath+'\Sounds\msg.mp3');
+          // Engine.SetGameWindow(true); // Undeclared in version 1.71
+          break;
+        end;
+      end;
+    end;
+    Delay(100);
+  end;
+    Print('Ended Chat Scanner Thread');
+end;
+
+procedure TradeSpam();
+begin
+  while  true  do
+  begin
+    Engine.EnterText('+WTS 5 Gift Box 1k');
+    Delay (20 * 1000);
+  end;
+end;
+
+procedure mouseClick(x, y : integer);
+begin
+  SetCursorPos(x, y);
+  mouse_event($2, 0, 0, 0, 0);
+  delay(perActionDelay);
+  mouse_event($4, 0, 0, 0, 0);
+  delay(perActionDelay);
+end;
+
+procedure ExchangeItems();
+var
+  i : integer;
+begin
+  i := 1;
+  while i < itemCount do begin
+    mouseClick(690, 280);
+    mouseClick(690, 280);
+    mouseClick(890, 460);
+    mouseClick(690, 460);
+    i := i + 1;
+  end;
+end.
+
+///  Sound alert when there is a champion with a specific string in its title
+procedure ChampionAlert;
+var
+  i: integer;
+  mobTitle: string;
+  p: integer;
+begin
+  while  true  do
+  begin
+    for  i := 0 to NpcList.Count-1  do
+    begin
+      mobTitle := NpcList.Items (i).Title;
+      p := pos ('GoldKeeper', mobTitle);
+
+      if  ( User.DistTo(NpcList.Items(i)) < 300 )  and
+          NpcList.Items(i).Attackable  and
+          not NpcList.Items(i).Dead  and
+         ((NpcList.Items(i).MaxHP > 30000)  or  (p <> 0))  then
+      begin
+        PlaySound (exepath + '\Sounds\beep.wav');
+      end;
+    end;
+    Delay (10 * 1000);
+  end;
+end;
+
+procedure countMembers;
+var
+  i: integer;
+begin
+  for i:=0 to Party.chars.count-1 do
+  begin
+    if (User.DistTo(party.chars.items(i)) > 1000) or ((User.Z - party.chars.items(i).Z) > 100) then
+      print(party.chars.items(i).name);
+  end;
+end;
+
+// Kamaloka (Labyrinth of the Abyss)
+procedure checkLabaFirstFloor;
+var
+  i: integer;
+  result: integer;
+begin
+  result := 0;
+  for i:=0 to NpcList.count-1 do
+  begin
+    if (AnsiSameText(npclist.items(i).name, 'Lost Watchman')) then
+      inc(result);
+  end;
+  print(result);
+end;
+
+// Print party members level
+procedure printLvl;
+var
+  i: integer;
+begin
+  for i:=0 to Party.chars.count-1 do
+  begin
+   print(party.chars.items(i).name + ' ' + inttostr(party.chars.items(i).level));
+  end;
+end;
+
+procedure waitRaid;
+const
+  cabrioChest = 31027;
+  cabrioRaid = 25035;
+  golkondaChest = 31029;
+  kernonChest = 31028;
+var
+  i: integer;
+  npc: TL2Live;
+begin
+  while true do
+  begin
+    delay(100);
+    NpcList.ByID(kernonChest, npc);
+    if (Assigned(npc)) then
+    begin
+      Engine.SetTarget(npc);
+      Engine.MoveTo(npc);
+      Engine.DlgOpen;
+      Engine.DlgSel(1);
+      Engine.DlgSel(1);
+      delay(10000);
+    end;
+  end;
+end;
+
+procedure waitRaidNotification;
+const
+  cabrioChest = 31027;
+  cabrioRaid = 25035;
+  hallateRaid = 25220;
+  golkondaRaid = 25126;
+  kernonRaid = 25054;
+var
+  npc: TL2Live;
+  isPlaying: boolean;
+  startTime: cardinal;
+begin
+  isPlaying := false;
+  while true do
+  begin
+    delay(100);
+    NpcList.ByID(kernonRaid, npc);
+    //Charlist.byname('03', npc);
+    if (Assigned(npc)) and not isPlaying then
+    begin
+      PlaySound('C:\refresh.wav',  true);
+      startTime := GetTickCount + 30 * 1000;
+      isPlaying := true;
+      delay(10000);
+    end;
+
+    if (GetTickCount > startTime) then
+    begin
+      StopSound;
+      isPlaying := false;
+      delay(10000);
+    end;
+  end;
+end;
+
+procedure WaitRaidMain();
+begin
+  StopSound();
+  script.newThread(@waitRaid);
+  //script.newThread(@waitRaidNotification);
+end;
+
+{-------------------------------------------------------------------------------
+  Run around the square of Giran telling people to move aside
+ -------------------------------------------------------------------------------}
+procedure ShoutObstacles();
+var
+  i: integer;
+begin
+  while  Engine.Status = lsOnline  do
+  begin
+    for  i := 0  to  NpcList.Count-1  do
+    begin
+      if  User.DistTo(NpcList.Items(i)) < 40  then
+      begin
+        Engine.EnterText('MOVE ASIDE');
+        Engine.EnterText('I''m in a hurry!');
+      end;
+    end;
+    Delay(1000);
+  end;
+end;
+
+procedure Shout();
+begin
+  while  Engine.Status = lsOnline  do
+  begin
+    Delay(10 * 1000);
+    Engine.EnterText('Move move!');
+    Delay(10 * 1000);
+    Engine.EnterText('Move aside! I''m in a hurry');
+  end;
+end;
+
+procedure Move();
+begin
+  while  Engine.Status = lsOnline  do
+  begin
+    Engine.MoveTo(82794, 147782, -3464);
+    Engine.MoveTo(81056, 147817, -3495);
+    Engine.MoveTo(81058, 149411, -3495);
+    Engine.MoveTo(82837, 149412, -3464);
+  end;
+end;
+
+procedure ForTheLulz();
+begin
+  Script.NewThread(@Move);
+  Script.NewThread(@Shout);
+end;
+
+// Blacksmith that is in various places of FoG
+procedure TargetRooney();
+begin
+  while  true  do
+  begin
+    if  Engine.SetTarget(Rooney)  then
+      PlaySound(exepath + '\sounds\beep.wav');
+    Delay(1000);
+  end;
+end;
+
+begin
+  TradeSpam();
+end.
